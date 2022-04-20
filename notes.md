@@ -31,3 +31,11 @@
 #### using next middleware
 
 -   just assign whatever random string to it in your .env.local file
+
+## yarn add prisma -D
+
+## yarn add @prisma/client
+
+## yarn init prisma
+
+-   creates prisma folder + .env
