@@ -25,3 +25,9 @@
 -   homepageURL: http://localhost:3333
 -   authorizationCallbackURL: http://localhost:3333/api/auth/callback
     -   (authorizationCallbackURL must match next url pattern)
+
+## NEXTAUTH_SECRET
+
+#### using next middleware
+
+-   just assign whatever random string to it in your .env.local file

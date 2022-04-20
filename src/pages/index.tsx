@@ -10,13 +10,12 @@ const s = {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-	// req.cookies
 	const session = await getSession({ req });
 
 	if (session) {
 		return {
 			redirect: {
-				destination: '/App',
+				destination: '/Main',
 				permanent: false,
 			},
 		};
@@ -26,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 		props: {},
 	};
 };
+
 const SignIn: NextPage = () => {
 	const { data, status } = useSession();
 	console.log({ data, status });
