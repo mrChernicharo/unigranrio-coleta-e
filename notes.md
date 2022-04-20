@@ -13,3 +13,15 @@
 </pre>
 
 ## tailwindui.com
+
+## github.com/settings
+
+-   developer settings
+    -   OAuth apps
+        -   register new app
+
+<img src="./public/github-oauth.png" />
+
+-   homepageURL: http://localhost:3333
+-   authorizationCallbackURL: http://localhost:3333/api/auth/callback
+    -   (authorizationCallbackURL must match next url pattern)
