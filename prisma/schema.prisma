@@ -6,6 +6,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model CollectionPoint {
+  id String @id @default(uuid())
+  name String
+  lat Float
+  lng Float
+  address String
+  city String
+  UF String @db.Char(2)
+  createdAt DateTime @default(now())
 }

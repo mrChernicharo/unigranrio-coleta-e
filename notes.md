@@ -39,3 +39,9 @@
 ## yarn init prisma
 
 -   creates prisma folder + .env
+
+### yarn prisma migrate dev
+
+## npx prisma studio
+
+mysql://USER:PASSWORD@HOST:PORT/DATABASE
