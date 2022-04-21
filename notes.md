@@ -45,3 +45,8 @@
 ## npx prisma studio
 
 mysql://USER:PASSWORD@HOST:PORT/DATABASE
+
+### mdb cli
+
+-   hosting our database with mdb
+-   https://dashboard.mdbgo.com/#/databases
