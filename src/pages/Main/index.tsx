@@ -1,31 +1,56 @@
 import { CollectionPoint } from '@prisma/client';
 import { GetServerSideProps } from 'next';
-import Link from 'next/link';
+import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
+import CreatePointModal from '../../components/CreatePointModal';
 import Profile from '../../components/Profile';
 import { prisma } from '../../lib/prisma';
 
 interface Props {
 	collectionPoints: CollectionPoint[];
+	googleApiKey: string;
 }
 
-export default function App({ collectionPoints }: Props) {
-	console.log(collectionPoints);
+export default function App({ collectionPoints, googleApiKey }: Props) {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	console.log(collectionPoints, googleApiKey);
+
+	const handleModalOpen = () => {
+		setIsModalOpen(true);
+	};
+
+	const handleModalClose = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<div className="">
 			<Profile />
 
-			<Link href="/CreatePoint" passHref>
-				<FaPlus />
-			</Link>
-			<h1>Hello world</h1>
+			<div>Map</div>
 
-			<pre>{JSON.stringify(collectionPoints, null, 2)}</pre>
+			<pre>
+				{JSON.stringify(
+					collectionPoints.map(p => p.name),
+					null,
+					2
+				)}
+			</pre>
+
+			<button onClick={handleModalOpen}>
+				<FaPlus size={40} />
+			</button>
+
+			{isModalOpen && (
+				<CreatePointModal handleModalClose={handleModalClose} />
+			)}
 		</div>
 	);
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
+	const googleApiKey = process.env.GOOGLE_API_KEY;
 	const response = await prisma.collectionPoint.findMany();
 
 	const collectionPoints = response.map(item => ({
@@ -33,7 +58,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 		createdAt: item.createdAt.toISOString(),
 	}));
 
+	console.log('getServerSideProps just ran!');
+
 	return {
-		props: { collectionPoints },
+		props: { collectionPoints, googleApiKey },
 	};
 };
