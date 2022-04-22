@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
+import GoogleMap from '../../components/GoogleMap';
 import Profile from '../../components/Profile';
 import { prisma } from '../../lib/prisma';
 
@@ -28,8 +29,6 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 		<div className="">
 			<Profile />
 
-			<div>Map</div>
-
 			<pre>
 				{JSON.stringify(
 					collectionPoints.map(p => p.name),
@@ -45,6 +44,8 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 			{isModalOpen && (
 				<CreatePointModal handleModalClose={handleModalClose} />
 			)}
+
+			<GoogleMap />
 		</div>
 	);
 }

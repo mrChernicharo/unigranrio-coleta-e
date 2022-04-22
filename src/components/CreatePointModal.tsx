@@ -1,7 +1,8 @@
-import axios from 'axios';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FiX } from 'react-icons/fi';
+import { fetchCities, fetchUFs } from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
+import GoogleMap from './GoogleMap';
 
 interface Props {
 	handleModalClose: () => void;
@@ -27,26 +28,6 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 
 	const handleCitySelect = e => {
 		setSelectedCity(citySelectRef.current?.value!);
-	};
-
-	const fetchUFs = async () => {
-		const response = await axios.get<UF[]>(
-			'https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome'
-		);
-		const { data } = response;
-
-		console.log(data);
-		return data;
-	};
-
-	const fetchCities = async (UF: string) => {
-		const response = await axios.get<City[]>(
-			`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${UF}/municipios?orderBy=nome`
-		);
-		const { data } = response;
-
-		console.log(data);
-		return data;
 	};
 
 	useEffect(() => {
@@ -99,7 +80,7 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 							))}
 					</select>
 
-					<div>Mapa</div>
+					<GoogleMap />
 
 					<button type="submit">Confirmar</button>
 				</form>
