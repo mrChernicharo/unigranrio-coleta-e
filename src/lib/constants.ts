@@ -5,3 +5,10 @@ export const initialState = {
 	},
 	zoom: 10,
 };
+
+export const placeholderCity = {
+	id: 'placeholder',
+	nome: 'selecione a cidade',
+	'regiao-imediata': {},
+	microrregiao: {},
+};

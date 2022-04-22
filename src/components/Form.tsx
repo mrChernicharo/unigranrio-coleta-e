@@ -1,152 +1,127 @@
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import { placeholderCity } from '../lib/constants';
+import { fetchCities, fetchUFs } from '../lib/functions';
+import { City, UF } from '../lib/interfaces';
+import { styles } from '../styles/styles';
+
 export default function Form() {
+	const [UFs, setUFs] = useState<UF[]>([]);
+	const [SelectedUF, setSelectedUF] = useState('');
+	const [cities, setCities] = useState<City[]>([]);
+	const [SelectedCity, setSelectedCity] = useState('');
+
+	const UFSelectRef = useRef<HTMLSelectElement>(null);
+	const citySelectRef = useRef<HTMLSelectElement>(null);
+
+	const handleFormSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		console.log({ SelectedUF, SelectedCity });
+	};
+
+	const handleUFSelect = e => {
+		setSelectedUF(UFSelectRef.current?.value!);
+	};
+
+	const handleCitySelect = e => {
+		setSelectedCity(citySelectRef.current?.value!);
+	};
+
+	useEffect(() => {
+		fetchUFs().then(ufs => setUFs(ufs));
+	}, []);
+
+	useEffect(() => {
+		if (SelectedUF)
+			fetchCities(SelectedUF).then(cities =>
+				setCities([placeholderCity, ...cities])
+			);
+	}, [SelectedUF]);
 	return (
-		<div className="mt-5 md:mt-0 md:col-span-2">
-			<form action="#" method="POST">
-				<div className="shadow overflow-hidden sm:rounded-md">
-					<div className="px-4 py-5 bg-white sm:p-6">
-						<div className="grid grid-cols-6 gap-6">
-							<div className="col-span-6 sm:col-span-3">
+		<form onSubmit={handleFormSubmit}>
+			<div className="w-full sm:w-[640px] mx-auto shadow overflow-hidden sm:rounded-md">
+				<div className="px-4 py-5 sm:px-8">
+					<div className="grid grid-cols-6 gap-6">
+						<>
+							<div className="col-span-2 sm:col-span-1">
 								<label
-									htmlFor="first-name"
-									className="block text-sm font-medium text-gray-700"
+									htmlFor="UF"
+									className={styles.fieldLabel}
 								>
-									First name
-								</label>
-								<input
-									type="text"
-									name="first-name"
-									id="first-name"
-									autoComplete="given-name"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-
-							<div className="col-span-6 sm:col-span-3">
-								<label
-									htmlFor="last-name"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Last name
-								</label>
-								<input
-									type="text"
-									name="last-name"
-									id="last-name"
-									autoComplete="family-name"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-
-							<div className="col-span-6 sm:col-span-4">
-								<label
-									htmlFor="email-address"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Email address
-								</label>
-								<input
-									type="text"
-									name="email-address"
-									id="email-address"
-									autoComplete="email"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-
-							<div className="col-span-6 sm:col-span-3">
-								<label
-									htmlFor="country"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Country
+									UF
 								</label>
 								<select
-									id="country"
-									name="country"
-									autoComplete="country-name"
-									className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+									name="UF"
+									id="UF"
+									onChange={handleUFSelect}
+									value={SelectedUF}
+									ref={UFSelectRef}
+									className={styles.input2}
 								>
-									<option>United States</option>
-									<option>Canada</option>
-									<option>Mexico</option>
+									<option value=""></option>
+									{UFs &&
+										UFs.map(uf => (
+											<option
+												key={uf.id}
+												value={uf.sigla}
+											>
+												{uf.sigla}
+											</option>
+										))}
 								</select>
 							</div>
-
-							<div className="col-span-6">
-								<label
-									htmlFor="street-address"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Street address
-								</label>
-								<input
-									type="text"
-									name="street-address"
-									id="street-address"
-									autoComplete="street-address"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-
-							<div className="col-span-6 sm:col-span-6 lg:col-span-2">
+							<div className="col-span-4 sm:col-span-5">
 								<label
 									htmlFor="city"
-									className="block text-sm font-medium text-gray-700"
+									className={styles.fieldLabel}
 								>
-									City
+									Cidade
 								</label>
-								<input
-									type="text"
+								<select
 									name="city"
 									id="city"
-									autoComplete="address-level2"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-
-							<div className="col-span-6 sm:col-span-3 lg:col-span-2">
-								<label
-									htmlFor="region"
-									className="block text-sm font-medium text-gray-700"
+									onChange={handleCitySelect}
+									value={SelectedCity}
+									ref={citySelectRef}
+									className={styles.input2}
+									disabled={!SelectedUF}
 								>
-									State / Province
-								</label>
-								<input
-									type="text"
-									name="region"
-									id="region"
-									autoComplete="address-level1"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
+									{cities &&
+										cities.map(city => (
+											<option
+												key={city.id}
+												value={city.nome}
+											>
+												{city.nome}
+											</option>
+										))}
+								</select>
 							</div>
-
-							<div className="col-span-6 sm:col-span-3 lg:col-span-2">
-								<label
-									htmlFor="postal-code"
-									className="block text-sm font-medium text-gray-700"
-								>
-									ZIP / Postal code
-								</label>
-								<input
-									type="text"
-									name="postal-code"
-									id="postal-code"
-									autoComplete="postal-code"
-									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-						<button
-							type="submit"
-							className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-						>
-							Save
-						</button>
+							{SelectedCity &&
+								SelectedCity !== 'selecione a cidade' && (
+									<div className="col-span-6">
+										<label
+											htmlFor="address"
+											className={styles.fieldLabel}
+										>
+											Endereço
+										</label>
+										<input
+											type="text"
+											name="address"
+											id="address"
+											className={styles.input2}
+										/>
+									</div>
+								)}
+						</>
 					</div>
 				</div>
-			</form>
-		</div>
+				<div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+					<button type="submit" className={styles.btn}>
+						Save
+					</button>
+				</div>
+			</div>
+		</form>
 	);
 }
