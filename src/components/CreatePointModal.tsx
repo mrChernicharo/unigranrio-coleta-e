@@ -40,7 +40,7 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 
 	return (
 		<>
-			<div className="max-w-[600px] bg-white pb-4 relative z-50 mx-auto flex flex-col justify-center items-center border border-sky-500">
+			<div className="max-w-[600px] bg-white pb-4 absolute z-50 top-[10%] left-[20%] flex flex-col justify-center items-center border border-sky-500">
 				<button
 					onClick={handleModalClose}
 					className="absolute right-2 top-2"
