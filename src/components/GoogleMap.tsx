@@ -1,17 +1,10 @@
-import { GoogleApiWrapper } from 'google-maps-react';
-// interface GoogleApiWrapperProps {
-// 	apiKey: string;
-// }
 
-export function GoogleMap(props) {
-	console.log(props);
+
+
+export default function GoogleMap() {
 	return (
 		<div>
 			<h1>Mapa</h1>
 		</div>
 	);
 }
-
-export default GoogleApiWrapper({
-	apiKey: '',
-})(GoogleMap);
