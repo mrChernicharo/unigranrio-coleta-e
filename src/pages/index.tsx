@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { getSession, signIn, useSession } from 'next-auth/react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
-import { styles } from '../lib/styles';
+import { styles } from '../styles/styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	const session = await getSession({ req });

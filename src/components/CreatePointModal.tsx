@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import { fetchCities, fetchUFs } from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
-import GoogleMap from './GoogleMap';
+import Form from './Form';
 
 interface Props {
 	handleModalClose: () => void;
@@ -50,7 +50,7 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 
 	return (
 		<>
-			<div className="max-w-[600px] bg-white pb-4 absolute z-50 top-[10%] left-[20%] flex flex-col justify-center items-center border border-sky-500">
+			{/* <div className="max-w-[600px] bg-white pb-4 absolute z-50 top-[10%] left-[20%] flex flex-col justify-center items-center border border-sky-500">
 				<button
 					onClick={handleModalClose}
 					className="absolute right-2 top-2"
@@ -102,11 +102,20 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 
 					<button type="submit">Confirmar</button>
 				</form>
-			</div>
-			<div
+			</div> */}
+
+			<button
+				onClick={handleModalClose}
+				// className="absolute right-2 top-2"
+			>
+				<FiX />
+			</button>
+
+			<Form />
+			{/* <div
 				onClick={handleModalClose}
 				className="w-screen h-screen absolute top-0 left-0 bg-indigo-300 opacity-50 z-40"
-			></div>
+			></div> */}
 		</>
 	);
 }
