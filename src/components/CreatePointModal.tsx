@@ -8,11 +8,18 @@ interface Props {
 	handleModalClose: () => void;
 }
 
+const placeholder = {
+	id: 'placeholder',
+	nome: 'selecione a cidade',
+	'regiao-imediata': {},
+	microrregiao: {},
+};
+
 export default function CreatePointModal({ handleModalClose }: Props) {
 	const [UFs, setUFs] = useState<UF[]>([]);
-	const [SelectedUF, setSelectedUF] = useState('RJ');
+	const [SelectedUF, setSelectedUF] = useState('');
 	const [cities, setCities] = useState<City[]>([]);
-	const [SelectedCity, setSelectedCity] = useState('Rio de Janeiro');
+	const [SelectedCity, setSelectedCity] = useState('');
 
 	const UFSelectRef = useRef<HTMLSelectElement>(null);
 	const citySelectRef = useRef<HTMLSelectElement>(null);
@@ -35,7 +42,10 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 	}, []);
 
 	useEffect(() => {
-		fetchCities(SelectedUF).then(cities => setCities(cities));
+		if (SelectedUF)
+			fetchCities(SelectedUF).then(cities =>
+				setCities([placeholder, ...cities])
+			);
 	}, [SelectedUF]);
 
 	return (
@@ -52,35 +62,43 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 				<h1>Cadastrar novo ponto de coleta</h1>
 
 				<form onSubmit={handleFormSubmit}>
-					<select
-						name="UFs"
-						onChange={handleUFSelect}
-						value={SelectedUF}
-						ref={UFSelectRef}
-					>
-						{UFs &&
-							UFs.map(uf => (
-								<option key={uf.id} value={uf.sigla}>
-									{uf.sigla}
-								</option>
-							))}
-					</select>
+					<label>Estado</label>
+					<div>
+						<select
+							name="UFs"
+							onChange={handleUFSelect}
+							value={SelectedUF}
+							ref={UFSelectRef}
+						>
+							<option value=""></option>
+							{UFs &&
+								UFs.map(uf => (
+									<option key={uf.id} value={uf.sigla}>
+										{uf.sigla}
+									</option>
+								))}
+						</select>
+					</div>
 
-					<select
-						name="City"
-						onChange={handleCitySelect}
-						value={SelectedCity}
-						ref={citySelectRef}
-					>
-						{cities &&
-							cities.map(city => (
-								<option key={city.id} value={city.nome}>
-									{city.nome}
-								</option>
-							))}
-					</select>
-
-					<GoogleMap />
+					{SelectedUF && (
+						<div>
+							<label>Cidade</label>
+							<select
+								name="City"
+								onChange={handleCitySelect}
+								value={SelectedCity}
+								ref={citySelectRef}
+							>
+								{cities &&
+									cities.map(city => (
+										<option key={city.id} value={city.nome}>
+											{city.nome}
+										</option>
+									))}
+							</select>
+						</div>
+					)}
+					{SelectedCity && <GoogleMap />}
 
 					<button type="submit">Confirmar</button>
 				</form>
