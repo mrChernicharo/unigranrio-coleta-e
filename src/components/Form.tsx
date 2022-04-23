@@ -1,6 +1,7 @@
+import { CollectionPoint } from '@prisma/client';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { placeholderCity } from '../lib/constants';
-import { fetchCities, fetchUFs } from '../lib/functions';
+import { fetchCities, fetchUFs, postCreatePoint } from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
@@ -10,13 +11,27 @@ export default function Form() {
 	const [SelectedUF, setSelectedUF] = useState('');
 	const [cities, setCities] = useState<City[]>([]);
 	const [SelectedCity, setSelectedCity] = useState('');
+	const [address, setAddress] = useState('');
+	const [name, setName] = useState('');
 
 	const UFSelectRef = useRef<HTMLSelectElement>(null);
 	const citySelectRef = useRef<HTMLSelectElement>(null);
+	const addressInputRef = useRef<HTMLInputElement>(null);
+	const nameInputRef = useRef<HTMLInputElement>(null);
 
-	const handleFormSubmit = (e: FormEvent) => {
+	const handleFormSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		console.log({ SelectedUF, SelectedCity });
+		const point: Partial<CollectionPoint> = {
+			name,
+			UF: SelectedUF,
+			city: SelectedCity,
+			address,
+			lat: -22.930489,
+			lng: -43.361814,
+			// lat: -22.930489039424334,
+			// lng: -43.36181473091044,
+		};
+		await postCreatePoint(point);
 	};
 
 	const handleUFSelect = e => {
@@ -27,6 +42,14 @@ export default function Form() {
 		const inputVal = citySelectRef.current?.value;
 		const city = inputVal === 'selecione a cidade' ? '' : inputVal;
 		setSelectedCity(city!);
+	};
+
+	const handleAddressInput = e => {
+		setAddress(addressInputRef.current?.value!);
+	};
+
+	const handleNameInput = e => {
+		setName(nameInputRef.current?.value!);
 	};
 
 	useEffect(() => {
@@ -95,21 +118,43 @@ export default function Form() {
 						)}
 
 						{SelectedCity && (
-							<div className="col-span-6">
-								<label
-									htmlFor="address"
-									className={styles.fieldLabel}
-								>
-									Endereço
-								</label>
-								<input
-									type="text"
-									name="address"
-									id="address"
-									className={styles.input2}
-								/>
-							</div>
+							<>
+								<div className="col-span-6">
+									<label
+										htmlFor="address"
+										className={styles.fieldLabel}
+									>
+										Endereço
+									</label>
+									<input
+										ref={addressInputRef}
+										onChange={handleAddressInput}
+										type="text"
+										name="address"
+										id="address"
+										className={styles.input2}
+									/>
+								</div>
+								<div className="col-span-6">
+									<label
+										htmlFor="name"
+										className={styles.fieldLabel}
+									>
+										Nome do Ponto de Coleta
+									</label>
+									<input
+										ref={nameInputRef}
+										onChange={handleNameInput}
+										type="text"
+										name="name"
+										id="name"
+										className={styles.input2}
+									/>
+								</div>
+							</>
 						)}
+
+						{/* nameInputRef */}
 					</>
 				</div>
 				<div className="fixed bottom-0 w-full right-0 px-4 py-3 bg-gray-100 text-right sm:px-6">

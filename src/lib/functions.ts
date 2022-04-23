@@ -1,3 +1,4 @@
+import { CollectionPoint } from '@prisma/client';
 import axios from 'axios';
 import { City, UF } from './interfaces';
 
@@ -27,4 +28,14 @@ export const fetchCities = async (UF: string) => {
 
 	console.log(data);
 	return data;
+};
+
+export const postCreatePoint = async (point: Partial<CollectionPoint>) => {
+	const response = await fetch('http://localhost:3000/api/point/create', {
+		method: 'POST',
+		body: JSON.stringify(point),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 };
