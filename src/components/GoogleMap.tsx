@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { CollectionPoint } from '@prisma/client';
+import { useEffect, useRef, useState, Children, isValidElement, cloneElement, ReactNode } from 'react';
 import { initialState } from '../lib/constants';
 
 const { position, zoom } = initialState;
 
 interface Props {
 	height?: number;
+	collectionPoints: CollectionPoint[];
+	children: ReactNode,
 	onClick?: (e: google.maps.MapMouseEvent) => void;
 	onIdle?: (map: google.maps.Map) => void;
 	onZoom?: (zoom: number) => void;
@@ -15,6 +18,8 @@ export default function GoogleMap({
 	onClick,
 	onIdle,
 	onZoom,
+	collectionPoints,
+	children
 }: Props) {
 	const [map, setMap] = useState<google.maps.Map>();
 	const mapRef = useRef<HTMLDivElement>(null);
@@ -28,7 +33,6 @@ export default function GoogleMap({
 				})
 			);
 		}
-		console.log({ map, mapRef });
 	}, [mapRef, map]);
 
 	useEffect(() => {
@@ -52,5 +56,13 @@ export default function GoogleMap({
 		}
 	}, [map, onClick, onIdle, onZoom]);
 
-	return <div ref={mapRef} style={{ width: '100%', height }} />;
+	return <div ref={mapRef} style={{ width: '100%', height }}>
+		{Children.map(children, (child) => {
+			if (isValidElement(child)) {
+				// set the map prop on the child component
+				return cloneElement(child, { map });
+			}
+		})}
+
+	</div>;
 }
