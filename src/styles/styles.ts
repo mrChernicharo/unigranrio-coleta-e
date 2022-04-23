@@ -9,4 +9,6 @@ export const styles = {
 	fieldLabel: 'block text-sm font-medium text-gray-700',
 	absoluteCenter:
 		'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+	overlay:
+		'fixed w-[3000px] h-[3000px] top-0 left-0 bg-indigo-400 opacity-50 z-30',
 };

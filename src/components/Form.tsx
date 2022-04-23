@@ -87,7 +87,7 @@ export default function Form({ onSend }: Props) {
 	useEffect(() => console.log(latLng), [latLng]);
 
 	return (
-		<form className="h-full bg-sky-200" onSubmit={handleFormSubmit}>
+		<form className="h-full bg-white" onSubmit={handleFormSubmit}>
 			<div className="px-4 py-5 sm:px-8 ">
 				<div className="grid grid-cols-6 gap-6">
 					<>
@@ -134,16 +134,15 @@ export default function Form({ onSend }: Props) {
 							</select>
 						</div>
 
-						{/* {SelectedCity && (
-						
-						)} */}
 						<div className="col-span-6">
+							<span>Clique no mapa</span>
 							<GoogleMap onClick={handleLatLng} />
 						</div>
 
-						<div>
+						<div className="bg-white text-sky-500">
 							<pre>click:{JSON.stringify(latLng)}</pre>
 						</div>
+
 						{SelectedCity && (
 							<>
 								<div className="col-span-6">
@@ -182,9 +181,9 @@ export default function Form({ onSend }: Props) {
 						)}
 					</>
 				</div>
-				<div className="fixed bottom-0 w-full right-0 px-4 py-3 bg-gray-100 text-right sm:px-6">
+				<div className="mt-8 mb-4 text-right">
 					<button type="submit" className={styles.btn}>
-						Save
+						Cadastrar Ponto
 					</button>
 				</div>
 			</div>
