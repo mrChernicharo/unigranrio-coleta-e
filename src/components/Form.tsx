@@ -3,7 +3,6 @@ import { placeholderCity } from '../lib/constants';
 import { fetchCities, fetchUFs } from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
 import { styles } from '../styles/styles';
-import GoogleMap from './GoogleMap';
 
 export default function Form() {
 	const [UFs, setUFs] = useState<UF[]>([]);
@@ -90,7 +89,7 @@ export default function Form() {
 
 						{SelectedCity && (
 							<div className="col-span-6">
-								<GoogleMap />
+								{/* <GoogleMap /> */}
 							</div>
 						)}
 
