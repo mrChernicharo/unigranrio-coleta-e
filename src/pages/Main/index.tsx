@@ -1,10 +1,11 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { CollectionPoint } from '@prisma/client';
 import { GetServerSideProps } from 'next';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
 import GoogleMap from '../../components/GoogleMap';
+import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
 import { prisma } from '../../lib/prisma';
 
@@ -25,7 +26,6 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 	const handleModalOpen = () => {
 		setIsModalOpen(true);
 	};
-
 	const handleModalClose = () => {
 		setIsModalOpen(false);
 	};
@@ -33,12 +33,16 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 	const handleMapIdle = map => {
 		console.log('map Idle ', map);
 	};
-	const handleMapClick = e => {
-		console.log('map Click ', e);
+	const handleMapClick = (e: google.maps.MapMouseEvent) => {
+		const { lat, lng } = e.latLng!
+		const [latitude, longitude] = [lat(), lng()]
+		console.log('map Click ', { latitude, longitude });
 	};
 	const handleMapZoom = e => {
 		console.log('map Zoom ', e);
 	};
+
+	useEffect(() => console.log(collectionPoints), [])
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>
@@ -61,7 +65,10 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 				onClick={handleMapClick}
 				onZoom={handleMapZoom}
 				onIdle={handleMapIdle}
-			/>
+				collectionPoints={collectionPoints}
+			>
+				{collectionPoints.map(({ name, lat, lng }) => <Marker position={{ lat, lng }} title={name} clickable />)}
+			</GoogleMap>
 
 			{isModalOpen && (
 				<CreatePointModal handleModalClose={handleModalClose} />
