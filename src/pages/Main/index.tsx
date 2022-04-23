@@ -30,6 +30,16 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 		setIsModalOpen(false);
 	};
 
+	const handleMapIdle = map => {
+		console.log('map Idle ', map);
+	};
+	const handleMapClick = e => {
+		console.log('map Click ', e);
+	};
+	const handleMapZoom = e => {
+		console.log('map Zoom ', e);
+	};
+
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>
 			<Profile />
@@ -46,7 +56,12 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 				<FaPlus size={40} />
 			</button>
 
-			<GoogleMap />
+			<GoogleMap
+				height={500}
+				onClick={handleMapClick}
+				onZoom={handleMapZoom}
+				onIdle={handleMapIdle}
+			/>
 
 			{isModalOpen && (
 				<CreatePointModal handleModalClose={handleModalClose} />

@@ -3,6 +3,7 @@ import { placeholderCity } from '../lib/constants';
 import { fetchCities, fetchUFs } from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
 import { styles } from '../styles/styles';
+import GoogleMap from './GoogleMap';
 
 export default function Form() {
 	const [UFs, setUFs] = useState<UF[]>([]);
@@ -23,7 +24,9 @@ export default function Form() {
 	};
 
 	const handleCitySelect = e => {
-		setSelectedCity(citySelectRef.current?.value!);
+		const inputVal = citySelectRef.current?.value;
+		const city = inputVal === 'selecione a cidade' ? '' : inputVal;
+		setSelectedCity(city!);
 	};
 
 	useEffect(() => {
@@ -35,88 +38,81 @@ export default function Form() {
 			fetchCities(SelectedUF).then(cities =>
 				setCities([placeholderCity, ...cities])
 			);
+		else setSelectedCity('');
 	}, [SelectedUF]);
 	return (
-		<form onSubmit={handleFormSubmit}>
-			<div className="w-full sm:w-[640px] mx-auto shadow overflow-hidden sm:rounded-md">
-				<div className="px-4 py-5 sm:px-8">
-					<div className="grid grid-cols-6 gap-6">
-						<>
-							<div className="col-span-2 sm:col-span-1">
+		<form className="h-full bg-sky-200" onSubmit={handleFormSubmit}>
+			<div className="px-4 py-5 sm:px-8 ">
+				<div className="grid grid-cols-6 gap-6">
+					<>
+						<div className="col-span-2 sm:col-span-1">
+							<label htmlFor="UF" className={styles.fieldLabel}>
+								UF
+							</label>
+							<select
+								name="UF"
+								id="UF"
+								onChange={handleUFSelect}
+								value={SelectedUF}
+								ref={UFSelectRef}
+								className={styles.input2}
+							>
+								<option value=""></option>
+								{UFs &&
+									UFs.map(uf => (
+										<option key={uf.id} value={uf.sigla}>
+											{uf.sigla}
+										</option>
+									))}
+							</select>
+						</div>
+						<div className="col-span-4 sm:col-span-5">
+							<label htmlFor="city" className={styles.fieldLabel}>
+								Cidade
+							</label>
+							<select
+								name="city"
+								id="city"
+								onChange={handleCitySelect}
+								value={SelectedCity}
+								ref={citySelectRef}
+								className={styles.input2}
+								disabled={!SelectedUF}
+							>
+								{cities &&
+									cities.map(city => (
+										<option key={city.id} value={city.nome}>
+											{city.nome}
+										</option>
+									))}
+							</select>
+						</div>
+
+						{SelectedCity && (
+							<div className="col-span-6">
+								<GoogleMap />
+							</div>
+						)}
+
+						{SelectedCity && (
+							<div className="col-span-6">
 								<label
-									htmlFor="UF"
+									htmlFor="address"
 									className={styles.fieldLabel}
 								>
-									UF
+									Endereço
 								</label>
-								<select
-									name="UF"
-									id="UF"
-									onChange={handleUFSelect}
-									value={SelectedUF}
-									ref={UFSelectRef}
+								<input
+									type="text"
+									name="address"
+									id="address"
 									className={styles.input2}
-								>
-									<option value=""></option>
-									{UFs &&
-										UFs.map(uf => (
-											<option
-												key={uf.id}
-												value={uf.sigla}
-											>
-												{uf.sigla}
-											</option>
-										))}
-								</select>
+								/>
 							</div>
-							<div className="col-span-4 sm:col-span-5">
-								<label
-									htmlFor="city"
-									className={styles.fieldLabel}
-								>
-									Cidade
-								</label>
-								<select
-									name="city"
-									id="city"
-									onChange={handleCitySelect}
-									value={SelectedCity}
-									ref={citySelectRef}
-									className={styles.input2}
-									disabled={!SelectedUF}
-								>
-									{cities &&
-										cities.map(city => (
-											<option
-												key={city.id}
-												value={city.nome}
-											>
-												{city.nome}
-											</option>
-										))}
-								</select>
-							</div>
-							{SelectedCity &&
-								SelectedCity !== 'selecione a cidade' && (
-									<div className="col-span-6">
-										<label
-											htmlFor="address"
-											className={styles.fieldLabel}
-										>
-											Endereço
-										</label>
-										<input
-											type="text"
-											name="address"
-											id="address"
-											className={styles.input2}
-										/>
-									</div>
-								)}
-						</>
-					</div>
+						)}
+					</>
 				</div>
-				<div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+				<div className="fixed bottom-0 w-full right-0 px-4 py-3 bg-gray-100 text-right sm:px-6">
 					<button type="submit" className={styles.btn}>
 						Save
 					</button>

@@ -1,11 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { initialState } from '../lib/constants';
 
-// onClick?: (e: google.maps.MapMouseEvent) => void;
-// onIdle?: (map: google.maps.Map) => void;
 const { position, zoom } = initialState;
 
-export default function GoogleMap() {
+interface Props {
+	height?: number;
+	onClick?: (e: google.maps.MapMouseEvent) => void;
+	onIdle?: (map: google.maps.Map) => void;
+	onZoom?: (zoom: number) => void;
+}
+
+export default function GoogleMap({
+	height = 300,
+	onClick,
+	onIdle,
+	onZoom,
+}: Props) {
 	const [map, setMap] = useState<google.maps.Map>();
 	const mapRef = useRef<HTMLDivElement>(null);
 
@@ -21,5 +31,26 @@ export default function GoogleMap() {
 		console.log({ map, mapRef });
 	}, [mapRef, map]);
 
-	return <div ref={mapRef} style={{ width: '100%', height: '420px' }} />;
+	useEffect(() => {
+		if (map) {
+			['click', 'zoom_changed', 'idle'].forEach(eventName =>
+				google.maps.event.clearListeners(map, eventName)
+			);
+
+			if (onClick) {
+				map.addListener('click', onClick);
+			}
+
+			if (onZoom) {
+				map.addListener('zoom_changed', () => {
+					onZoom(map.getZoom()!);
+				});
+			}
+			if (onIdle) {
+				map.addListener('idle', () => onIdle(map));
+			}
+		}
+	}, [map, onClick, onIdle, onZoom]);
+
+	return <div ref={mapRef} style={{ width: '100%', height }} />;
 }
