@@ -1,17 +1,28 @@
 import { CollectionPoint } from '@prisma/client';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { placeholderCity } from '../lib/constants';
-import { fetchCities, fetchUFs, postCreatePoint } from '../lib/functions';
+import {
+	fetchCities,
+	fetchUFs,
+	parseLatLng,
+	postCreatePoint,
+} from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
 import { styles } from '../styles/styles';
+import GoogleMap from './GoogleMap';
 
-export default function Form() {
+interface Props {
+	onSend: () => void;
+}
+
+export default function Form({ onSend }: Props) {
 	const [UFs, setUFs] = useState<UF[]>([]);
 	const [SelectedUF, setSelectedUF] = useState('');
 	const [cities, setCities] = useState<City[]>([]);
 	const [SelectedCity, setSelectedCity] = useState('');
 	const [address, setAddress] = useState('');
 	const [name, setName] = useState('');
+	const [latLng, setLatLng] = useState<{ lat: number; lng: number }>();
 
 	const UFSelectRef = useRef<HTMLSelectElement>(null);
 	const citySelectRef = useRef<HTMLSelectElement>(null);
@@ -19,18 +30,23 @@ export default function Form() {
 	const nameInputRef = useRef<HTMLInputElement>(null);
 
 	const handleFormSubmit = async (e: FormEvent) => {
-		e.preventDefault();
-		const point: Partial<CollectionPoint> = {
-			name,
-			UF: SelectedUF,
-			city: SelectedCity,
-			address,
-			lat: -22.930489,
-			lng: -43.361814,
-			// lat: -22.930489039424334,
-			// lng: -43.36181473091044,
-		};
-		await postCreatePoint(point);
+		try {
+			e.preventDefault();
+
+			const point: Partial<CollectionPoint> = {
+				name,
+				UF: SelectedUF,
+				city: SelectedCity,
+				address,
+				lat: latLng?.lat,
+				lng: latLng?.lng,
+			};
+			await postCreatePoint(point);
+			alert('Ponto de coleta cadastrado com sucesso!');
+			onSend();
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const handleUFSelect = e => {
@@ -51,6 +67,11 @@ export default function Form() {
 		setName(nameInputRef.current?.value!);
 	};
 
+	const handleLatLng = e => {
+		const { lat, lng } = parseLatLng(e);
+		setLatLng(loc => ({ lat, lng }));
+	};
+
 	useEffect(() => {
 		fetchUFs().then(ufs => setUFs(ufs));
 	}, []);
@@ -62,6 +83,9 @@ export default function Form() {
 			);
 		else setSelectedCity('');
 	}, [SelectedUF]);
+
+	useEffect(() => console.log(latLng), [latLng]);
+
 	return (
 		<form className="h-full bg-sky-200" onSubmit={handleFormSubmit}>
 			<div className="px-4 py-5 sm:px-8 ">
@@ -110,12 +134,16 @@ export default function Form() {
 							</select>
 						</div>
 
-						{SelectedCity && (
-							<div className="col-span-6">
-								{/* <GoogleMap /> */}
-							</div>
-						)}
+						{/* {SelectedCity && (
+						
+						)} */}
+						<div className="col-span-6">
+							<GoogleMap onClick={handleLatLng} />
+						</div>
 
+						<div>
+							<pre>click:{JSON.stringify(latLng)}</pre>
+						</div>
 						{SelectedCity && (
 							<>
 								<div className="col-span-6">
@@ -152,8 +180,6 @@ export default function Form() {
 								</div>
 							</>
 						)}
-
-						{/* nameInputRef */}
 					</>
 				</div>
 				<div className="fixed bottom-0 w-full right-0 px-4 py-3 bg-gray-100 text-right sm:px-6">

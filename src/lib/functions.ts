@@ -39,3 +39,13 @@ export const postCreatePoint = async (point: Partial<CollectionPoint>) => {
 		},
 	});
 };
+
+export const parseLatLng = (e: google.maps.MapMouseEvent) => {
+	let latLng = { lat: 0, lng: 0 };
+	if (e.latLng) {
+		const [lat, lng] = [e.latLng.lat(), e.latLng.lng()];
+		latLng = { lat, lng };
+	}
+
+	return latLng;
+};

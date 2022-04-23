@@ -7,6 +7,7 @@ import CreatePointModal from '../../components/CreatePointModal';
 import GoogleMap from '../../components/GoogleMap';
 import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
+import { parseLatLng } from '../../lib/functions';
 import { prisma } from '../../lib/prisma';
 
 interface Props {
@@ -34,9 +35,8 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 		console.log('map Idle ', map);
 	};
 	const handleMapClick = (e: google.maps.MapMouseEvent) => {
-		const { lat, lng } = e.latLng!;
-		const [latitude, longitude] = [lat(), lng()];
-		console.log('map Click ', { latitude, longitude });
+		const { lat, lng } = parseLatLng(e);
+		console.log('map Click ', { lat, lng });
 	};
 	const handleMapZoom = e => {
 		console.log('map Zoom ', e);
