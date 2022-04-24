@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { ReactElement, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
+import Footer from '../../components/Footer';
 import GoogleMap from '../../components/GoogleMap';
 import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
@@ -25,15 +26,19 @@ const render = (status: Status): ReactElement => {
 export default function App({ initialPoints, googleApiKey }: Props) {
 	const { data, status } = useSession();
 
-	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
 	const [appUser, setAppUser] = useState<User | null>(null);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
+	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
+	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+	const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(
+		null
+	);
 
-	const handleModalOpen = () => {
-		setIsModalOpen(true);
+	const handleCreatePointModalOpen = () => {
+		setIsCreatePointModalOpen(true);
 	};
 	const handleModalClose = () => {
-		setIsModalOpen(false);
+		setIsCreatePointModalOpen(false);
 	};
 	const handleMapIdle = map => {
 		console.log('map Idle ', map);
@@ -45,8 +50,9 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		const { lat, lng } = getClickLatLng(e);
 		console.log('map Click ', { lat, lng });
 	};
-	const handleMarkerClick = e => {
-		console.log(e);
+	const handleMarkerClick = (point: CollectionPoint) => {
+		setSelectedPoint(point);
+		setIsDetailsModalOpen(true);
 	};
 
 	useEffect(() => {
@@ -67,7 +73,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				)}
 			</pre>
 
-			<button onClick={handleModalOpen}>
+			<button onClick={handleCreatePointModalOpen}>
 				<FaPlus size={40} />
 			</button>
 
@@ -92,7 +98,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				})}
 			</GoogleMap>
 
-			{isModalOpen && appUser && (
+			{isCreatePointModalOpen && appUser && (
 				<CreatePointModal
 					userId={appUser.id}
 					handleModalClose={handleModalClose}
@@ -101,6 +107,12 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					}
 				/>
 			)}
+
+			{/* {isDetailsModalOpen && selectedPoint && (
+				<DetailsModal point={selectedPoint} />
+			)} */}
+
+			<Footer />
 		</Wrapper>
 	);
 }
