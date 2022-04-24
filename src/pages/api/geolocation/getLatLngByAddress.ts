@@ -20,6 +20,6 @@ export default async function getLatLngByAddress(
 
 		console.log({ data });
 
-		res.status(201).json(data.results);
+		res.status(201).json(data);
 	} catch (err) {}
 }

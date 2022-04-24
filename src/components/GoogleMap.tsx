@@ -9,11 +9,14 @@ import {
 	useState,
 } from 'react';
 import { initialState } from '../lib/constants';
+import { Location } from '../lib/interfaces';
 
-const { position, zoom } = initialState;
+const { initialPosition, initialZoom } = initialState;
 
 interface Props {
 	height?: number;
+	center?: Location;
+	zoom: number;
 	collectionPoints?: CollectionPoint[];
 	children?: ReactNode;
 	onClick?: (e: google.maps.MapMouseEvent) => void;
@@ -23,10 +26,11 @@ interface Props {
 
 export default function GoogleMap({
 	height = 300,
+	center = initialPosition,
+	zoom = initialZoom,
 	onClick,
 	onIdle,
 	onZoom,
-	collectionPoints,
 	children,
 }: Props) {
 	const [map, setMap] = useState<google.maps.Map>();
@@ -36,12 +40,12 @@ export default function GoogleMap({
 		if (mapRef.current && !map) {
 			setMap(
 				new window.google.maps.Map(mapRef.current, {
-					center: position,
+					center,
 					zoom,
 				})
 			);
 		}
-	}, [mapRef, map]);
+	}, [mapRef, map, center, zoom]);
 
 	useEffect(() => {
 		if (map) {
