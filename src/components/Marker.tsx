@@ -1,22 +1,35 @@
-import React from 'react'
+import { CollectionPoint } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
-const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
-	const [marker, setMarker] = React.useState<google.maps.Marker>();
+interface Props extends google.maps.MarkerOptions {
+	point?: CollectionPoint;
+	onClick?: (point: CollectionPoint) => void;
+}
 
-	React.useEffect(() => {
-		if (!marker) setMarker(new google.maps.Marker());
+const Marker = ({ onClick, point, ...options }: Props) => {
+	const [marker, setMarker] = useState<google.maps.Marker>();
+
+	useEffect(() => {
+		if (!marker) {
+			setMarker(new google.maps.Marker());
+		}
 
 		return () => {
 			if (marker) marker.setMap(null);
 		};
-	}, [marker]);
-
-	React.useEffect(() => {
-		if (marker) marker.setOptions(options);
-		console.log(marker);
 	}, [marker, options]);
+
+	useEffect(() => {
+		if (marker) {
+			marker.setOptions(options);
+			google.maps.event.clearInstanceListeners(marker);
+			if (onClick && point) {
+				marker.addListener('click', e => onClick(point));
+			}
+		}
+	}, [marker, options, point, onClick]);
 
 	return null;
 };
 
-export default Marker
+export default Marker;

@@ -16,7 +16,7 @@ const { initialPosition, initialZoom } = initialState;
 interface Props {
 	height?: number;
 	center?: Location;
-	zoom: number;
+	zoom?: number;
 	collectionPoints?: CollectionPoint[];
 	children?: ReactNode;
 	onClick?: (e: google.maps.MapMouseEvent) => void;
@@ -72,7 +72,7 @@ export default function GoogleMap({
 		<div ref={mapRef} style={{ width: '100%', height }}>
 			{Children.map(children, child => {
 				if (isValidElement(child)) {
-					// set the map prop on the child component
+					console.log({ child, map });
 					return cloneElement(child, { map });
 				}
 			})}

@@ -35,16 +35,18 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	const handleModalClose = () => {
 		setIsModalOpen(false);
 	};
-
 	const handleMapIdle = map => {
 		console.log('map Idle ', map);
+	};
+	const handleMapZoom = e => {
+		console.log('map Zoom ', e);
 	};
 	const handleMapClick = (e: google.maps.MapMouseEvent) => {
 		const { lat, lng } = getClickLatLng(e);
 		console.log('map Click ', { lat, lng });
 	};
-	const handleMapZoom = e => {
-		console.log('map Zoom ', e);
+	const handleMarkerClick = e => {
+		console.log(e);
 	};
 
 	useEffect(() => {
@@ -74,16 +76,20 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				onClick={handleMapClick}
 				onZoom={handleMapZoom}
 				onIdle={handleMapIdle}
-				collectionPoints={collectionPoints}
 			>
-				{collectionPoints.map(({ id, name, lat, lng }) => (
-					<Marker
-						key={id}
-						position={{ lat, lng }}
-						title={name}
-						clickable
-					/>
-				))}
+				{collectionPoints.map(point => {
+					const { id, name, lat, lng } = point;
+					return (
+						<Marker
+							point={point}
+							onClick={handleMarkerClick}
+							key={id}
+							position={{ lat, lng }}
+							title={name}
+							clickable
+						/>
+					);
+				})}
 			</GoogleMap>
 
 			{isModalOpen && appUser && (

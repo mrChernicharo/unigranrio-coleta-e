@@ -149,7 +149,10 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 						<>
 							<div className="col-span-6">
 								<GoogleMap center={latLng} zoom={15}>
-									<Marker position={latLng} />
+									<Marker
+										position={latLng}
+										// animation={markerAnimation}
+									/>
 								</GoogleMap>
 							</div>
 

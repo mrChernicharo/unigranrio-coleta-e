@@ -1,3 +1,9 @@
+/*
+  This file must be named [nextauth].ts not [nextAuth].ts
+  git is changing the case settings leading you to errors 
+  BEWARE!
+*/
+
 import NextAuth from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import GithubProvider from 'next-auth/providers/github';
