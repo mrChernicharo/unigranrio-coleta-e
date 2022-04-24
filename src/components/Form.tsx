@@ -1,37 +1,32 @@
+/* eslint-disable @next/next/no-img-element */
 import { CollectionPoint } from '@prisma/client';
+// import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import { placeholderCity } from '../lib/constants';
-import {
-	fetchAddressLatLng,
-	fetchCities,
-	fetchUFs,
-	parseLatLng,
-} from '../lib/functions';
-import { City, UF } from '../lib/interfaces';
+import { fetchAddressLatLng, getClickLatLng } from '../lib/functions';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
-
 interface Props {
 	onFormClose: () => void;
 	onSend: (point: CollectionPoint) => void;
 }
 
 export default function Form({ onFormClose, onSend }: Props) {
-	const [UFs, setUFs] = useState<UF[]>([]);
-	const [SelectedUF, setSelectedUF] = useState('');
-	const [cities, setCities] = useState<City[]>([]);
-	const [SelectedCity, setSelectedCity] = useState('');
 	const [address, setAddress] = useState('');
 	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [phone, setPhone] = useState('');
+	const [imgURL, setImgURL] = useState('');
 	const [latLng, setLatLng] = useState<{ lat: number; lng: number }>();
 
-	const UFSelectRef = useRef<HTMLSelectElement>(null);
-	const citySelectRef = useRef<HTMLSelectElement>(null);
 	const addressInputRef = useRef<HTMLInputElement>(null);
 	const nameInputRef = useRef<HTMLInputElement>(null);
+	const emailInputRef = useRef<HTMLInputElement>(null);
+	const phoneInputRef = useRef<HTMLInputElement>(null);
+	const imgURLInputRef = useRef<HTMLInputElement>(null);
 
 	const handleFormSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+		console.log({ address, name, email, phone, imgURL });
 		try {
 			// const point: Partial<CollectionPoint> = {
 			// 	name,
@@ -44,6 +39,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 
 			// const newPoint = await postCreatePoint(point);
 			// onSend(newPoint);
+
 			await fetchAddressLatLng(addressInputRef.current?.value!);
 
 			// alert('Ponto de coleta cadastrado com sucesso!');
@@ -51,16 +47,6 @@ export default function Form({ onFormClose, onSend }: Props) {
 		} catch (err) {
 			console.log(err);
 		}
-	};
-
-	const handleUFSelect = e => {
-		setSelectedUF(UFSelectRef.current?.value!);
-	};
-
-	const handleCitySelect = e => {
-		const inputVal = citySelectRef.current?.value;
-		const city = inputVal === 'selecione a cidade' ? '' : inputVal;
-		setSelectedCity(city!);
 	};
 
 	const handleAddressInput = async e => {
@@ -71,22 +57,22 @@ export default function Form({ onFormClose, onSend }: Props) {
 		setName(nameInputRef.current?.value!);
 	};
 
-	const handleLatLng = e => {
-		const { lat, lng } = parseLatLng(e);
-		setLatLng(loc => ({ lat, lng }));
+	const handlePhoneInput = e => {
+		setPhone(phoneInputRef.current?.value!);
 	};
 
-	useEffect(() => {
-		fetchUFs().then(ufs => setUFs(ufs));
-	}, []);
+	const handleEmailInput = e => {
+		setEmail(emailInputRef.current?.value!);
+	};
 
-	useEffect(() => {
-		if (SelectedUF)
-			fetchCities(SelectedUF).then(cities =>
-				setCities([placeholderCity, ...cities])
-			);
-		else setSelectedCity('');
-	}, [SelectedUF]);
+	const handleImgURLInput = e => {
+		setImgURL(imgURLInputRef.current?.value!);
+	};
+
+	const handleLatLng = e => {
+		const { lat, lng } = getClickLatLng(e);
+		setLatLng(loc => ({ lat, lng }));
+	};
 
 	useEffect(() => console.log(latLng), [latLng]);
 
@@ -94,96 +80,90 @@ export default function Form({ onFormClose, onSend }: Props) {
 		<form className="h-full bg-white" onSubmit={handleFormSubmit}>
 			<div className="px-4 py-5 sm:px-8 ">
 				<div className="grid grid-cols-6 gap-6">
-					<>
-						<div className="col-span-2 sm:col-span-1">
-							<label htmlFor="UF" className={styles.fieldLabel}>
-								UF
-							</label>
-							<select
-								name="UF"
-								id="UF"
-								onChange={handleUFSelect}
-								value={SelectedUF}
-								ref={UFSelectRef}
-								className={styles.input2}
-							>
-								<option value=""></option>
-								{UFs &&
-									UFs.map(uf => (
-										<option key={uf.id} value={uf.sigla}>
-											{uf.sigla}
-										</option>
-									))}
-							</select>
-						</div>
-						<div className="col-span-4 sm:col-span-5">
-							<label htmlFor="city" className={styles.fieldLabel}>
-								Cidade
-							</label>
-							<select
-								name="city"
-								id="city"
-								onChange={handleCitySelect}
-								value={SelectedCity}
-								ref={citySelectRef}
-								className={styles.input2}
-								disabled={!SelectedUF}
-							>
-								{cities &&
-									cities.map(city => (
-										<option key={city.id} value={city.nome}>
-											{city.nome}
-										</option>
-									))}
-							</select>
-						</div>
+					<div className="col-span-6">
+						<label htmlFor="address" className={styles.fieldLabel}>
+							Endereço
+						</label>
+						<input
+							ref={addressInputRef}
+							onChange={handleAddressInput}
+							type="text"
+							name="address"
+							id="address"
+							className={styles.input2}
+						/>
+					</div>
 
-						<div className="col-span-6">
-							<span>Clique no mapa</span>
-							<GoogleMap onClick={handleLatLng} />
-						</div>
+					<div className="col-span-6">
+						<span>Clique no mapa</span>
+						<GoogleMap onClick={handleLatLng} />
+					</div>
 
-						<div className="bg-white text-sky-500">
-							<pre>click:{JSON.stringify(latLng)}</pre>
-						</div>
+					<div className="bg-white text-sky-500">
+						<pre>click:{JSON.stringify(latLng)}</pre>
+					</div>
 
-						{/* {SelectedCity && ( */}
-						<>
-							<div className="col-span-6">
-								<label
-									htmlFor="address"
-									className={styles.fieldLabel}
-								>
-									Endereço
-								</label>
-								<input
-									ref={addressInputRef}
-									onChange={handleAddressInput}
-									type="text"
-									name="address"
-									id="address"
-									className={styles.input2}
-								/>
-							</div>
-							<div className="col-span-6">
-								<label
-									htmlFor="name"
-									className={styles.fieldLabel}
-								>
-									Nome do Ponto de Coleta
-								</label>
-								<input
-									ref={nameInputRef}
-									onChange={handleNameInput}
-									type="text"
-									name="name"
-									id="name"
-									className={styles.input2}
-								/>
-							</div>
-						</>
-						{/* )} */}
-					</>
+					<div className="col-span-6">
+						<label htmlFor="name" className={styles.fieldLabel}>
+							Nome do Ponto de Coleta
+						</label>
+						<input
+							ref={nameInputRef}
+							onChange={handleNameInput}
+							type="text"
+							name="name"
+							id="name"
+							className={styles.input2}
+						/>
+					</div>
+
+					<div className="col-span-4">
+						<label htmlFor="email" className={styles.fieldLabel}>
+							Email
+						</label>
+						<input
+							ref={nameInputRef}
+							onChange={handleNameInput}
+							type="email"
+							name="email"
+							id="email"
+							className={styles.input2}
+						/>
+					</div>
+
+					<div className="col-span-2">
+						<label htmlFor="phone" className={styles.fieldLabel}>
+							Telefone
+						</label>
+						<input
+							ref={nameInputRef}
+							onChange={handleNameInput}
+							type="tel"
+							name="phone"
+							id="phone"
+							className={styles.input2}
+						/>
+					</div>
+
+					<div className="col-span-6">
+						<label htmlFor="image" className={styles.fieldLabel}>
+							Imagem URL
+						</label>
+						<input
+							ref={imgURLInputRef}
+							onChange={handleImgURLInput}
+							type="text"
+							name="image"
+							id="image"
+							className={styles.input2}
+						/>
+					</div>
+					{imgURL && (
+						// <div className={'w-[576px] h-[500px]'}>
+						<div className={'w-[206px] h-[500px]'}>
+							<img src={imgURL} alt="imagem do ponto de coleta" />
+						</div>
+					)}
 				</div>
 				<div className="mt-8 mb-4 text-right">
 					<button type="submit" className={styles.btn}>

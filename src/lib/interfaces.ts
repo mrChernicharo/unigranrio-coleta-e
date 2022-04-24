@@ -1,21 +1,3 @@
-export interface UF {
-	id: number;
-	nome: string;
-	sigla: string;
-	regiao: {
-		id: number;
-		nome: string;
-		sigla: string;
-	};
-}
-
-export interface City {
-	id: string;
-	microrregiao: {};
-	nome: string;
-	'regiao-imediata': {};
-}
-
 export interface AddressComponent {
 	long_name: string;
 	short_name: string;
