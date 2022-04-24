@@ -3,11 +3,20 @@ import axios from 'axios';
 import { City, UF } from './interfaces';
 
 export const fetchAddressLatLng = async (address: string) => {
-	const encodedAddress = encodeURIComponent(address);
-
-	axios.get(
-		`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GOOGLE_API_KEY}`
+	const response = await fetch(
+		'http://localhost:3000/api/geolocation/getLatLngByAddress',
+		{
+			method: 'POST',
+			body: JSON.stringify({ address }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
 	);
+
+	const data = await response.json();
+	console.log(data);
+	// return data;
 };
 
 export const fetchUFs = async () => {

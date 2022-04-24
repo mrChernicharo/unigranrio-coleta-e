@@ -2,10 +2,10 @@ import { CollectionPoint } from '@prisma/client';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { placeholderCity } from '../lib/constants';
 import {
+	fetchAddressLatLng,
 	fetchCities,
 	fetchUFs,
 	parseLatLng,
-	postCreatePoint,
 } from '../lib/functions';
 import { City, UF } from '../lib/interfaces';
 import { styles } from '../styles/styles';
@@ -31,22 +31,23 @@ export default function Form({ onFormClose, onSend }: Props) {
 	const nameInputRef = useRef<HTMLInputElement>(null);
 
 	const handleFormSubmit = async (e: FormEvent) => {
+		e.preventDefault();
 		try {
-			e.preventDefault();
+			// const point: Partial<CollectionPoint> = {
+			// 	name,
+			// 	UF: SelectedUF,
+			// 	city: SelectedCity,
+			// 	address,
+			// 	lat: latLng?.lat,
+			// 	lng: latLng?.lng,
+			// };
 
-			const point: Partial<CollectionPoint> = {
-				name,
-				UF: SelectedUF,
-				city: SelectedCity,
-				address,
-				lat: latLng?.lat,
-				lng: latLng?.lng,
-			};
-			const newPoint = await postCreatePoint(point);
-			onSend(newPoint);
+			// const newPoint = await postCreatePoint(point);
+			// onSend(newPoint);
+			await fetchAddressLatLng(addressInputRef.current?.value!);
 
-			alert('Ponto de coleta cadastrado com sucesso!');
-			onFormClose();
+			// alert('Ponto de coleta cadastrado com sucesso!');
+			// onFormClose();
 		} catch (err) {
 			console.log(err);
 		}
@@ -62,7 +63,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 		setSelectedCity(city!);
 	};
 
-	const handleAddressInput = e => {
+	const handleAddressInput = async e => {
 		setAddress(addressInputRef.current?.value!);
 	};
 
@@ -146,42 +147,42 @@ export default function Form({ onFormClose, onSend }: Props) {
 							<pre>click:{JSON.stringify(latLng)}</pre>
 						</div>
 
-						{SelectedCity && (
-							<>
-								<div className="col-span-6">
-									<label
-										htmlFor="address"
-										className={styles.fieldLabel}
-									>
-										Endereço
-									</label>
-									<input
-										ref={addressInputRef}
-										onChange={handleAddressInput}
-										type="text"
-										name="address"
-										id="address"
-										className={styles.input2}
-									/>
-								</div>
-								<div className="col-span-6">
-									<label
-										htmlFor="name"
-										className={styles.fieldLabel}
-									>
-										Nome do Ponto de Coleta
-									</label>
-									<input
-										ref={nameInputRef}
-										onChange={handleNameInput}
-										type="text"
-										name="name"
-										id="name"
-										className={styles.input2}
-									/>
-								</div>
-							</>
-						)}
+						{/* {SelectedCity && ( */}
+						<>
+							<div className="col-span-6">
+								<label
+									htmlFor="address"
+									className={styles.fieldLabel}
+								>
+									Endereço
+								</label>
+								<input
+									ref={addressInputRef}
+									onChange={handleAddressInput}
+									type="text"
+									name="address"
+									id="address"
+									className={styles.input2}
+								/>
+							</div>
+							<div className="col-span-6">
+								<label
+									htmlFor="name"
+									className={styles.fieldLabel}
+								>
+									Nome do Ponto de Coleta
+								</label>
+								<input
+									ref={nameInputRef}
+									onChange={handleNameInput}
+									type="text"
+									name="name"
+									id="name"
+									className={styles.input2}
+								/>
+							</div>
+						</>
+						{/* )} */}
 					</>
 				</div>
 				<div className="mt-8 mb-4 text-right">
