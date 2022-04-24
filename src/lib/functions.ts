@@ -18,7 +18,19 @@ export const fetchAddressLatLng = async (address: string) => {
 	return data;
 };
 
-export const postCreatePoint = async (point: Partial<CollectionPoint>) => {
+export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
+	const { name, address, email, phone, image, lat, lng, authorId } = data;
+	const point = {
+		name,
+		address,
+		phone,
+		lat,
+		lng,
+		image: image ?? imgURLS.rio,
+		email,
+		authorId,
+	};
+
 	const response = await fetch('http://localhost:3000/api/point/create', {
 		method: 'POST',
 		body: JSON.stringify(point),
@@ -51,11 +63,12 @@ export const handleUserInit = async userData => {
 	const foundUser = await userQueryResponse.json();
 
 	if ('name' in foundUser || 'email' in foundUser) {
-		console.log('email is already in use');
-		return;
+		console.log('email is already in use, user exists');
+		return foundUser;
 	}
 
-	const newUser: Omit<User, 'id'> = {
+	const newUser: User = {
+		id: foundUser.id,
 		name,
 		email,
 		image: image ?? imgURLS.defaultAvatarImg,

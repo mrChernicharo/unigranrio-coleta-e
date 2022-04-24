@@ -1,9 +1,12 @@
+import { Location } from './interfaces';
+
+const initialPosition: Location = {
+	lat: -22.91888,
+	lng: -43.2217,
+};
 export const initialState = {
-	position: {
-		lat: -22.91888,
-		lng: -43.2217,
-	},
-	zoom: 10,
+	initialPosition,
+	initialZoom: 10,
 };
 
 export const placeholderCity = {

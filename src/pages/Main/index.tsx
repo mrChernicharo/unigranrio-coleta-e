@@ -86,9 +86,9 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				))}
 			</GoogleMap>
 
-			{isModalOpen && (
+			{isModalOpen && appUser && (
 				<CreatePointModal
-					userId={appUser?.id || 0}
+					userId={appUser.id}
 					handleModalClose={handleModalClose}
 					onPointCreated={point =>
 						setCollectionPoints([...collectionPoints, point])
