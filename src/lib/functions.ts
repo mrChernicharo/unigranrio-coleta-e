@@ -55,8 +55,6 @@ export const handleUserInit = async userData => {
 		return;
 	}
 
-	console.log('heeey user not found, keep going', foundUser);
-
 	const newUser: Omit<User, 'id'> = {
 		name,
 		email,

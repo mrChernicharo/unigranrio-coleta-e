@@ -25,6 +25,10 @@ const SignIn: NextPage = () => {
 	const handleGithubSignIn = () => {
 		signIn('github');
 	};
+
+	const handleGoogleSignIn = () => {
+		signIn('google');
+	};
 	return (
 		<div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
@@ -104,7 +108,11 @@ const SignIn: NextPage = () => {
 				</h2>
 
 				<div className="grid grid-cols-2 gap-4 w-100 h-10">
-					<button type="button" className={styles.loginProviderBtn}>
+					<button
+						type="button"
+						className={styles.loginProviderBtn}
+						onClick={handleGoogleSignIn}
+					>
 						<FaGoogle className="text-indigo-500 group-hover:text-white" />
 					</button>
 					<button
