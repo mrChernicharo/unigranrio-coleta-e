@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { getSession, signIn } from 'next-auth/react';
+import { useRef } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { styles } from '../styles/styles';
 
@@ -22,12 +23,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const SignIn: NextPage = () => {
+	const emailInputRef = useRef<HTMLInputElement>(null);
 	const handleGithubSignIn = () => {
 		signIn('github');
 	};
 
 	const handleGoogleSignIn = () => {
 		signIn('google');
+	};
+
+	const handleEmailSignIn = () => {
+		signIn('email');
 	};
 	return (
 		<div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -51,6 +57,7 @@ const SignIn: NextPage = () => {
 								Email address
 							</label>
 							<input
+								ref={emailInputRef}
 								id="email-address"
 								name="email"
 								type="email"
@@ -63,7 +70,7 @@ const SignIn: NextPage = () => {
 
 						<div className="h-4"></div>
 
-						<div>
+						{/* <div>
 							<label htmlFor="password" className="sr-only">
 								Password
 							</label>
@@ -76,11 +83,15 @@ const SignIn: NextPage = () => {
 								className={styles.input}
 								placeholder="Password"
 							/>
-						</div>
+						</div> */}
 					</div>
 
 					<div>
-						<button type="submit" className={styles.submitBtn}>
+						<button
+							type="submit"
+							className={styles.submitBtn}
+							onClick={handleEmailSignIn}
+						>
 							<span className="absolute left-0 inset-y-0 flex items-center pl-3">
 								<svg
 									className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"

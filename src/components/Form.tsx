@@ -2,7 +2,9 @@
 import { CollectionPoint } from '@prisma/client';
 // import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 import { fetchAddressLatLng, getClickLatLng } from '../lib/functions';
+import { Geocode } from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
 interface Props {
@@ -36,12 +38,8 @@ export default function Form({ onFormClose, onSend }: Props) {
 			// 	lat: latLng?.lat,
 			// 	lng: latLng?.lng,
 			// };
-
 			// const newPoint = await postCreatePoint(point);
 			// onSend(newPoint);
-
-			await fetchAddressLatLng(addressInputRef.current?.value!);
-
 			// alert('Ponto de coleta cadastrado com sucesso!');
 			// onFormClose();
 		} catch (err) {
@@ -51,6 +49,15 @@ export default function Form({ onFormClose, onSend }: Props) {
 
 	const handleAddressInput = async e => {
 		setAddress(addressInputRef.current?.value!);
+	};
+
+	const handleAddressSearch = async e => {
+		const geoCode: Geocode = await fetchAddressLatLng(
+			addressInputRef.current?.value!
+		);
+		console.log(geoCode);
+		const { lat, lng } = geoCode[0].geometry?.location;
+		setLatLng(loc => ({ lat, lng }));
 	};
 
 	const handleNameInput = e => {
@@ -93,6 +100,14 @@ export default function Form({ onFormClose, onSend }: Props) {
 							className={styles.input2}
 						/>
 					</div>
+					<div className="col-span-1">
+						<button
+							className={styles.btn}
+							onClick={handleAddressSearch}
+						>
+							<FaSearch />
+						</button>
+					</div>
 
 					<div className="col-span-6">
 						<span>Clique no mapa</span>
@@ -122,8 +137,8 @@ export default function Form({ onFormClose, onSend }: Props) {
 							Email
 						</label>
 						<input
-							ref={nameInputRef}
-							onChange={handleNameInput}
+							ref={emailInputRef}
+							onChange={handleEmailInput}
 							type="email"
 							name="email"
 							id="email"
@@ -159,14 +174,13 @@ export default function Form({ onFormClose, onSend }: Props) {
 						/>
 					</div>
 					{imgURL && (
-						// <div className={'w-[576px] h-[500px]'}>
 						<div className={'w-[206px] h-[500px]'}>
 							<img src={imgURL} alt="imagem do ponto de coleta" />
 						</div>
 					)}
 				</div>
 				<div className="mt-8 mb-4 text-right">
-					<button type="submit" className={styles.btn}>
+					<button type="submit" className={`${styles.btn}`}>
 						Cadastrar Ponto
 					</button>
 				</div>

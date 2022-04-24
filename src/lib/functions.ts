@@ -14,8 +14,8 @@ export const fetchAddressLatLng = async (address: string) => {
 	);
 
 	const data = await response.json();
-	console.log(data);
-	// return data;
+
+	return data;
 };
 
 export const postCreatePoint = async (point: Partial<CollectionPoint>) => {
