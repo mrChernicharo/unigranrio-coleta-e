@@ -7,11 +7,13 @@ import Form from './Form';
 interface Props {
 	handleModalClose: () => void;
 	onPointCreated: (point: CollectionPoint) => void;
+	userId: number;
 }
 
 export default function CreatePointModal({
 	handleModalClose,
 	onPointCreated,
+	userId,
 }: Props) {
 	return (
 		<>
@@ -28,7 +30,11 @@ export default function CreatePointModal({
 					</button>
 				</div>
 
-				<Form onFormClose={handleModalClose} onSend={onPointCreated} />
+				<Form
+					onFormClose={handleModalClose}
+					onSend={onPointCreated}
+					userId={userId}
+				/>
 			</div>
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>

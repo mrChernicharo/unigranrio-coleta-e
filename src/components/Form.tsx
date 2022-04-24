@@ -3,16 +3,22 @@ import { CollectionPoint } from '@prisma/client';
 // import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { fetchAddressLatLng, getClickLatLng } from '../lib/functions';
+import { imgURLS } from '../lib/constants';
+import {
+	fetchAddressLatLng,
+	getClickLatLng,
+	postCreatePoint,
+} from '../lib/functions';
 import { Geocode } from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
 interface Props {
 	onFormClose: () => void;
 	onSend: (point: CollectionPoint) => void;
+	userId: number;
 }
 
-export default function Form({ onFormClose, onSend }: Props) {
+export default function Form({ onFormClose, onSend, userId }: Props) {
 	const [address, setAddress] = useState('');
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -30,18 +36,19 @@ export default function Form({ onFormClose, onSend }: Props) {
 		e.preventDefault();
 		console.log({ address, name, email, phone, imgURL });
 		try {
-			// const point: Partial<CollectionPoint> = {
-			// 	name,
-			// 	UF: SelectedUF,
-			// 	city: SelectedCity,
-			// 	address,
-			// 	lat: latLng?.lat,
-			// 	lng: latLng?.lng,
-			// };
-			// const newPoint = await postCreatePoint(point);
-			// onSend(newPoint);
-			// alert('Ponto de coleta cadastrado com sucesso!');
-			// onFormClose();
+			const point: Partial<CollectionPoint> = {
+				name,
+				address,
+				phone,
+				lat: latLng?.lat,
+				lng: latLng?.lng,
+				image: imgURL ?? imgURLS.rio,
+				authorId: userId ?? 0,
+			};
+			const newPoint = await postCreatePoint({ ...point });
+			onSend(newPoint);
+			alert('Ponto de coleta cadastrado com sucesso!');
+			onFormClose();
 		} catch (err) {
 			console.log(err);
 		}
