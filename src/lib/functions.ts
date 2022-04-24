@@ -1,4 +1,5 @@
-import { CollectionPoint } from '@prisma/client';
+import { CollectionPoint, User } from '@prisma/client';
+import { imgURLS } from './constants';
 
 export const fetchAddressLatLng = async (address: string) => {
 	const response = await fetch(
@@ -38,4 +39,46 @@ export const getClickLatLng = (e: google.maps.MapMouseEvent) => {
 	}
 
 	return latLng;
+};
+
+export const handleUserInit = async userData => {
+	const { name, email, image } = userData;
+	console.log({ userData });
+	const userQueryResponse = await fetch(
+		`http://localhost:3000/api/user/findByEmail?email=${email}`
+	);
+
+	const foundUser = await userQueryResponse.json();
+
+	if ('name' in foundUser || 'email' in foundUser) {
+		console.log('email is already in use');
+		return;
+	}
+
+	console.log('heeey user not found, keep going', foundUser);
+
+	const newUser: Omit<User, 'id'> = {
+		name,
+		email,
+		image: image ?? imgURLS.defaultAvatarImg,
+	};
+
+	const user = await apiPost('http://localhost:3000/api/user/create', {
+		...newUser,
+	});
+
+	return user;
+};
+
+export const apiPost = async (url: string, body: any) => {
+	const response = await fetch(url, {
+		method: 'POST',
+		body: JSON.stringify(body),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+
+	return data;
 };

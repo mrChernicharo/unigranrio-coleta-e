@@ -1,13 +1,14 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { CollectionPoint } from '@prisma/client';
+import { CollectionPoint, User } from '@prisma/client';
 import { GetServerSideProps } from 'next';
-import { ReactElement, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { ReactElement, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
 import GoogleMap from '../../components/GoogleMap';
 import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
-import { getClickLatLng } from '../../lib/functions';
+import { getClickLatLng, handleUserInit } from '../../lib/functions';
 import { prisma } from '../../lib/prisma';
 
 interface Props {
@@ -22,7 +23,10 @@ const render = (status: Status): ReactElement => {
 };
 
 export default function App({ initialPoints, googleApiKey }: Props) {
+	const { data, status } = useSession();
+
 	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
+	const [appUser, setAppUser] = useState<User | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleModalOpen = () => {
@@ -43,7 +47,11 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		console.log('map Zoom ', e);
 	};
 
-	// useEffect(() => console.log(collectionPoints), [])
+	useEffect(() => {
+		if (status && data && data.user && !appUser) {
+			handleUserInit(data.user).then(u => setAppUser(u));
+		}
+	}, [status, data, appUser]);
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>

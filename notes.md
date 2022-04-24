@@ -42,6 +42,9 @@
 
 ### yarn prisma migrate dev
 
+-   when running new migrations I had errors
+-   the solution: add a new DB for prisma to perform its shadow operations
+
 ## npx prisma studio
 
 mysql://USER:PASSWORD@HOST:PORT/DATABASE

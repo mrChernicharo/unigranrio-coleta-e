@@ -1,16 +1,18 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { styles } from '../styles/styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	const session = await getSession({ req });
-
 	if (session) {
 		return {
 			redirect: {
 				destination: '/Main',
 				permanent: false,
+			},
+			props: {
+				session,
 			},
 		};
 	}
@@ -20,9 +22,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const SignIn: NextPage = () => {
-	const { data, status } = useSession();
-	console.log({ data, status });
-
 	const handleGithubSignIn = () => {
 		signIn('github');
 	};

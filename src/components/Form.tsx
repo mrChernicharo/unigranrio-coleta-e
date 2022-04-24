@@ -136,8 +136,8 @@ export default function Form({ onFormClose, onSend }: Props) {
 							Telefone
 						</label>
 						<input
-							ref={nameInputRef}
-							onChange={handleNameInput}
+							ref={phoneInputRef}
+							onChange={handlePhoneInput}
 							type="tel"
 							name="phone"
 							id="phone"
