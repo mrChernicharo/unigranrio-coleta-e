@@ -12,10 +12,11 @@ import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
 
 interface Props {
-	onSend: () => void;
+	onFormClose: () => void;
+	onSend: (point: CollectionPoint) => void;
 }
 
-export default function Form({ onSend }: Props) {
+export default function Form({ onFormClose, onSend }: Props) {
 	const [UFs, setUFs] = useState<UF[]>([]);
 	const [SelectedUF, setSelectedUF] = useState('');
 	const [cities, setCities] = useState<City[]>([]);
@@ -41,9 +42,11 @@ export default function Form({ onSend }: Props) {
 				lat: latLng?.lat,
 				lng: latLng?.lng,
 			};
-			await postCreatePoint(point);
+			const newPoint = await postCreatePoint(point);
+			onSend(newPoint);
+
 			alert('Ponto de coleta cadastrado com sucesso!');
-			onSend();
+			onFormClose();
 		} catch (err) {
 			console.log(err);
 		}

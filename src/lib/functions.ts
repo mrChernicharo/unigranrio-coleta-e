@@ -38,6 +38,9 @@ export const postCreatePoint = async (point: Partial<CollectionPoint>) => {
 			'Content-Type': 'application/json',
 		},
 	});
+	const newPoint: CollectionPoint = await response.json();
+
+	return newPoint;
 };
 
 export const parseLatLng = (e: google.maps.MapMouseEvent) => {

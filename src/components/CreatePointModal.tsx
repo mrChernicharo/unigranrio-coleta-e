@@ -1,3 +1,4 @@
+import { CollectionPoint } from '@prisma/client';
 import React from 'react';
 import { FiX } from 'react-icons/fi';
 import { styles } from '../styles/styles';
@@ -5,9 +6,13 @@ import Form from './Form';
 
 interface Props {
 	handleModalClose: () => void;
+	onPointCreated: (point: CollectionPoint) => void;
 }
 
-export default function CreatePointModal({ handleModalClose }: Props) {
+export default function CreatePointModal({
+	handleModalClose,
+	onPointCreated,
+}: Props) {
 	return (
 		<>
 			<div
@@ -23,7 +28,7 @@ export default function CreatePointModal({ handleModalClose }: Props) {
 					</button>
 				</div>
 
-				<Form onSend={handleModalClose} />
+				<Form onFormClose={handleModalClose} onSend={onPointCreated} />
 			</div>
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>

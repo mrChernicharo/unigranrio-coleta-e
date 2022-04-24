@@ -7,7 +7,9 @@ export default async function CreatePoint(
 ) {
 	console.log();
 
-	const response = await prisma.collectionPoint.create({ data: req.body });
+	const createdPoint = await prisma.collectionPoint.create({
+		data: req.body,
+	});
 
-	return res.status(201).json({});
+	return res.status(201).json(createdPoint);
 }

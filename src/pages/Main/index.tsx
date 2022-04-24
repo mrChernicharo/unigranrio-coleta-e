@@ -11,7 +11,7 @@ import { parseLatLng } from '../../lib/functions';
 import { prisma } from '../../lib/prisma';
 
 interface Props {
-	collectionPoints: CollectionPoint[];
+	initialPoints: CollectionPoint[];
 	googleApiKey: string;
 }
 
@@ -21,7 +21,8 @@ const render = (status: Status): ReactElement => {
 	return <h1>{status}</h1>;
 };
 
-export default function App({ collectionPoints, googleApiKey }: Props) {
+export default function App({ initialPoints, googleApiKey }: Props) {
+	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleModalOpen = () => {
@@ -78,7 +79,12 @@ export default function App({ collectionPoints, googleApiKey }: Props) {
 			</GoogleMap>
 
 			{isModalOpen && (
-				<CreatePointModal handleModalClose={handleModalClose} />
+				<CreatePointModal
+					handleModalClose={handleModalClose}
+					onPointCreated={point =>
+						setCollectionPoints([...collectionPoints, point])
+					}
+				/>
 			)}
 		</Wrapper>
 	);
@@ -88,7 +94,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 	const googleApiKey = process.env.GOOGLE_API_KEY;
 	const response = await prisma.collectionPoint.findMany();
 
-	const collectionPoints = response.map(item => ({
+	const initialPoints = response.map(item => ({
 		...item,
 		createdAt: item.createdAt.toISOString(),
 	}));
@@ -96,6 +102,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 	console.log('getServerSideProps just ran!');
 
 	return {
-		props: { collectionPoints, googleApiKey },
+		props: { initialPoints, googleApiKey },
 	};
 };
