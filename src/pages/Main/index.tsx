@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { ReactElement, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
+import DetailsModal from '../../components/DetailsModal';
 import Footer from '../../components/Footer';
 import GoogleMap from '../../components/GoogleMap';
 import Marker from '../../components/Marker';
@@ -28,17 +29,20 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 
 	const [appUser, setAppUser] = useState<User | null>(null);
 	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
-	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
-	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 	const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(
 		null
 	);
+	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
+	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
 	const handleCreatePointModalOpen = () => {
 		setIsCreatePointModalOpen(true);
 	};
-	const handleModalClose = () => {
+	const handleCreatePointModalClose = () => {
 		setIsCreatePointModalOpen(false);
+	};
+	const handleDetailsModalClose = () => {
+		setIsDetailsModalOpen(false);
 	};
 	const handleMapIdle = map => {
 		console.log('map Idle ', map);
@@ -101,16 +105,20 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 			{isCreatePointModalOpen && appUser && (
 				<CreatePointModal
 					userId={appUser.id}
-					handleModalClose={handleModalClose}
+					handleModalClose={handleCreatePointModalClose}
 					onPointCreated={point =>
 						setCollectionPoints([...collectionPoints, point])
 					}
 				/>
 			)}
 
-			{/* {isDetailsModalOpen && selectedPoint && (
-				<DetailsModal point={selectedPoint} />
-			)} */}
+			{isDetailsModalOpen && appUser && selectedPoint && (
+				<DetailsModal
+					userId={appUser.id}
+					handleModalClose={handleDetailsModalClose}
+					point={selectedPoint}
+				/>
+			)}
 
 			<Footer />
 		</Wrapper>

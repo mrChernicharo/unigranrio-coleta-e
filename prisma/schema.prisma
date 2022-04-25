@@ -27,7 +27,7 @@ model CollectionPoint {
   address String
   phone String @db.VarChar(15)
   email String @db.VarChar(80)
-  image String
+  image String @db.LongText()
   authorId Int
   author User @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
