@@ -77,10 +77,6 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				)}
 			</pre>
 
-			<button onClick={handleCreatePointModalOpen}>
-				<FaPlus size={40} />
-			</button>
-
 			<GoogleMap
 				height={500}
 				onClick={handleMapClick}
@@ -101,6 +97,15 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					);
 				})}
 			</GoogleMap>
+
+			<div className="pt-6 px-2 text-right">
+				<button
+					className="rounded-full p-6 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+					onClick={handleCreatePointModalOpen}
+				>
+					<FaPlus size={32} color={'white'} />
+				</button>
+			</div>
 
 			{isCreatePointModalOpen && appUser && (
 				<CreatePointModal

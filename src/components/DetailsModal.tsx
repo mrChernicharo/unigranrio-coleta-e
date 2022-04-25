@@ -16,7 +16,7 @@ export default function DetailsModal({
 	// onPointCreated,
 	userId,
 }: Props) {
-	const { name, image } = point;
+	const { name, address, image, createdAt, phone, email } = point;
 	return (
 		<>
 			<div
@@ -31,6 +31,12 @@ export default function DetailsModal({
 						/>
 					</button>
 				</div>
+
+				<div>{name}</div>
+				<div>{email}</div>
+				<div>{phone}</div>
+				<img src={image} alt="imagem do ponto de coleta" />
+				<div>{address}</div>
 			</div>
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>
