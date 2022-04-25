@@ -17,12 +17,9 @@ interface Props {
 
 export default function Form({ onFormClose, onSend, userId }: Props) {
 	const [address, setAddress] = useState('');
+	const [imgURL, setImgURL] = useState('');
 	const [geocodeAddresses, setGeocodeAddresses] = useState<Geocode[]>([]);
 	const [geoCodeStatus, setGeoCodeStatus] = useState('');
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [phone, setPhone] = useState('');
-	const [imgURL, setImgURL] = useState('');
 	const [latLng, setLatLng] = useState<{ lat: number; lng: number }>();
 
 	const addressInputRef = useRef<HTMLInputElement>(null);
@@ -33,6 +30,11 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 
 	const handleFormSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+		const name = nameInputRef.current?.value;
+		const email = emailInputRef.current?.value;
+		const phone = phoneInputRef.current?.value;
+		const imgURL = imgURLInputRef.current?.value;
+
 		console.log({ address, name, email, phone, imgURL, userId });
 		if (!address || !name || !userId) return;
 
@@ -67,22 +69,6 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 		const geoCode: Geocode[] = results;
 		setGeoCodeStatus(status);
 		setGeocodeAddresses(geoCode);
-	};
-
-	const handleNameInput = e => {
-		setName(nameInputRef.current?.value!);
-	};
-
-	const handlePhoneInput = e => {
-		setPhone(phoneInputRef.current?.value!);
-	};
-
-	const handleEmailInput = e => {
-		setEmail(emailInputRef.current?.value!);
-	};
-
-	const handleImgURLInput = e => {
-		setImgURL(imgURLInputRef.current?.value!);
 	};
 
 	useEffect(() => console.log(latLng), [latLng]);
@@ -169,7 +155,6 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 								</label>
 								<input
 									ref={nameInputRef}
-									onChange={handleNameInput}
 									type="text"
 									name="name"
 									id="name"
@@ -186,7 +171,6 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 								</label>
 								<input
 									ref={emailInputRef}
-									onChange={handleEmailInput}
 									type="email"
 									name="email"
 									id="email"
@@ -203,7 +187,7 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 								</label>
 								<input
 									ref={phoneInputRef}
-									onChange={handlePhoneInput}
+									// onChange={handlePhoneInput}
 									type="tel"
 									name="phone"
 									id="phone"
@@ -220,7 +204,11 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 								</label>
 								<input
 									ref={imgURLInputRef}
-									onChange={handleImgURLInput}
+									onChange={() =>
+										setImgURL(
+											imgURLInputRef.current?.value || ''
+										)
+									}
 									type="text"
 									name="image"
 									id="image"
@@ -243,7 +231,7 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 						<button
 							type="submit"
 							className={`${styles.btn}`}
-							disabled={!latLng || !name}
+							disabled={!latLng}
 						>
 							Cadastrar Ponto
 						</button>

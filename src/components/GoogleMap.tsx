@@ -72,7 +72,6 @@ export default function GoogleMap({
 		<div ref={mapRef} style={{ width: '100%', height }}>
 			{Children.map(children, child => {
 				if (isValidElement(child)) {
-					console.log({ child, map });
 					return cloneElement(child, { map });
 				}
 			})}

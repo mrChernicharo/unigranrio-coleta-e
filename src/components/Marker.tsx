@@ -22,12 +22,20 @@ const Marker = ({ onClick, point, ...options }: Props) => {
 	useEffect(() => {
 		if (marker) {
 			marker.setOptions(options);
+		}
+	}, [marker, options]);
+
+	useEffect(() => {
+		if (marker) {
+			console.log('heeey marker');
+
 			google.maps.event.clearInstanceListeners(marker);
+
 			if (onClick && point) {
 				marker.addListener('click', e => onClick(point));
 			}
 		}
-	}, [marker, options, point, onClick]);
+	}, [marker, point, onClick]);
 
 	return null;
 };
