@@ -2,6 +2,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { getSession, signIn } from 'next-auth/react';
 import { useRef } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
+import Footer from '../components/Footer';
 import { styles } from '../styles/styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
@@ -45,16 +46,20 @@ const SignIn: NextPage = () => {
 						src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
 						alt="Workflow"
 					/>
-					<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-						Sign in to your account
+					<div className="mt-6 mb-2 text-center">
+						Boas vindas!
+					</div>
+					<h2 className=" text-center text-3xl font-extrabold text-gray-900">
+						Coleta App
 					</h2>
+
 				</div>
-				<form className="mt-8 space-y-6" action="#" method="POST">
+				<form className="mt-8 space-y-6">
 					<input type="hidden" name="remember" value="true" />
 					<div className="rounded-md shadow-sm -space-y-px">
 						<div>
 							<label htmlFor="email-address" className="sr-only">
-								Email address
+								Email
 							</label>
 							<input
 								ref={emailInputRef}
@@ -68,7 +73,6 @@ const SignIn: NextPage = () => {
 							/>
 						</div>
 
-						<div className="h-4"></div>
 
 						{/* <div>
 							<label htmlFor="password" className="sr-only">
@@ -115,10 +119,10 @@ const SignIn: NextPage = () => {
 				<hr />
 
 				<h2 className="mt-6 text-center text-xl font-bold text-gray-900">
-					or login with
+					ou entre com
 				</h2>
 
-				<div className="grid grid-cols-2 gap-4 w-100 h-10">
+				<div className="grid grid-cols-2 gap-4 w-100 h-8">
 					<button
 						type="button"
 						className={styles.loginProviderBtn}
@@ -135,6 +139,7 @@ const SignIn: NextPage = () => {
 					</button>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };
