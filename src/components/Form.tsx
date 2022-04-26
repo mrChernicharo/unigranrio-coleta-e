@@ -5,17 +5,18 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { imgURLS } from '../lib/constants';
 import { fetchAddressLatLng, postCreatePoint } from '../lib/functions';
-import { Geocode } from '../lib/interfaces';
+import { CollectionPointWithAuthor, Geocode } from '../lib/interfaces';
+import { useUserContext } from '../lib/UserContext';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
 import Marker from './Marker';
 interface Props {
 	onFormClose: () => void;
-	onSend: (point: CollectionPoint) => void;
-	userId: number;
+	onSend: (point: CollectionPointWithAuthor) => void;
 }
 
-export default function Form({ onFormClose, onSend, userId }: Props) {
+export default function Form({ onFormClose, onSend }: Props) {
+	const { user } = useUserContext();
 	const [address, setAddress] = useState('');
 	const [imgURL, setImgURL] = useState('');
 	const [geocodeAddresses, setGeocodeAddresses] = useState<Geocode[]>([]);
@@ -35,8 +36,8 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 		const phone = phoneInputRef.current?.value;
 		const imgURL = imgURLInputRef.current?.value;
 
-		console.log({ address, name, email, phone, imgURL, userId });
-		if (!address || !name || !userId) return;
+		console.log({ address, name, email, phone, imgURL });
+		if (!address || !name || !user) return;
 
 		try {
 			const point: Partial<CollectionPoint> = {
@@ -47,10 +48,10 @@ export default function Form({ onFormClose, onSend, userId }: Props) {
 				lat: latLng?.lat,
 				lng: latLng?.lng,
 				image: imgURL ?? imgURLS.rio,
-				authorId: userId,
+				authorId: user?.id,
 			};
 			const newPoint = await postCreatePoint({ ...point });
-			onSend(newPoint);
+			onSend({ ...newPoint, author: user });
 			alert('Ponto de coleta cadastrado com sucesso!');
 			onFormClose();
 		} catch (err) {

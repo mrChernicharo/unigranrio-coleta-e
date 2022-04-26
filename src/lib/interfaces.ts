@@ -1,3 +1,5 @@
+import { CollectionPoint, User } from '@prisma/client';
+
 export interface AddressComponent {
 	long_name: string;
 	short_name: string;
@@ -30,4 +32,8 @@ export interface Geocode {
 		global_code: string;
 	};
 	types: string[];
+}
+
+export interface CollectionPointWithAuthor extends CollectionPoint {
+	author: User;
 }

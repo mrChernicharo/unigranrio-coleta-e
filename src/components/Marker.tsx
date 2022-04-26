@@ -1,9 +1,9 @@
-import { CollectionPoint } from '@prisma/client';
 import { useEffect, useState } from 'react';
+import { CollectionPointWithAuthor } from '../lib/interfaces';
 
 interface Props extends google.maps.MarkerOptions {
-	point?: CollectionPoint;
-	onClick?: (point: CollectionPoint) => void;
+	point?: CollectionPointWithAuthor;
+	onClick?: (point: CollectionPointWithAuthor) => void;
 }
 
 const Marker = ({ onClick, point, ...options }: Props) => {

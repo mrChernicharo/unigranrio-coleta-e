@@ -1,5 +1,4 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { CollectionPoint } from '@prisma/client';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { ReactElement, useEffect, useState } from 'react';
@@ -11,11 +10,12 @@ import GoogleMap from '../../components/GoogleMap';
 import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
 import { getClickLatLng, handleUserInit } from '../../lib/functions';
+import { CollectionPointWithAuthor } from '../../lib/interfaces';
 import { prisma } from '../../lib/prisma';
 import { useUserContext } from '../../lib/UserContext';
 
 interface Props {
-	initialPoints: CollectionPoint[];
+	initialPoints: CollectionPointWithAuthor[];
 	googleApiKey: string;
 }
 
@@ -29,9 +29,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	const { data: session, status } = useSession();
 	const { user, setUser } = useUserContext();
 	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
-	const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(
-		null
-	);
+	const [selectedPoint, setSelectedPoint] =
+		useState<CollectionPointWithAuthor | null>(null);
 	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
 	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
@@ -54,7 +53,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		const { lat, lng } = getClickLatLng(e);
 		console.log('map Click ', { lat, lng });
 	};
-	const handleMarkerClick = (point: CollectionPoint) => {
+	const handleMarkerClick = (point: CollectionPointWithAuthor) => {
 		setSelectedPoint(point);
 		setIsDetailsModalOpen(true);
 	};
@@ -69,13 +68,13 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		<Wrapper apiKey={googleApiKey} render={render}>
 			<Profile />
 
-			<pre>
+			{/* <pre>
 				{JSON.stringify(
-					collectionPoints.map(p => p.name),
+					collectionPoints.map(p => p),
 					null,
 					2
 				)}
-			</pre>
+			</pre> */}
 
 			<GoogleMap
 				height={500}
@@ -109,7 +108,6 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 
 			{isCreatePointModalOpen && user && (
 				<CreatePointModal
-					userId={Number(user.id)}
 					handleModalClose={handleCreatePointModalClose}
 					onPointCreated={point =>
 						setCollectionPoints([...collectionPoints, point])
@@ -119,7 +117,6 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 
 			{isDetailsModalOpen && user && selectedPoint && (
 				<DetailsModal
-					userId={Number(user.id)}
 					handleModalClose={handleDetailsModalClose}
 					point={selectedPoint}
 				/>
@@ -132,7 +129,14 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const googleApiKey = process.env.GOOGLE_API_KEY;
-	const response = await prisma.collectionPoint.findMany();
+
+	// include: => point + author
+	const response: CollectionPointWithAuthor[] =
+		await prisma.collectionPoint.findMany({
+			include: {
+				author: true,
+			},
+		});
 
 	const initialPoints = response.map(item => ({
 		...item,
