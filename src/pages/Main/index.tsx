@@ -1,5 +1,5 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { CollectionPoint, User } from '@prisma/client';
+import { CollectionPoint } from '@prisma/client';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { ReactElement, useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
 import { getClickLatLng, handleUserInit } from '../../lib/functions';
 import { prisma } from '../../lib/prisma';
+import { useUserContext } from '../../lib/UserContext';
 
 interface Props {
 	initialPoints: CollectionPoint[];
@@ -25,9 +26,8 @@ const render = (status: Status): ReactElement => {
 };
 
 export default function App({ initialPoints, googleApiKey }: Props) {
-	const { data, status } = useSession();
-
-	const [appUser, setAppUser] = useState<User | null>(null);
+	const { data: session, status } = useSession();
+	const { user, setUser } = useUserContext();
 	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
 	const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(
 		null
@@ -60,10 +60,10 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	};
 
 	useEffect(() => {
-		if (status && data && data.user && !appUser) {
-			handleUserInit(data.user).then(u => setAppUser(u));
+		if (status && session && session.user && !user) {
+			handleUserInit(session.user).then(u => setUser(u));
 		}
-	}, [status, data, appUser]);
+	}, [status, session, user, setUser]);
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>
@@ -107,9 +107,9 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				</button>
 			</div>
 
-			{isCreatePointModalOpen && appUser && (
+			{isCreatePointModalOpen && user && (
 				<CreatePointModal
-					userId={appUser.id}
+					userId={Number(user.id)}
 					handleModalClose={handleCreatePointModalClose}
 					onPointCreated={point =>
 						setCollectionPoints([...collectionPoints, point])
@@ -117,9 +117,9 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				/>
 			)}
 
-			{isDetailsModalOpen && appUser && selectedPoint && (
+			{isDetailsModalOpen && user && selectedPoint && (
 				<DetailsModal
-					userId={appUser.id}
+					userId={Number(user.id)}
 					handleModalClose={handleDetailsModalClose}
 					point={selectedPoint}
 				/>

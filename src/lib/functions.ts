@@ -18,6 +18,15 @@ export const fetchAddressLatLng = async (address: string) => {
 	return data;
 };
 
+export const fetchAuthor = async (authorId: number) => {
+	const response = await fetch(
+		`http://localhost:3000/api/user/findById?authorId=${authorId}`
+	);
+
+	const data = await response.json();
+	return data;
+};
+
 export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
 	const { name, address, email, phone, image, lat, lng, authorId } = data;
 	const point = {

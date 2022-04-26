@@ -55,3 +55,7 @@ mysql://USER:PASSWORD@HOST:PORT/DATABASE
 -   https://dashboard.mdbgo.com/#/databases
 
 == useSWR
+
+### Google Auth
+
+-   http://localhost:3000/api/auth/callback/google
