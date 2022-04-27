@@ -46,13 +46,10 @@ const SignIn: NextPage = () => {
 						src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
 						alt="Workflow"
 					/>
-					<div className="mt-6 mb-2 text-center">
-						Boas vindas!
-					</div>
-					<h2 className=" text-center text-3xl font-extrabold text-gray-900">
+					<div className="mt-6 mb-2 text-center">Boas vindas!</div>
+					<h2 className="text-center text-3xl font-extrabold text-gray-900">
 						Coleta App
 					</h2>
-
 				</div>
 				<form className="mt-8 space-y-6">
 					<input type="hidden" name="remember" value="true" />
@@ -72,7 +69,6 @@ const SignIn: NextPage = () => {
 								placeholder="Email address"
 							/>
 						</div>
-
 
 						{/* <div>
 							<label htmlFor="password" className="sr-only">

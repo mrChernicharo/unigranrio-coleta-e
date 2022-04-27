@@ -216,17 +216,19 @@ export default function Form({ onFormClose, onSend }: Props) {
 									className={styles.input2}
 								/>
 							</div>
-							{imgURL && (
-								<div className={'w-auto h-auto'}>
-									<img
-										src={imgURL}
-										alt="imagem do ponto de coleta"
-									/>
-								</div>
-							)}
 						</>
 					)}
 				</div>
+
+				{imgURL && (
+					<div className="bg-gray-100">
+						<img
+							src={imgURL}
+							alt="imagem do ponto de coleta"
+							className={'mx-auto'}
+						/>
+					</div>
+				)}
 				<div className="mt-8 mb-4 text-right">
 					{latLng && (
 						<button

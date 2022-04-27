@@ -66,9 +66,10 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>
-			<Profile />
+			<div className="h-screen">
+				<Profile />
 
-			{/* <pre>
+				{/* <pre>
 				{JSON.stringify(
 					collectionPoints.map(p => p),
 					null,
@@ -76,53 +77,54 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				)}
 			</pre> */}
 
-			<GoogleMap
-				height={500}
-				onClick={handleMapClick}
-				onZoom={handleMapZoom}
-				onIdle={handleMapIdle}
-			>
-				{collectionPoints.map(point => {
-					const { id, name, lat, lng } = point;
-					return (
-						<Marker
-							point={point}
-							onClick={handleMarkerClick}
-							key={id}
-							position={{ lat, lng }}
-							title={name}
-							clickable
-						/>
-					);
-				})}
-			</GoogleMap>
-
-			<div className="pt-6 px-2 text-right">
-				<button
-					className="rounded-full p-6 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-					onClick={handleCreatePointModalOpen}
+				<GoogleMap
+					height={500}
+					onClick={handleMapClick}
+					onZoom={handleMapZoom}
+					onIdle={handleMapIdle}
 				>
-					<FaPlus size={32} color={'white'} />
-				</button>
+					{collectionPoints.map(point => {
+						const { id, name, lat, lng } = point;
+						return (
+							<Marker
+								point={point}
+								onClick={handleMarkerClick}
+								key={id}
+								position={{ lat, lng }}
+								title={name}
+								clickable
+							/>
+						);
+					})}
+				</GoogleMap>
+
+				<div className="bg-gray-100 py-5 text-right">
+					<button
+						className="rounded-full p-6 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						onClick={handleCreatePointModalOpen}
+					>
+						<FaPlus size={32} color={'white'} />
+					</button>
+				</div>
+
+				{isCreatePointModalOpen && user && (
+					<CreatePointModal
+						handleModalClose={handleCreatePointModalClose}
+						onPointCreated={point =>
+							setCollectionPoints([...collectionPoints, point])
+						}
+					/>
+				)}
+
+				{isDetailsModalOpen && user && selectedPoint && (
+					<DetailsModal
+						handleModalClose={handleDetailsModalClose}
+						point={selectedPoint}
+					/>
+				)}
+
+				<Footer />
 			</div>
-
-			{isCreatePointModalOpen && user && (
-				<CreatePointModal
-					handleModalClose={handleCreatePointModalClose}
-					onPointCreated={point =>
-						setCollectionPoints([...collectionPoints, point])
-					}
-				/>
-			)}
-
-			{isDetailsModalOpen && user && selectedPoint && (
-				<DetailsModal
-					handleModalClose={handleDetailsModalClose}
-					point={selectedPoint}
-				/>
-			)}
-
-			<Footer />
 		</Wrapper>
 	);
 }

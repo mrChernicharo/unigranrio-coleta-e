@@ -59,3 +59,19 @@ mysql://USER:PASSWORD@HOST:PORT/DATABASE
 ### Google Auth
 
 -   http://localhost:3000/api/auth/callback/google
+
+*   TODOS
+
+    -   Loading animation
+    -   Enter animation
+    -   E-Waste Types
+
+        -   Pequenos equipamentos e eletroportáteis (torradeiras, batedeiras, aspiradores de pó, ventiladores, mixers, secadores de cabelo ferramentas elétricas, calculadoras, câmeras digitais, rádios, etc.)
+        -   Grandes equipamentos: geladeiras, freezers, máquinas de lavar, fogões, ar condicionados, micro-ondas, grandes TVs, etc.
+        -   Equipamentos de informática e telefonia: computadores, tablets, notebooks, celulares, impressoras, monitores e outros.
+        -   Pilhas e bateria portáteis: pilhas modelos AA, AAA, recarregáveis, baterias portáteis de 9 V, etc.
+
+            -   Small equipments
+            -   Large equipments
+            -   Tele-Info equipments
+            -   Bateries

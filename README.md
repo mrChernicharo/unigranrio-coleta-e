@@ -1,34 +1,78 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tailwind
 
-## Getting Started
+`yarn add tailwindcss postcss autoprefixer -D`
 
-First, run the development server:
+`npx tailwindcss init -p`
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+`yarn add @tailwindcss/forms -D`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### tailwindui.com
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+-   ui component library
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# Prisma
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+`yarn add prisma -D`
 
-## Learn More
+`yarn add @prisma/client`
 
-To learn more about Next.js, take a look at the following resources:
+`yarn init prisma`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   creates prisma folder + .env file
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#` yarn prisma migrate dev`
 
-## Deploy on Vercel
+-   when running new migrations I had errors
+    -   the solution: create another DB for prisma to perform its shadow operations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`npx prisma studio`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# MDB cli
+
+-   Free database hosting and more
+
+-   hosting our database with mdb
+    -   https://dashboard.mdbgo.com/#/databases
+    -   mysql://USER:PASSWORD@HOST:PORT/DATABASE
+
+# Auth Providers
+
+### GITHUB
+
+-   github.com/settings
+
+<img src="./public/github-oauth.png" />
+
+-   homepageURL: http://localhost:3000
+-   authorizationCallbackURL: http://localhost:3000/api/auth/callback
+    -   (authorizationCallbackURL must match next url pattern)
+
+### Google Auth
+
+-   developer settings
+
+    -   OAuth apps
+    -   register new app
+
+-   authorized redirect URL:
+    -   http://localhost:3000/api/auth/callback/google
+
+<img src="./public/GoogleOAuthExample.png">
+
+# .env
+
+### NEXTAUTH_SECRET
+
+-   Using next middleware
+
+    -   just assign whatever random string to it in your .env.local file
+
+## Vscode tricks
+
+<pre>
+    // settings.json
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
+		"source.organizeImports": true
+	},
+</pre>
