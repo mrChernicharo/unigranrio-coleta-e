@@ -62,8 +62,10 @@ mysql://USER:PASSWORD@HOST:PORT/DATABASE
 
 *   TODOS
 
-    -   Loading animation
-    -   Enter animation
+    -   set image right
+    -   Loading animations
+        -   skeletons
+    -   Entering animation
     -   E-Waste Types
 
         -   Pequenos equipamentos e eletroportáteis (torradeiras, batedeiras, aspiradores de pó, ventiladores, mixers, secadores de cabelo ferramentas elétricas, calculadoras, câmeras digitais, rádios, etc.)
