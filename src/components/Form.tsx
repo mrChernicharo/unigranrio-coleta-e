@@ -68,6 +68,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 		const { results, status } = data;
 
 		const geoCode: Geocode[] = results;
+		console.log({ geoCode });
 		setGeoCodeStatus(status);
 		setGeocodeAddresses(geoCode);
 	};

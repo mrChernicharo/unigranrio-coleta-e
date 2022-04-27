@@ -13,6 +13,7 @@ export default function CreatePointModal({
 	handleModalClose,
 	onPointCreated,
 }: Props) {
+	console.log('opeen');
 	return (
 		<>
 			<div

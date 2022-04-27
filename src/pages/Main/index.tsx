@@ -29,12 +29,13 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	const { data: session, status } = useSession();
 	const { user, setUser } = useUserContext();
 	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
-	const [selectedPoint, setSelectedPoint] =
-		useState<CollectionPointWithAuthor | null>(null);
+	// prettier-ignore
+	const [selectedPoint, setSelectedPoint] = useState<CollectionPointWithAuthor | null>(null);
 	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
 	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
-	const handleCreatePointModalOpen = () => {
+	const handleCreatePointModalOpen = e => {
+		console.log(e);
 		setIsCreatePointModalOpen(true);
 	};
 	const handleCreatePointModalClose = () => {
@@ -63,6 +64,14 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 			handleUserInit(session.user).then(u => setUser(u));
 		}
 	}, [status, session, user, setUser]);
+
+	useEffect(() => {
+		console.log(user);
+	}, [user]);
+
+	useEffect(() => {
+		console.log(isCreatePointModalOpen);
+	}, [isCreatePointModalOpen]);
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>
@@ -107,7 +116,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					</button>
 				</div>
 
-				{isCreatePointModalOpen && user && (
+				{isCreatePointModalOpen && (
 					<CreatePointModal
 						handleModalClose={handleCreatePointModalClose}
 						onPointCreated={point =>
@@ -116,7 +125,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					/>
 				)}
 
-				{isDetailsModalOpen && user && selectedPoint && (
+				{isDetailsModalOpen && selectedPoint && (
 					<DetailsModal
 						handleModalClose={handleDetailsModalClose}
 						point={selectedPoint}

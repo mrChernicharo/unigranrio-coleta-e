@@ -10,6 +10,8 @@ import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
 export default NextAuth({
+	// @ts-ignore
+	site: process.env.NEXTAUTH_URL,
 	providers: [
 		// EmailProvider({
 		// 	server: process.env.EMAIL_SERVER,
@@ -28,5 +30,5 @@ export default NextAuth({
 			clientSecret: process.env.GITHUB_SECRET,
 		}),
 	],
-	debug: true,
+	// debug: true,
 });
