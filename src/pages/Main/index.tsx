@@ -78,9 +78,9 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 			<div className="pt-[74px] flex flex-col justify-center bg-white">
 				<Profile />
 
-				<h1 className="my-4 text-4xl font-bold">Coleta App</h1>
-				<h2 className="my-4 text-lg">
-					Encontre o ponto de coleta mais próximo da sua casa
+				<h1 className="mt-8 mb-2 text-4xl font-bold">Coleta App</h1>
+				<h2 className="mb-4 text-md">
+					Encontre pontos de coleta de lixo eletrônico pelo mundo
 				</h2>
 
 				{/* <pre>
@@ -113,13 +113,13 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					})}
 				</GoogleMap>
 
-				<div className="bg-gray-100 py-5 pr-8 flex justify-end">
+				<div className="bg-white pt-6 pr-8 pb-32 flex justify-end">
 					<button
-						className="flex items-center rounded-lg p-6 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						className="flex items-center rounded-lg p-4 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						onClick={handleCreatePointModalOpen}
 					>
-						<FaPlus size={24} color={'white'} />
-						<span className="text-xl text-white ml-6">
+						<FaPlus color={'white'} />
+						<span className=" text-white ml-6">
 							Novo Ponto de Coleta
 						</span>
 					</button>
@@ -140,8 +140,6 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 						point={selectedPoint}
 					/>
 				)}
-
-				<div className="h-[160px]"></div>
 
 				<Footer />
 			</div>
