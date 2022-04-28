@@ -9,7 +9,7 @@ export default function Profile() {
 		const { user } = data;
 		const { name, email, image } = user;
 		return (
-			<div className="w-full px-2 py-1 flex border items-center justify-between">
+			<div className="fixed top-0 z-20 w-full px-2 py-1 flex border items-center justify-between bg-gray-50">
 				<Image
 					className="rounded-full"
 					src={image!}

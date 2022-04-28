@@ -17,7 +17,7 @@ export default function CreatePointModal({
 	return (
 		<>
 			<div
-				className={`w-full sm:w-[640px] shadow overflow-hidden sm:rounded-md bg-gray-50 ${styles.absoluteCenterX} z-50`}
+				className={`w-full sm:w-[640px] max-h-[90vh] block sm:rounded-lg py-1 bg-gray-50 ${styles.absoluteCenter} z-50`}
 			>
 				<div className="text-right p-3 pb-0">
 					<button onClick={handleModalClose}>

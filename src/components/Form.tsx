@@ -73,6 +73,9 @@ export default function Form({ onFormClose, onSend }: Props) {
 		setGeocodeAddresses(geoCode);
 	};
 
+	useEffect(() => {
+		addressInputRef.current?.focus();
+	}, []);
 	useEffect(() => console.log(latLng), [latLng]);
 	useEffect(() => console.log(geocodeAddresses), [geocodeAddresses]);
 

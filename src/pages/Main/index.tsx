@@ -74,17 +74,23 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	}, [isCreatePointModalOpen]);
 
 	return (
-		<div style={{ height: '100vh' }}>
-			<Wrapper apiKey={googleApiKey} render={render}>
+		<Wrapper apiKey={googleApiKey} render={render}>
+			<div className="pt-[74px] flex flex-col justify-center bg-white">
 				<Profile />
 
+				<h1 className="my-4 text-4xl font-bold">Coleta App</h1>
+				<h2 className="my-4 text-lg">
+					Encontre o ponto de coleta mais próximo da sua casa
+				</h2>
+
 				{/* <pre>
-				{JSON.stringify(
-					collectionPoints.map(p => p),
-					null,
-					2
-				)}
-			</pre> */}
+					{JSON.stringify(
+						// collectionPoints.map(p => [p.name, p.address]),
+						collectionPoints.map(p => p.name),
+						null,
+						2
+					)}
+				</pre> */}
 
 				<GoogleMap
 					height={500}
@@ -107,12 +113,15 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					})}
 				</GoogleMap>
 
-				<div className="bg-gray-100 py-5 text-right">
+				<div className="bg-gray-100 py-5 pr-8 flex justify-end">
 					<button
-						className="rounded-full p-6 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						className="flex items-center rounded-lg p-6 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						onClick={handleCreatePointModalOpen}
 					>
-						<FaPlus size={32} color={'white'} />
+						<FaPlus size={24} color={'white'} />
+						<span className="text-xl text-white ml-6">
+							Novo Ponto de Coleta
+						</span>
 					</button>
 				</div>
 
@@ -132,9 +141,11 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					/>
 				)}
 
+				<div className="h-[160px]"></div>
+
 				<Footer />
-			</Wrapper>
-		</div>
+			</div>
+		</Wrapper>
 	);
 }
 
