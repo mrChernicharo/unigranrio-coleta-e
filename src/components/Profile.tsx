@@ -9,12 +9,12 @@ export default function Profile() {
 		const { user } = data;
 		const { name, email, image } = user;
 		return (
-			<div className="fixed top-0 z-20 w-full px-2 py-1 flex border items-center justify-between bg-gray-50">
+			<div className="fixed top-0 z-20 w-full px-6 py-2 flex border items-center justify-between bg-gray-50">
 				<Image
 					className="rounded-full"
 					src={image!}
-					width={60}
-					height={60}
+					width={54}
+					height={54}
 					alt=""
 				/>
 				<span>{name}</span>

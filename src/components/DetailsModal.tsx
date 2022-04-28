@@ -50,10 +50,17 @@ Props) {
 	return (
 		<>
 			<div
-				className={`w-full sm:w-[640px] shadow overflow-hidden sm:rounded-md bg-gray-50 ${styles.absoluteCenter} z-50 text-center`}
+				className={`w-full sm:w-[580px] shadow overflow-hidden sm:rounded-md bg-gray-50 ${styles.absoluteCenter} z-50 text-center`}
 			>
-				<div className="text-right bg-gray-200 p-3 pb-0">
-					<button onClick={handleModalClose}>
+				<div className="text-right bg-gray-200 flex p-2">
+					<h1 className="w-full text-lg font-bold text-center">
+						{name}
+					</h1>
+
+					<button
+						className="absolute right-2"
+						onClick={handleModalClose}
+					>
 						<FiX
 							size={24}
 							strokeWidth={4}
@@ -62,75 +69,56 @@ Props) {
 					</button>
 				</div>
 
-				{/* <div>{name}</div> */}
-				<h1 className="mt-[-2rem] mb-2 text-lg font-bold text-center">
-					{name}
-				</h1>
+				<div className="">
+					<img
+						src={image}
+						alt="imagem do ponto de coleta"
+						height={200}
+						width={580}
+						className=""
+					/>
+				</div>
 
 				<div className="p-4">
 					{user && isAuthor(user) && (
-						<div className="flex">
-							<div className="mr-1 flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:h-10 sm:w-10">
+						<div className="flex justify-end -mt-10">
+							<div className="mr-2 flex-shrink-0 flex items-center justify-center rounded-full bg-green-200 bg-opacity-80 h-12 w-12">
 								<button>
 									<FaEdit
-										size={24}
+										size={28}
 										className="text-green-600"
 									/>
 								</button>
 							</div>
 
-							<div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+							<div className="flex-shrink-0 flex items-center justify-center rounded-full bg-red-200 bg-opacity-80 h-12 w-12">
 								<button>
 									<FaTrash
-										size={24}
+										size={28}
 										className="text-red-600"
 									/>
 								</button>
 							</div>
 						</div>
 					)}
-
-					<div className="">
-						<img
-							src={image}
-							alt="imagem do ponto de coleta"
-							height={200}
-							width={620}
-							className="m-auto"
-						/>
-					</div>
-
-					{/* <Image
-					src={`/api/imgae/imageproxy?url=${encodeURIComponent(
-						image
-					)}`}
-					alt="imagem do ponto de coleta"
-					height={200}
-					width={500}
-					placeholder="blur"
-					blurDataURL={`data:image/svg+xml;base64,${toBase64(
-						shimmer(700, 475)
-					)}`}
-				/> */}
-
-					<div className="border  flex flex-col">
+					<div className="flex flex-col mb-4">
 						<div className="w-full flex justify-left">
 							<div className="text-left mr-4">
-								<label className="text-gray-400 text-sm">
+								<label className="text-gray-400 text-xs">
 									Endereço
 								</label>
 								<p>{address}</p>
 							</div>
 						</div>
-						<div className="w-full flex justify-left">
-							<div className="text-left mr-4">
-								<label className="text-gray-400 text-sm">
+						<div className="w-full flex ">
+							<div className="text-left mr-6">
+								<label className="text-gray-400 text-xs">
 									Email
 								</label>
 								<p>{email}</p>
 							</div>
 							<div className="text-left">
-								<label className="text-gray-400 text-sm">
+								<label className="text-gray-400 text-xs">
 									Telefone
 								</label>
 								<p>{phone}</p>
@@ -138,16 +126,16 @@ Props) {
 						</div>
 					</div>
 
-					<div className="w-52 p-1 flex items-center border rounded">
+					<div className="p-2 flex items-center">
 						<div className="">
 							<img
-								className="h-12 rounded-full"
+								className="h-10 rounded-full"
 								src={author?.image}
 								alt=""
 							/>
 						</div>
 						<div className="pl-2 text-left">
-							<p className="text-gray-400 text-sm">Postado por</p>
+							<p className="text-gray-400 text-xs">Postado por</p>
 							<p>{author?.name}</p>
 						</div>
 					</div>
@@ -156,4 +144,19 @@ Props) {
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>
 	);
+}
+
+{
+	/* <Image
+		src={`/api/imgae/imageproxy?url=${encodeURIComponent(
+			image
+		)}`}
+		alt="imagem do ponto de coleta"
+		height={200}
+		width={500}
+		placeholder="blur"
+		blurDataURL={`data:image/svg+xml;base64,${toBase64(
+			shimmer(700, 475)
+		)}`}
+		/> */
 }
