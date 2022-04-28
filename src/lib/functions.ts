@@ -1,8 +1,8 @@
 import { CollectionPoint, User } from '@prisma/client';
-import { imgURLS, /* devBaseURL */ prodBaseURL } from './constants';
+import { /* prodBaseURL */ devBaseURL, imgURLS } from './constants';
 export const fetchAddressLatLng = async (address: string) => {
 	const response = await fetch(
-		`${prodBaseURL}/api/geolocation/getLatLngByAddress`,
+		`${devBaseURL}/api/geolocation/getLatLngByAddress`,
 		{
 			method: 'POST',
 			body: JSON.stringify({ address }),
@@ -19,7 +19,7 @@ export const fetchAddressLatLng = async (address: string) => {
 
 export const fetchAuthor = async (authorId: number) => {
 	const response = await fetch(
-		`${prodBaseURL}/api/user/findById?authorId=${authorId}`
+		`${devBaseURL}/api/user/findById?authorId=${authorId}`
 	);
 
 	const data = await response.json();
@@ -39,7 +39,7 @@ export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
 		authorId,
 	};
 
-	const response = await fetch(`${prodBaseURL}/api/point/create`, {
+	const response = await fetch(`${devBaseURL}/api/point/create`, {
 		method: 'POST',
 		body: JSON.stringify(point),
 		headers: {
@@ -65,7 +65,7 @@ export const handleUserInit = async userData => {
 	const { name, email, image } = userData;
 	console.log({ userData });
 	const userQueryResponse = await fetch(
-		`${prodBaseURL}/api/user/findByEmail?email=${email}`
+		`${devBaseURL}/api/user/findByEmail?email=${email}`
 	);
 
 	const foundUser = await userQueryResponse.json();
@@ -82,7 +82,7 @@ export const handleUserInit = async userData => {
 		image: image ?? imgURLS.defaultAvatarImg,
 	};
 
-	const user = await apiPost(`${prodBaseURL}/api/user/create`, {
+	const user = await apiPost(`${devBaseURL}/api/user/create`, {
 		...newUser,
 	});
 

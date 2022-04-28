@@ -74,8 +74,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	}, [isCreatePointModalOpen]);
 
 	return (
-		<Wrapper apiKey={googleApiKey} render={render}>
-			<div className="h-screen">
+		<div style={{ height: '100vh' }}>
+			<Wrapper apiKey={googleApiKey} render={render}>
 				<Profile />
 
 				{/* <pre>
@@ -133,8 +133,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				)}
 
 				<Footer />
-			</div>
-		</Wrapper>
+			</Wrapper>
+		</div>
 	);
 }
 

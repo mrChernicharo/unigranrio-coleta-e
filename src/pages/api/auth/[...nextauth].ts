@@ -11,12 +11,8 @@ import GoogleProvider from 'next-auth/providers/google';
 
 export default NextAuth({
 	// @ts-ignore
-	site: process.env.NEXTAUTH_URL,
+	// site: process.env.NEXTAUTH_URL,
 	providers: [
-		// EmailProvider({
-		// 	server: process.env.EMAIL_SERVER,
-		// 	from: process.env.EMAIL_FROM,
-		// }),
 		GoogleProvider({
 			clientId: process.env.GOOGLE_AUTH_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET!,
