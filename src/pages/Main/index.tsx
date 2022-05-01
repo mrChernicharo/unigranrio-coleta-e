@@ -159,10 +159,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
 				author: true,
 			},
 		});
+	console.log(response);
 
 	const initialPoints = response.map(item => ({
 		...item,
 		createdAt: item.createdAt.toISOString(),
+		author: {
+			...item.author,
+			emailVerified: item.author.emailVerified?.toISOString(),
+		},
 	}));
 
 	console.log('getServerSideProps just ran!');

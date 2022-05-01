@@ -28,5 +28,5 @@ export default function Profile() {
 			</div>
 		);
 	}
-	return <div>profile</div>;
+	return <div>Loading Profile...</div>;
 }

@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 import { useCallback } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
+import { imgURLS } from '../lib/constants';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
 import { useUserContext } from '../lib/UserContext';
 import { styles } from '../styles/styles';
@@ -43,7 +44,7 @@ Props) {
 	console.log(point);
 
 	const isAuthor = useCallback(
-		(user: User) => authorId === Number(user.id),
+		(user: User) => authorId === user.id,
 		[authorId]
 	);
 
@@ -130,7 +131,7 @@ Props) {
 						<div className="">
 							<img
 								className="h-10 rounded-full"
-								src={author?.image}
+								src={author?.image || imgURLS.defaultAvatarImg}
 								alt=""
 							/>
 						</div>

@@ -7,6 +7,7 @@ import { styles } from '../styles/styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	const session = await getSession({ req });
+
 	if (session) {
 		return {
 			redirect: {
@@ -33,8 +34,10 @@ const SignIn: NextPage = () => {
 		signIn('google');
 	};
 
-	const handleEmailSignIn = () => {
-		signIn('email');
+	const handleEmailSignIn = e => {
+		e.preventDefault();
+		console.log('handle signIn');
+		signIn('email').then(res => console.log(res));
 	};
 	return (
 		<div className="bg-gray-200 flex flex-col items-center space-between">

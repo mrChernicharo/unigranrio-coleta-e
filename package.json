@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@googlemaps/react-wrapper": "^1.1.31",
+		"@next-auth/prisma-adapter": "^0.5.2-next.19",
 		"@prisma/client": "^3.12.0",
 		"axios": "^0.26.1",
 		"next": "12.1.5",
