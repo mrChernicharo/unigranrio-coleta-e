@@ -11,7 +11,7 @@ export default async function findById(
 	const author = await prisma.user.findFirst({
 		where: {
 			id: {
-				equals: authorId,
+				equals: String(authorId),
 			},
 		},
 	});
