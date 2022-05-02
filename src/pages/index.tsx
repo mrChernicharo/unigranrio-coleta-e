@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	};
 };
 
-const SignIn: NextPage = () => {
+const SignIn: NextPage = props => {
 	const emailInputRef = useRef<HTMLInputElement>(null);
 
 	const handleGithubSignIn = () => {
@@ -37,8 +37,7 @@ const SignIn: NextPage = () => {
 
 	const handleEmailSignIn = e => {
 		e.preventDefault();
-		console.log('handle signIn');
-		signIn('email');
+		signIn('email', { email: emailInputRef.current?.value });
 	};
 
 	return (
@@ -62,7 +61,7 @@ const SignIn: NextPage = () => {
 					<form className="mt-8 space-y-6">
 						<input type="hidden" name="remember" value="true" />
 						<div className="rounded-md shadow-sm -space-y-px">
-							{/* <div>
+							<div>
 								<label
 									htmlFor="email-address"
 									className="sr-only"
@@ -79,22 +78,7 @@ const SignIn: NextPage = () => {
 									className={styles.input}
 									placeholder="Endereço de Email"
 								/>
-							</div> */}
-
-							{/* <div>
-							<label htmlFor="password" className="sr-only">
-								Password
-							</label>
-							<input
-								id="password"
-								name="password"
-								type="password"
-								autoComplete="current-password"
-								required
-								className={styles.input}
-								placeholder="Password"
-							/>
-						</div> */}
+							</div>
 						</div>
 
 						<div>

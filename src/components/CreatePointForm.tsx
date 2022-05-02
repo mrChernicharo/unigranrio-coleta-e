@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { CollectionPoint } from '@prisma/client';
 // import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useUserContext } from '../contexts/UserContext';
-import { fetchAddressLatLng, postCreatePoint } from '../lib/functions';
+import { fetchAddressLatLng } from '../lib/functions';
 import { CollectionPointWithAuthor, Geocode } from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
@@ -29,6 +28,10 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 	const emailInputRef = useRef<HTMLInputElement>(null);
 	const phoneInputRef = useRef<HTMLInputElement>(null);
 	const imgURLInputRef = useRef<HTMLInputElement>(null);
+	const smallCheckboxRef = useRef<HTMLInputElement>(null);
+	const largeCheckboxRef = useRef<HTMLInputElement>(null);
+	const infoCheckboxRef = useRef<HTMLInputElement>(null);
+	const batteriesCheckboxRef = useRef<HTMLInputElement>(null);
 
 	const handleFormSubmit = async (e: FormEvent) => {
 		e.preventDefault();
@@ -42,25 +45,36 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 
 		try {
 			setIsLoading(true);
+			const slib = [
+				smallCheckboxRef.current?.checked,
+				largeCheckboxRef.current?.checked,
+				infoCheckboxRef.current?.checked,
+				batteriesCheckboxRef.current?.checked,
+			];
 
-			const point: Partial<CollectionPoint> = {
-				name,
-				address,
-				email,
-				phone,
-				lat: latLng?.lat,
-				lng: latLng?.lng,
-				image: imgURL,
-				authorId: user?.id,
-			};
-			const newPoint = await postCreatePoint({ ...point });
-			onSend({ ...newPoint, author: user });
-			onFormClose();
+			const collectedTypes = slib.map((item, i) =>
+				item ? 'SLIB'[i] : '_'
+			);
+			console.log(collectedTypes);
+
+			// const point: Partial<CollectionPoint> = {
+			// 	name,
+			// 	address,
+			// 	email,
+			// 	phone,
+			// 	lat: latLng?.lat,
+			// 	lng: latLng?.lng,
+			// 	image: imgURL,
+			// 	authorId: user?.id,
+			// };
+			// const newPoint = await postCreatePoint({ ...point });
+			// onSend({ ...newPoint, author: user });
+			// onFormClose();
 		} catch (err) {
 			console.log(err);
 		} finally {
-			setIsLoading(false);
-			alert('Ponto de coleta cadastrado com sucesso!');
+			// setIsLoading(false);
+			// alert('Ponto de coleta cadastrado com sucesso!');
 		}
 	};
 
@@ -237,6 +251,101 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 									id="phone"
 									className={styles.input2}
 								/>
+							</div>
+
+							<div className="col-span-6">
+								<h2 className="mb-4">
+									Tipos de resíduos recolhidos
+								</h2>
+								<div className="flex items-start">
+									<div className="flex items-center h-5">
+										<input
+											ref={smallCheckboxRef}
+											id="small"
+											name="small"
+											type="checkbox"
+											className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+										/>
+									</div>
+									<div className="ml-3 text-sm">
+										<label
+											htmlFor="small"
+											className="font-medium text-gray-700"
+										>
+											Pequenos equipamentos
+										</label>
+										<p className="text-gray-500">
+											Get notified when a candidate
+											applies for a job.
+										</p>
+									</div>
+
+									<div className="flex items-center h-5">
+										<input
+											ref={largeCheckboxRef}
+											id="large"
+											name="large"
+											type="checkbox"
+											className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+										/>
+									</div>
+									<div className="ml-3 text-sm">
+										<label
+											htmlFor="large"
+											className="font-medium text-gray-700"
+										>
+											Itens Grandes
+										</label>
+										<p className="text-gray-500">
+											Get notified when a candidate
+											applies for a job.
+										</p>
+									</div>
+
+									<div className="flex items-center h-5">
+										<input
+											ref={infoCheckboxRef}
+											id="info"
+											name="info"
+											type="checkbox"
+											className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+										/>
+									</div>
+									<div className="ml-3 text-sm">
+										<label
+											htmlFor="info"
+											className="font-medium text-gray-700"
+										>
+											Itens de Informática
+										</label>
+										<p className="text-gray-500">
+											Get notified when a candidate
+											applies for a job.
+										</p>
+									</div>
+
+									<div className="flex items-center h-5">
+										<input
+											ref={batteriesCheckboxRef}
+											id="batteries"
+											name="batteries"
+											type="checkbox"
+											className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+										/>
+									</div>
+									<div className="ml-3 text-sm">
+										<label
+											htmlFor="batteries"
+											className="font-medium text-gray-700"
+										>
+											Baterias
+										</label>
+										<p className="text-gray-500">
+											Get notified when a candidate
+											applies for a job.
+										</p>
+									</div>
+								</div>
 							</div>
 
 							<div className="col-span-6">

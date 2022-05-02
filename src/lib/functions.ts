@@ -1,20 +1,13 @@
 import { CollectionPoint, User } from '@prisma/client';
-import { imgURLS, /* devBaseURL */ prodBaseURL } from './constants';
+import { devBaseURL, imgURLS, prodBaseURL } from './constants';
+
+console.log({ prodBaseURL, devBaseURL });
+
 export const fetchAddressLatLng = async (address: string) => {
-	const response = await fetch(
-		`${prodBaseURL}/api/geolocation/getLatLngByAddress`,
-		{
-			method: 'POST',
-			body: JSON.stringify({ address }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}
-	);
-
-	const data = await response.json();
-
-	return data;
+	console.log('fetchAddressLatLng', address);
+	return apiPost(`${prodBaseURL}/api/geolocation/getLatLngByAddress`, {
+		address,
+	});
 };
 
 export const fetchAuthor = async (authorId: number) => {

@@ -7,6 +7,9 @@ import { prisma } from '../../../lib/prisma';
 
 export default NextAuth({
 	adapter: PrismaAdapter(prisma),
+	pages: {
+		verifyRequest: '/VerifyEmail',
+	},
 	providers: [
 		EmailProvider({
 			server: process.env.EMAIL_SERVER,
