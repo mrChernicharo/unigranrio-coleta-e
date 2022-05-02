@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 47.5 47.5" viewBox="0 0 47.5 47.5">
+    <defs>
+        <clipPath id="a" clipPathUnits="userSpaceOnUse">
+            <path d="M 0,38 38,38 38,0 0,0 0,38 Z" />
+        </clipPath>
+    </defs>
+    <g transform="matrix(1.25 0 0 -1.25 0 47.5)">
+        <path fill="#be1931" d="m 0,0 -6,0 1,13 4,0 1,-13 z" transform="translate(12 19)" />
+        <path fill="#be1931" d="m 0,0 -6,0 1,13 4,0 1,-13 z" transform="translate(22 19)" />
+        <path fill="#be1931" d="m 0,0 -6,0 1,13 4,0 1,-13 z" transform="translate(32 19)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.154,-2 5.077,-2 4.923,0 0,0 Z" transform="translate(6.539 26)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.154,-2 4.461,-2 4.308,0 0,0 Z" transform="translate(6.846 30)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.154,2 -5.692,2 -5.846,0 0,0 Z" transform="translate(11.923 20)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.154,-2 5.077,-2 4.923,0 0,0 Z" transform="translate(16.539 26)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.154,-2 4.461,-2 4.308,0 0,0 Z" transform="translate(16.846 30)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.153,2 -5.692,2 -5.846,0 0,0 Z" transform="translate(21.923 20)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.153,-2 5.077,-2 4.924,0 0,0 Z" transform="translate(26.538 26)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.153,2 -5.692,2 -5.846,0 0,0 Z" transform="translate(31.923 20)" />
+        <path fill="#e6e7e8" d="M 0,0 -0.153,-2 4.462,-2 4.309,0 0,0 Z" transform="translate(26.846 30)" />
+        <g clip-path="url(#a)">
+            <path fill="#a0041e"
+                d="m 0,0 c 0,-1.104 -0.896,-2 -2,-2 l -30,0 c -1.104,0 -2,0.896 -2,2 l 0,14 c 0,1.104 0.896,2 2,2 l 30,0 c 1.104,0 2,-0.896 2,-2 L 0,0 Z"
+                transform="translate(36 3)" />
+            <path fill="#c1694f" d="m 36,15 -34,0 0,2 34,0 0,-2 z" />
+            <path fill="#a7a9ac"
+                d="M11 9l-4 0 0 4 4 0 0-4zM21 9l-4 0 0 4 4 0 0-4zM31 9l-4 0 0 4 4 0 0-4zM11 3L7 3 7 7 11 7 11 3zM21 3l-4 0 0 4 4 0 0-4zM31 3l-4 0 0 4 4 0 0-4z" />
+            <path fill="#d1d3d4"
+                d="m 0,0 c -1.104,0 -2,-0.896 -2,-2 0,-0.457 0.159,-0.873 0.417,-1.209 C -1.83,-3.392 -2,-3.67 -2,-4 c 0,-0.552 0.448,-1 1,-1 0.552,0 1,0.448 1,1 1.104,0 2,0.896 2,2 0,1.104 -0.896,2 -2,2"
+                transform="translate(10 37)" />
+            <path fill="#d1d3d4"
+                d="m 0,0 c -1.104,0 -2,-0.896 -2,-2 0,-0.457 0.159,-0.873 0.417,-1.209 C -1.83,-3.392 -2,-3.67 -2,-4 c 0,-0.552 0.448,-1 1,-1 0.552,0 1,0.448 1,1 1.104,0 2,0.896 2,2 0,1.104 -0.896,2 -2,2"
+                transform="translate(20 37)" />
+            <path fill="#d1d3d4"
+                d="m 0,0 c -1.104,0 -2,-0.896 -2,-2 0,-0.457 0.159,-0.873 0.417,-1.209 C -1.83,-3.392 -2,-3.67 -2,-4 c 0,-0.552 0.447,-1 1,-1 0.553,0 1,0.448 1,1 1.104,0 2,0.896 2,2 0,1.104 -0.896,2 -2,2"
+                transform="translate(30 37)" />
+        </g>
+    </g>
+</svg>

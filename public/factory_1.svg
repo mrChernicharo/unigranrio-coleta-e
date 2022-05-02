@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <path fill="#E5E5E5" d="M64 48L32 64V32l32-16z" />
+    <path fill="#FFF" d="M61 31L35 44v-8l26-13z" />
+    <path fill="#39C" d="M60 30.5l-24 12v-6l24-12z" />
+    <path d="M60 27.5l-24 12v-3l24-12z" opacity=".15" />
+    <path d="M60 25.5l-24 12v-1l24-12z" opacity=".15" />
+    <path d="M60 30.5l-24 6 24-12z" opacity=".15" />
+    <path d="M64 48L32 64V32l32-16z" opacity=".39" />
+    <path fill="#E5E5E5" d="M32 64L0 48V16l32 16z" />
+    <path fill="#FFF" d="M29 44L3 31v-8l26 13z" />
+    <path fill="#39C" d="M28 42.5l-24-12v-6l24 12z" />
+    <path d="M28 39.5l-24-12v-3l24 12z" opacity=".15" />
+    <path d="M28 36.5v1l-24-12v-1" opacity=".15" />
+    <path fill="#FFF" d="M28 42.5l-24-18v6z" opacity=".15" />
+    <path fill="#FFF" d="M11 53.5l-8-4v-14l8 4z" />
+    <path fill="#656565" d="M4 37l6 3v13l-6-3z" />
+    <path fill="#FFF"
+        d="M10 52l-6-3v-1l6 3zM10 50l-6-3v-1l6 3zM10 48l-6-3v-1l6 3zM10 46l-6-3v-1l6 3zM10 44l-6-3v-1l6 3zM10 42l-6-3v-1l6 3z"
+        opacity=".25" />
+    <path d="M32 64L0 48V16l32 16z" opacity=".06" />
+    <path fill="#2D3134" d="M32 32l32-16L32 0 0 16z" />
+</svg>

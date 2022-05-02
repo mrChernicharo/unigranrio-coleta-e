@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { User } from '@prisma/client';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { useUserContext } from '../contexts/UserContext';
@@ -28,10 +28,10 @@ export default function DetailsModal({
 	const { id, name, address, image, phone, email, author, authorId } = point;
 	const [isLoading, setIsLoading] = useState(false);
 
-	const isAuthor = useCallback(
-		(user: User) => authorId === user.id,
-		[authorId]
-	);
+	const isAuthor = (user: User) => {
+		console.log({ user, authorId });
+		return authorId === user.id;
+	};
 
 	const handleDelete = async () => {
 		const hasConfirmed = confirm(`Tem certeza que deseja deletar ${name}?`);

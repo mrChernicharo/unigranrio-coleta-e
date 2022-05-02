@@ -131,6 +131,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 								onClick={handleMarkerClick}
 								key={id}
 								position={{ lat, lng }}
+								icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
 								title={name}
 								clickable
 							/>
@@ -138,7 +139,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					})}
 				</GoogleMap>
 
-				<div className="bg-white pt-6 pr-6 pb-32 flex justify-end">
+				<div className="bg-white pt-6 pr-6 pb-16 flex justify-end">
 					<button
 						className="flex items-center rounded-lg p-4 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						onClick={handleCreatePointModalOpen}
