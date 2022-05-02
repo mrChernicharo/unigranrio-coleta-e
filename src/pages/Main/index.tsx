@@ -19,7 +19,8 @@ interface Props {
 	initialPoints: CollectionPointWithAuthor[];
 	googleApiKey: string;
 }
-
+const googleIconURL =
+	'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 const render = (status: Status): ReactElement => {
 	console.log(status);
 	if (status === Status.FAILURE) return <h1>Error</h1>;
@@ -131,7 +132,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 								onClick={handleMarkerClick}
 								key={id}
 								position={{ lat, lng }}
-								icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+								icon={googleIconURL}
 								title={name}
 								clickable
 							/>
