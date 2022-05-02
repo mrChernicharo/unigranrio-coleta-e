@@ -1,9 +1,3 @@
-/*
-  This file must be named [nextauth].ts not [nextAuth].ts
-  git is changing the case settings leading you to errors 
-  BEWARE!
-*/
-
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';

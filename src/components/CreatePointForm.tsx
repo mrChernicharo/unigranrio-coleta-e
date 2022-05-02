@@ -3,10 +3,9 @@ import { CollectionPoint } from '@prisma/client';
 // import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
-import { imgURLS } from '../lib/constants';
+import { useUserContext } from '../contexts/UserContext';
 import { fetchAddressLatLng, postCreatePoint } from '../lib/functions';
 import { CollectionPointWithAuthor, Geocode } from '../lib/interfaces';
-import { useUserContext } from '../lib/UserContext';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
 import Marker from './Marker';
@@ -15,13 +14,15 @@ interface Props {
 	onSend: (point: CollectionPointWithAuthor) => void;
 }
 
-export default function Form({ onFormClose, onSend }: Props) {
+export default function CreatePointForm({ onFormClose, onSend }: Props) {
 	const { user } = useUserContext();
 	const [address, setAddress] = useState('');
 	const [imgURL, setImgURL] = useState('');
 	const [geocodeAddresses, setGeocodeAddresses] = useState<Geocode[]>([]);
 	const [geoCodeStatus, setGeoCodeStatus] = useState('');
 	const [latLng, setLatLng] = useState<{ lat: number; lng: number }>();
+	const [isBtnDisabled, setIsBtnDisabled] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const addressInputRef = useRef<HTMLInputElement>(null);
 	const nameInputRef = useRef<HTMLInputElement>(null);
@@ -40,6 +41,8 @@ export default function Form({ onFormClose, onSend }: Props) {
 		if (!address || !name || !user) return;
 
 		try {
+			setIsLoading(true);
+
 			const point: Partial<CollectionPoint> = {
 				name,
 				address,
@@ -47,20 +50,37 @@ export default function Form({ onFormClose, onSend }: Props) {
 				phone,
 				lat: latLng?.lat,
 				lng: latLng?.lng,
-				image: imgURL ?? imgURLS.rio,
+				image: imgURL,
 				authorId: user?.id,
 			};
 			const newPoint = await postCreatePoint({ ...point });
 			onSend({ ...newPoint, author: user });
-			alert('Ponto de coleta cadastrado com sucesso!');
 			onFormClose();
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setIsLoading(false);
+			alert('Ponto de coleta cadastrado com sucesso!');
 		}
 	};
 
 	const handleAddressInput = async e => {
 		setAddress(addressInputRef.current?.value!);
+	};
+
+	const onFieldBlur = e => {
+		const disable = Boolean(
+			addressInputRef.current?.value &&
+				nameInputRef.current?.value &&
+				emailInputRef.current?.value &&
+				phoneInputRef.current?.value
+		);
+		console.log('onFieldBlur', disable);
+		setIsBtnDisabled(!disable);
+	};
+
+	const onImgFieldChange = e => {
+		setImgURL(imgURLInputRef.current?.value || '');
 	};
 
 	const handleAddressSearch = async e => {
@@ -78,6 +98,22 @@ export default function Form({ onFormClose, onSend }: Props) {
 	}, []);
 	useEffect(() => console.log(latLng), [latLng]);
 	useEffect(() => console.log(geocodeAddresses), [geocodeAddresses]);
+
+	if (isLoading)
+		return (
+			<form className="h-full bg-white" onSubmit={handleFormSubmit}>
+				<div className="px-4 py-5 sm:px-8 ">
+					<div className="flex justify-center">
+						<img
+							src="loading.svg"
+							alt="loading"
+							height={120}
+							width={120}
+						/>
+					</div>
+				</div>
+			</form>
+		);
 
 	return (
 		<form className="h-full bg-white" onSubmit={handleFormSubmit}>
@@ -147,9 +183,9 @@ export default function Form({ onFormClose, onSend }: Props) {
 								</GoogleMap>
 							</div>
 
-							<div className="bg-white text-sky-500">
+							{/* <div className="bg-white text-sky-500">
 								<pre>click:{JSON.stringify(latLng)}</pre>
-							</div>
+							</div> */}
 
 							<div className="col-span-6">
 								<label
@@ -160,6 +196,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 								</label>
 								<input
 									ref={nameInputRef}
+									onBlur={onFieldBlur}
 									type="text"
 									name="name"
 									id="name"
@@ -176,6 +213,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 								</label>
 								<input
 									ref={emailInputRef}
+									onBlur={onFieldBlur}
 									type="email"
 									name="email"
 									id="email"
@@ -193,6 +231,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 								<input
 									ref={phoneInputRef}
 									// onChange={handlePhoneInput}
+									onBlur={onFieldBlur}
 									type="tel"
 									name="phone"
 									id="phone"
@@ -209,11 +248,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 								</label>
 								<input
 									ref={imgURLInputRef}
-									onChange={() =>
-										setImgURL(
-											imgURLInputRef.current?.value || ''
-										)
-									}
+									onChange={onImgFieldChange}
 									type="text"
 									name="image"
 									id="image"
@@ -238,7 +273,7 @@ export default function Form({ onFormClose, onSend }: Props) {
 						<button
 							type="submit"
 							className={`${styles.btn}`}
-							disabled={!latLng}
+							disabled={isBtnDisabled}
 						>
 							Cadastrar Ponto
 						</button>

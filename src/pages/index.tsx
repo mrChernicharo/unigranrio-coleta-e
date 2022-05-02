@@ -26,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
 const SignIn: NextPage = () => {
 	const emailInputRef = useRef<HTMLInputElement>(null);
+
 	const handleGithubSignIn = () => {
 		signIn('github');
 	};
@@ -37,12 +38,13 @@ const SignIn: NextPage = () => {
 	const handleEmailSignIn = e => {
 		e.preventDefault();
 		console.log('handle signIn');
-		signIn('email').then(res => console.log(res));
+		signIn('email');
 	};
+
 	return (
 		<div className="bg-gray-200 flex flex-col items-center space-between">
 			<div className="w-full">
-				<div className="max-w-lg mx-auto mt-32 mb-64 pt-16 pb-24 px-12 bg-white rounded-lg shadow-md">
+				<div className="max-w-lg mx-auto mt-32 mb-52 pt-16 pb-24 px-12 bg-white rounded-lg shadow-md">
 					<div>
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
@@ -60,7 +62,7 @@ const SignIn: NextPage = () => {
 					<form className="mt-8 space-y-6">
 						<input type="hidden" name="remember" value="true" />
 						<div className="rounded-md shadow-sm -space-y-px">
-							<div>
+							{/* <div>
 								<label
 									htmlFor="email-address"
 									className="sr-only"
@@ -77,7 +79,7 @@ const SignIn: NextPage = () => {
 									className={styles.input}
 									placeholder="Endereço de Email"
 								/>
-							</div>
+							</div> */}
 
 							{/* <div>
 							<label htmlFor="password" className="sr-only">
@@ -116,7 +118,7 @@ const SignIn: NextPage = () => {
 										/>
 									</svg>
 								</span>
-								Sign in
+								Sign in com Email
 							</button>
 						</div>
 					</form>

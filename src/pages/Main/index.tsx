@@ -9,10 +9,11 @@ import Footer from '../../components/Footer';
 import GoogleMap from '../../components/GoogleMap';
 import Marker from '../../components/Marker';
 import Profile from '../../components/Profile';
+import { useCollectionPointsContext } from '../../contexts/PointsContext';
+import { useUserContext } from '../../contexts/UserContext';
 import { getClickLatLng, handleUserInit } from '../../lib/functions';
 import { CollectionPointWithAuthor } from '../../lib/interfaces';
 import { prisma } from '../../lib/prisma';
-import { useUserContext } from '../../lib/UserContext';
 
 interface Props {
 	initialPoints: CollectionPointWithAuthor[];
@@ -28,7 +29,10 @@ const render = (status: Status): ReactElement => {
 export default function App({ initialPoints, googleApiKey }: Props) {
 	const { data: session, status } = useSession();
 	const { user, setUser } = useUserContext();
-	const [collectionPoints, setCollectionPoints] = useState(initialPoints);
+	const { collectionPoints, setCollectionPoints } =
+		useCollectionPointsContext();
+
+	// const [collectionPoints, setCollectionPoints] = useState(initialPoints);
 	// prettier-ignore
 	const [selectedPoint, setSelectedPoint] = useState<CollectionPointWithAuthor | null>(null);
 	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
@@ -59,6 +63,21 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		setIsDetailsModalOpen(true);
 	};
 
+	const handlePointCreated = point => {
+		setCollectionPoints([...collectionPoints, point]);
+	};
+
+	const handlePointDeleted = point => {
+		console.log('handlePointDeleted', point);
+		setCollectionPoints(
+			collectionPoints.filter(item => item.id !== point.id)
+		);
+	};
+
+	const handlePointUpdated = e => {
+		console.log('handlePointUpdated', e);
+	};
+
 	useEffect(() => {
 		if (status && session && session.user && !user) {
 			handleUserInit(session.user).then(u => setUser(u));
@@ -68,6 +87,10 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	useEffect(() => {
 		console.log(user);
 	}, [user]);
+
+	useEffect(() => {
+		setCollectionPoints(initialPoints);
+	}, [initialPoints, setCollectionPoints]);
 
 	useEffect(() => {
 		console.log(isCreatePointModalOpen);
@@ -130,9 +153,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				{isCreatePointModalOpen && (
 					<CreatePointModal
 						handleModalClose={handleCreatePointModalClose}
-						onPointCreated={point =>
-							setCollectionPoints([...collectionPoints, point])
-						}
+						onPointCreated={handlePointCreated}
 					/>
 				)}
 
@@ -140,6 +161,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					<DetailsModal
 						handleModalClose={handleDetailsModalClose}
 						point={selectedPoint}
+						onPointDeleted={handlePointDeleted}
+						onPointUpdated={handlePointUpdated}
 					/>
 				)}
 
@@ -159,7 +182,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 				author: true,
 			},
 		});
-	console.log(response);
 
 	const initialPoints = response.map(item => ({
 		...item,
@@ -169,8 +191,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 			emailVerified: item.author.emailVerified?.toISOString(),
 		},
 	}));
-
-	console.log('getServerSideProps just ran!');
 
 	return {
 		props: { initialPoints, googleApiKey },

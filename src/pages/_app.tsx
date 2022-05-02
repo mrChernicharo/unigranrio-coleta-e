@@ -1,6 +1,7 @@
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import { UserContextProvider } from '../lib/UserContext';
+import { PointsContextProvider } from '../contexts/PointsContext';
+import { UserContextProvider } from '../contexts/UserContext';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
@@ -8,7 +9,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<SessionProvider session={session}>
 			<UserContextProvider>
-				<Component {...pageProps} />
+				<PointsContextProvider>
+					<Component {...pageProps} />
+				</PointsContextProvider>
 			</UserContextProvider>
 		</SessionProvider>
 	);

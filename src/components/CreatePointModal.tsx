@@ -2,7 +2,7 @@ import React from 'react';
 import { FiX } from 'react-icons/fi';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
 import { styles } from '../styles/styles';
-import Form from './Form';
+import CreatePointForm from './CreatePointForm';
 
 interface Props {
 	handleModalClose: () => void;
@@ -13,11 +13,10 @@ export default function CreatePointModal({
 	handleModalClose,
 	onPointCreated,
 }: Props) {
-	console.log('opeen');
 	return (
 		<>
 			<div
-				className={`w-full sm:w-[640px] max-h-[90vh] block sm:rounded-lg py-1 bg-gray-50 ${styles.absoluteCenter} z-50`}
+				className={`animate-fade_in w-full sm:w-[640px] max-h-[90vh] block sm:rounded-lg py-1 bg-gray-50 ${styles.absoluteCenter} z-50`}
 			>
 				<div className="text-right p-3 pb-0">
 					<button onClick={handleModalClose}>
@@ -32,7 +31,11 @@ export default function CreatePointModal({
 				<h1 className="mt-[-2rem] mb-2 text-lg font-bold text-center">
 					Cadastrar novo ponto de coleta
 				</h1>
-				<Form onFormClose={handleModalClose} onSend={onPointCreated} />
+
+				<CreatePointForm
+					onFormClose={handleModalClose}
+					onSend={onPointCreated}
+				/>
 			</div>
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>

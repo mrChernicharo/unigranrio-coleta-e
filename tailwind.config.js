@@ -13,7 +13,22 @@ module.exports = {
 		// 'src/styles/*.ts',
 	],
 	theme: {
-		extend: {},
+		extend: {
+			keyframes: {
+				wiggle: {
+					'0%, 100%': { transform: 'rotate(-3deg)' },
+					'50%': { transform: 'rotate(3deg)' },
+				},
+				fade_in: {
+					'0%': { opacity: 0.4 },
+					'100%': { opacity: 1 },
+				},
+			},
+			animation: {
+				wiggle: 'wiggle 1s ease-in-out infinite',
+				fade_in: 'fade_in 0.2s ease-in',
+			},
+		},
 		screens: {
 			xs: '460px',
 			...require('tailwindcss/defaultTheme').screens,

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { FaPowerOff } from 'react-icons/fa';
@@ -28,5 +29,9 @@ export default function Profile() {
 			</div>
 		);
 	}
-	return <div>Loading Profile...</div>;
+	return (
+		<div className="fixed top-0 z-20 w-full px-6 py-2 flex border items-center justify-between bg-gray-50">
+			<img src="loading.svg" alt="loading" height={42} width={42} />
+		</div>
+	);
 }
