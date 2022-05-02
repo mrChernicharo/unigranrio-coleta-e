@@ -1,18 +1,16 @@
 import { CollectionPoint, User } from '@prisma/client';
-import { devBaseURL, imgURLS, prodBaseURL } from './constants';
-
-console.log({ prodBaseURL, devBaseURL });
+import { imgURLS } from './constants';
 
 export const fetchAddressLatLng = async (address: string) => {
 	console.log('fetchAddressLatLng', address);
-	return apiPost(`${prodBaseURL}/api/geolocation/getLatLngByAddress`, {
+	return apiPost(`${getMainUrl()}/api/geolocation/getLatLngByAddress`, {
 		address,
 	});
 };
 
 export const fetchAuthor = async (authorId: number) => {
 	const response = await fetch(
-		`${prodBaseURL}/api/user/findById?authorId=${authorId}`
+		`${getMainUrl()}/api/user/findById?authorId=${authorId}`
 	);
 
 	const data = await response.json();
@@ -32,7 +30,7 @@ export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
 		authorId,
 	};
 
-	const response = await fetch(`${prodBaseURL}/api/point/create`, {
+	const response = await fetch(`${getMainUrl()}/api/point/create`, {
 		method: 'POST',
 		body: JSON.stringify(point),
 		headers: {
@@ -45,7 +43,7 @@ export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
 };
 
 export const postDeletePoint = async (pointId: string) => {
-	const response = await fetch(`${prodBaseURL}/api/point/delete`, {
+	const response = await fetch(`${getMainUrl()}/api/point/delete`, {
 		method: 'POST',
 		body: JSON.stringify({ pointId }),
 		headers: {
@@ -57,21 +55,12 @@ export const postDeletePoint = async (pointId: string) => {
 	return newPoint;
 };
 
-export const getClickLatLng = (e: google.maps.MapMouseEvent) => {
-	let latLng = { lat: 0, lng: 0 };
-	if (e.latLng) {
-		const [lat, lng] = [e.latLng.lat(), e.latLng.lng()];
-		latLng = { lat, lng };
-	}
-
-	return latLng;
-};
-
-export const handleUserInit = async userData => {
+export const handleUserInit = async ({ userData }) => {
+	const url = getMainUrl();
 	const { name, email, image } = userData;
-	console.log({ userData });
+
 	const userQueryResponse = await fetch(
-		`${prodBaseURL}/api/user/findByEmail?email=${email}`
+		`${url}/api/user/findByEmail?email=${email}`
 	);
 
 	const foundUser = await userQueryResponse.json();
@@ -89,7 +78,7 @@ export const handleUserInit = async userData => {
 		image: image ?? imgURLS.defaultAvatarImg,
 	};
 
-	const user = await apiPost(`${prodBaseURL}/api/user/create`, {
+	const user = await apiPost(`${getMainUrl()}/api/user/create`, {
 		...newUser,
 	});
 
@@ -107,4 +96,18 @@ export const apiPost = async (url: string, body: any) => {
 	const data = await response.json();
 
 	return data;
+};
+
+export const getMainUrl = () => {
+	return location.href.replace('/Main', '');
+};
+
+export const getClickLatLng = (e: google.maps.MapMouseEvent) => {
+	let latLng = { lat: 0, lng: 0 };
+	if (e.latLng) {
+		const [lat, lng] = [e.latLng.lat(), e.latLng.lng()];
+		latLng = { lat, lng };
+	}
+
+	return latLng;
 };

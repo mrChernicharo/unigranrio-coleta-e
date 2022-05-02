@@ -23,6 +23,6 @@ export const imgURLS = {
 		'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F28%2F2021%2F07%2F30%2Frio-de-janeiro-RIOTG0721.jpg&w=600&h=400&c=sc&poi=face&q=60',
 };
 
-export const prodBaseURL =
-	'https://unigranrio-coleta-e-mrchernicharo.vercel.app';
-export const devBaseURL = 'http://localhost:3000';
+// export const prodBaseURL =
+// 	'https://unigranrio-coleta-e-mrchernicharo.vercel.app';
+// export const devBaseURL = 'http://localhost:3000';

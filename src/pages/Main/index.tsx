@@ -1,6 +1,7 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { GetServerSideProps } from 'next';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
@@ -21,6 +22,7 @@ interface Props {
 }
 const googleIconURL =
 	'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
 const render = (status: Status): ReactElement => {
 	console.log(status);
 	if (status === Status.FAILURE) return <h1>Error</h1>;
@@ -28,7 +30,13 @@ const render = (status: Status): ReactElement => {
 };
 
 export default function App({ initialPoints, googleApiKey }: Props) {
-	const { data: session, status } = useSession();
+	const router = useRouter();
+	const { data: session, status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/');
+		},
+	});
 	const { user, setUser } = useUserContext();
 	const { collectionPoints, setCollectionPoints } =
 		useCollectionPointsContext();
@@ -81,7 +89,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 
 	useEffect(() => {
 		if (status && session && session.user && !user) {
-			handleUserInit(session.user).then(u => setUser(u));
+			handleUserInit({ userData: session.user }).then(u => setUser(u));
 		}
 	}, [status, session, user, setUser]);
 
@@ -174,7 +182,18 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	);
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
+	const session = await getSession(ctx);
+	if (!session) {
+		return {
+			redirect: {
+				permanent: false,
+				destination: '/',
+			},
+			props: {},
+		};
+	}
+
 	const googleApiKey = process.env.GOOGLE_API_KEY;
 
 	// include: => point + author
