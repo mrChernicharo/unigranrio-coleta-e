@@ -38,6 +38,7 @@ export default function DetailsModal({
 		typesOfWaste,
 	} = point;
 	const [isLoading, setIsLoading] = useState(false);
+	const [mode, setMode] = useState<'read' | 'write'>('read');
 
 	const isAuthor = (user: User) => {
 		console.log({ user, authorId });
@@ -58,8 +59,8 @@ export default function DetailsModal({
 			handleModalClose();
 		}
 	};
-	const handleEdit = () => {
-		console.log('edit');
+	const toggleEdit = () => {
+		setMode(prevMode => (prevMode === 'read' ? 'write' : 'read'));
 	};
 
 	return (
@@ -74,7 +75,9 @@ export default function DetailsModal({
 
 					<button
 						className="absolute right-2"
-						onClick={handleModalClose}
+						onClick={
+							mode === 'read' ? handleModalClose : toggleEdit
+						}
 					>
 						<FiX
 							size={24}
@@ -95,10 +98,10 @@ export default function DetailsModal({
 				</div>
 
 				<div className="p-4">
-					{user && isAuthor(user) && (
+					{user && isAuthor(user) && mode === 'read' && (
 						<div className="flex justify-end -mt-10">
 							<div className="mr-2 flex-shrink-0 flex items-center justify-center rounded-full bg-green-200 bg-opacity-80 h-12 w-12">
-								<button onClick={handleEdit}>
+								<button onClick={toggleEdit}>
 									<FaEdit
 										size={26}
 										className="text-green-600 translate-x-[2px] translate-y-[-1px]"
@@ -132,46 +135,55 @@ export default function DetailsModal({
 					)}
 					{!isLoading && (
 						<>
-							<div className="flex flex-col mb-4">
-								<div className="w-full flex justify-left">
-									<div className="text-left mr-4">
-										<label className="text-gray-400 text-xs">
-											Endereço
-										</label>
-										<p>{address}</p>
+							{mode === 'read' && (
+								<div className="flex flex-col mb-4">
+									<div className="w-full flex justify-left">
+										<div className="text-left mr-4">
+											<label className="text-gray-400 text-xs">
+												Endereço
+											</label>
+											<p>{address}</p>
+										</div>
 									</div>
-								</div>
-								<div className="w-full flex ">
-									<div className="text-left mr-6">
-										<label className="text-gray-400 text-xs">
-											Email
-										</label>
-										<p>{email}</p>
-									</div>
-									<div className="text-left">
-										<label className="text-gray-400 text-xs">
-											Telefone
-										</label>
-										<p>{phone}</p>
-									</div>
+									<div className="w-full flex ">
+										<div className="text-left mr-6">
+											<label className="text-gray-400 text-xs">
+												Email
+											</label>
+											<p>{email}</p>
+										</div>
+										<div className="text-left">
+											<label className="text-gray-400 text-xs">
+												Telefone
+											</label>
+											<p>{phone}</p>
+										</div>
 
-									<div className="w-full mr-0 pt-1 flex justify-end">
-										<ul className="flex">
-											{Array.from(typesOfWaste)
-												.filter(
-													letter => letter !== '_'
-												)
-												.map((type, i) => (
-													<li key={i}>
-														<WasteType
-															type={type}
-														/>
-													</li>
-												))}
-										</ul>
+										<div className="w-full mr-0 pt-1 flex justify-end">
+											<ul className="flex">
+												{Array.from(typesOfWaste)
+													.filter(
+														letter => letter !== '_'
+													)
+													.map((type, i) => (
+														<li key={i}>
+															<WasteType
+																type={type}
+															/>
+														</li>
+													))}
+											</ul>
+										</div>
 									</div>
 								</div>
-							</div>
+							)}
+							{mode === 'write' && (
+								<div className="flex flex-col mb-4">
+									<div className="w-full flex justify-left">
+										Edit Form
+									</div>
+								</div>
+							)}
 
 							<div className="p-2 flex items-center">
 								<div className="">

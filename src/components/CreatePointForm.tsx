@@ -139,7 +139,7 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 		<form className="h-full bg-white" onSubmit={handleFormSubmit}>
 			<div className="px-4 py-5 sm:px-8 ">
 				<div className="grid grid-cols-6 gap-6">
-					<div className="col-span-5">
+					<div className="col-span-6">
 						<label htmlFor="address" className={styles.fieldLabel}>
 							Endereço
 						</label>
@@ -267,6 +267,7 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 									<div className="flex items-center h-5">
 										<input
 											ref={smallCheckboxRef}
+											onBlur={onFieldBlur}
 											id="small"
 											name="small"
 											type="checkbox"
@@ -289,6 +290,7 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 									<div className="flex items-center h-5">
 										<input
 											ref={largeCheckboxRef}
+											onBlur={onFieldBlur}
 											id="large"
 											name="large"
 											type="checkbox"
@@ -311,6 +313,7 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 									<div className="flex items-center h-5">
 										<input
 											ref={infoCheckboxRef}
+											onBlur={onFieldBlur}
 											id="info"
 											name="info"
 											type="checkbox"
@@ -333,6 +336,7 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 									<div className="flex items-center h-5">
 										<input
 											ref={batteriesCheckboxRef}
+											onBlur={onFieldBlur}
 											id="batteries"
 											name="batteries"
 											type="checkbox"

@@ -70,7 +70,11 @@ export default function GoogleMap({
 	}, [map, onClick, onIdle, onZoom]);
 
 	return (
-		<div ref={mapRef} style={{ width: '100%', height }}>
+		<div
+			ref={mapRef}
+			style={{ width: '100%', height }}
+			className="shadow-lg shadow-indigo-200"
+		>
 			{Children.map(children, child => {
 				if (isValidElement(child)) {
 					return cloneElement(child, { map });

@@ -103,7 +103,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				<Profile />
 
 				<div className="ml-6">
-					<h1 className="mt-8 mb-2 text-4xl font-bold">Coleta App</h1>
+					<h1 className="mt-4 mb-2 text-4xl font-bold">Coleta App</h1>
 					<h2 className="mb-4 text-md">
 						Encontre pontos de coleta de lixo eletrônico pelo mundo
 					</h2>
@@ -140,7 +140,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					})}
 				</GoogleMap>
 
-				<div className="bg-white pt-6 pr-6 pb-16 flex justify-end">
+				<div className="bg-white pt-10 pr-6 pb-16 flex justify-end">
 					<button
 						className="flex items-center rounded-lg p-4 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						onClick={handleCreatePointModalOpen}
