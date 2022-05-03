@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 // import Image from 'next/image';
+import { CollectionPoint } from '@prisma/client';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useUserContext } from '../contexts/UserContext';
-import { fetchAddressLatLng } from '../lib/functions';
+import { fetchAddressLatLng, postCreatePoint } from '../lib/functions';
 import { CollectionPointWithAuthor, Geocode } from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
@@ -52,29 +53,30 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 				batteriesCheckboxRef.current?.checked,
 			];
 
-			const collectedTypes = slib.map((item, i) =>
-				item ? 'SLIB'[i] : '_'
-			);
-			console.log(collectedTypes);
+			const typesOfWaste = slib
+				.map((item, i) => (item ? 'SLIB'[i] : '_'))
+				.join('');
 
-			// const point: Partial<CollectionPoint> = {
-			// 	name,
-			// 	address,
-			// 	email,
-			// 	phone,
-			// 	lat: latLng?.lat,
-			// 	lng: latLng?.lng,
-			// 	image: imgURL,
-			// 	authorId: user?.id,
-			// };
-			// const newPoint = await postCreatePoint({ ...point });
-			// onSend({ ...newPoint, author: user });
-			// onFormClose();
+			const point: Partial<CollectionPoint> = {
+				name,
+				address,
+				email,
+				phone,
+				typesOfWaste,
+				lat: latLng?.lat,
+				lng: latLng?.lng,
+				image: imgURL,
+				authorId: user?.id,
+			};
+			console.log(point);
+			const newPoint = await postCreatePoint({ ...point });
+			onSend({ ...newPoint, author: user });
+			onFormClose();
 		} catch (err) {
 			console.log(err);
 		} finally {
-			// setIsLoading(false);
-			// alert('Ponto de coleta cadastrado com sucesso!');
+			setIsLoading(false);
+			alert('Ponto de coleta cadastrado com sucesso!');
 		}
 	};
 
@@ -83,14 +85,18 @@ export default function CreatePointForm({ onFormClose, onSend }: Props) {
 	};
 
 	const onFieldBlur = e => {
-		const disable = Boolean(
+		const isValid = Boolean(
 			addressInputRef.current?.value &&
 				nameInputRef.current?.value &&
 				emailInputRef.current?.value &&
-				phoneInputRef.current?.value
+				phoneInputRef.current?.value &&
+				(smallCheckboxRef.current?.checked ||
+					largeCheckboxRef.current?.checked ||
+					infoCheckboxRef.current?.checked ||
+					batteriesCheckboxRef.current?.checked)
 		);
-		console.log('onFieldBlur', disable);
-		setIsBtnDisabled(!disable);
+		console.log('onFieldBlur', isValid);
+		setIsBtnDisabled(!isValid);
 	};
 
 	const onImgFieldChange = e => {

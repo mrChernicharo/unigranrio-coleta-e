@@ -69,6 +69,7 @@ model CollectionPoint {
   phone String @db.VarChar(15)
   email String @db.VarChar(80)
   image String @db.LongText()
+  typesOfWaste String @db.Char(4) @default("S_I_")
   authorId String
   author User @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())

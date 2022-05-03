@@ -8,6 +8,7 @@ import { imgURLS } from '../lib/constants';
 import { postDeletePoint } from '../lib/functions';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
 import { styles } from '../styles/styles';
+import WasteType from './WasteType';
 
 interface Props {
 	point: CollectionPointWithAuthor;
@@ -25,7 +26,17 @@ export default function DetailsModal({
 	onPointUpdated,
 }: Props) {
 	const { user } = useUserContext();
-	const { id, name, address, image, phone, email, author, authorId } = point;
+	const {
+		id,
+		name,
+		address,
+		image,
+		phone,
+		email,
+		author,
+		authorId,
+		typesOfWaste,
+	} = point;
 	const [isLoading, setIsLoading] = useState(false);
 
 	const isAuthor = (user: User) => {
@@ -142,6 +153,22 @@ export default function DetailsModal({
 											Telefone
 										</label>
 										<p>{phone}</p>
+									</div>
+
+									<div className="w-full mr-0 pt-1 flex justify-end">
+										<ul className="flex">
+											{Array.from(typesOfWaste)
+												.filter(
+													letter => letter !== '_'
+												)
+												.map((type, i) => (
+													<li key={i}>
+														<WasteType
+															type={type}
+														/>
+													</li>
+												))}
+										</ul>
 									</div>
 								</div>
 							</div>

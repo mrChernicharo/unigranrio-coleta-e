@@ -94,16 +94,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	}, [status, session, user, setUser]);
 
 	useEffect(() => {
-		console.log(user);
-	}, [user]);
-
-	useEffect(() => {
 		setCollectionPoints(initialPoints);
 	}, [initialPoints, setCollectionPoints]);
-
-	useEffect(() => {
-		console.log(isCreatePointModalOpen);
-	}, [isCreatePointModalOpen]);
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>

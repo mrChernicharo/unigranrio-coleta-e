@@ -18,16 +18,28 @@ export const fetchAuthor = async (authorId: number) => {
 };
 
 export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
-	const { name, address, email, phone, image, lat, lng, authorId } = data;
+	const {
+		name,
+		address,
+		email,
+		phone,
+		image,
+		lat,
+		lng,
+		authorId,
+		typesOfWaste,
+	} = data;
+
 	const point = {
 		name,
 		address,
+		email,
 		phone,
+		image,
 		lat,
 		lng,
-		image,
-		email,
 		authorId,
+		typesOfWaste,
 	};
 
 	const response = await fetch(`${getMainUrl()}/api/point/create`, {

@@ -5,7 +5,7 @@ export default async function CreatePoint(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	console.log();
+	console.log(req.body);
 
 	const createdPoint = await prisma.collectionPoint.create({
 		data: req.body,

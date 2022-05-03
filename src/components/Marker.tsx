@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
 
 interface Props extends google.maps.MarkerOptions {
@@ -11,6 +11,8 @@ const Marker = ({ onClick, point, ...options }: Props) => {
 
 	useEffect(() => {
 		if (!marker) {
+			console.log('set marker');
+
 			setMarker(new google.maps.Marker());
 		}
 
@@ -27,8 +29,6 @@ const Marker = ({ onClick, point, ...options }: Props) => {
 
 	useEffect(() => {
 		if (marker) {
-			console.log('heeey marker');
-
 			google.maps.event.clearInstanceListeners(marker);
 
 			if (onClick && point) {
@@ -40,4 +40,4 @@ const Marker = ({ onClick, point, ...options }: Props) => {
 	return null;
 };
 
-export default Marker;
+export default memo(Marker);
