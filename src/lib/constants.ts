@@ -1,4 +1,4 @@
-import { Location } from './interfaces';
+import { Location, PointFormValues } from './interfaces';
 
 const initialPosition: Location = {
 	lat: -22.91888,
@@ -7,6 +7,22 @@ const initialPosition: Location = {
 export const initialState = {
 	initialPosition,
 	initialZoom: 10,
+};
+
+export const formDefaultValues: Partial<PointFormValues> = {
+	address: '',
+	email: '',
+	image: '',
+	name: '',
+	phone: '',
+	lat: 0,
+	lng: 0,
+	typesOfWaste: {
+		small: false,
+		large: false,
+		info: false,
+		battery: false,
+	},
 };
 
 export const placeholderCity = {

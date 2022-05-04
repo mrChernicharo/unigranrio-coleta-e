@@ -8,6 +8,7 @@ import { imgURLS } from '../lib/constants';
 import { postDeletePoint } from '../lib/functions';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
 import { styles } from '../styles/styles';
+import FormWizard from './FormWizard';
 import WasteType from './WasteType';
 
 interface Props {
@@ -61,6 +62,10 @@ export default function DetailsModal({
 	};
 	const toggleEdit = () => {
 		setMode(prevMode => (prevMode === 'read' ? 'write' : 'read'));
+	};
+
+	const handleFormSubmit = e => {
+		console.log(e);
 	};
 
 	return (
@@ -181,6 +186,18 @@ export default function DetailsModal({
 								<div className="flex flex-col mb-4">
 									<div className="w-full flex justify-left">
 										Edit Form
+										<FormWizard
+											initialValues={{
+												name,
+												address,
+												image,
+												phone,
+												email,
+												typesOfWaste,
+											}}
+											onSubmit={handleFormSubmit}
+											mode="create"
+										/>
 									</div>
 								</div>
 							)}

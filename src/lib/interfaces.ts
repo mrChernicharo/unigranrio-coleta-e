@@ -37,3 +37,19 @@ export interface Geocode {
 export interface CollectionPointWithAuthor extends CollectionPoint {
 	author: User;
 }
+
+export interface PointFormValues {
+	name: string;
+	lat: number;
+	lng: number;
+	address: string;
+	phone: string;
+	email: string;
+	image: string;
+	typesOfWaste: {
+		small: boolean;
+		large: boolean;
+		info: boolean;
+		battery: boolean;
+	};
+}

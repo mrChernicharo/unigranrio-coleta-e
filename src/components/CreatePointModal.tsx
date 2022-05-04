@@ -1,8 +1,9 @@
 import React from 'react';
 import { FiX } from 'react-icons/fi';
+import { formDefaultValues } from '../lib/constants';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
 import { styles } from '../styles/styles';
-import CreatePointForm from './CreatePointForm';
+import FormWizard from './FormWizard';
 
 interface Props {
 	handleModalClose: () => void;
@@ -13,6 +14,10 @@ export default function CreatePointModal({
 	handleModalClose,
 	onPointCreated,
 }: Props) {
+	const handleFormSubmit = e => {
+		console.log('onSubmit', e);
+	};
+
 	return (
 		<>
 			<div
@@ -32,10 +37,16 @@ export default function CreatePointModal({
 					Cadastrar novo ponto de coleta
 				</h1>
 
-				<CreatePointForm
+				<FormWizard
+					initialValues={formDefaultValues}
+					onSubmit={handleFormSubmit}
+					mode="create"
+				/>
+
+				{/* <CreatePointForm
 					onFormClose={handleModalClose}
 					onSend={onPointCreated}
-				/>
+				/> */}
 			</div>
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>
