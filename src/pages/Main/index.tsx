@@ -24,7 +24,6 @@ const googleIconURL =
 	'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
 const render = (status: Status): ReactElement => {
-	// console.log(status);
 	if (status === Status.FAILURE) return <h1>Error</h1>;
 	return <h1>{status}</h1>;
 };
