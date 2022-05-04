@@ -1,16 +1,26 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 interface Props {
 	children: ReactNode;
 	googleApiKey: string;
 }
 
-const render = (status: Status): ReactElement => {
+const Render = (status: Status): ReactElement => {
 	console.log(status);
-	if (status === Status.FAILURE) return <h1>Error</h1>;
-	return <h1>{status}</h1>;
+	const router = useRouter();
+	if (status === Status.FAILURE) {
+		router.push('/Error');
+	}
+	return (
+		<div className="h-screen flex justify-center items-center">
+			<h1>{status}</h1>
+			<LoadingSpinner />
+		</div>
+	);
 };
 
 export default function GoogleMapsWrapper({ googleApiKey, children }: Props) {
@@ -23,7 +33,7 @@ export default function GoogleMapsWrapper({ googleApiKey, children }: Props) {
 	if (!apiKey) return <h1>Loading Env...</h1>;
 
 	return (
-		<Wrapper apiKey={apiKey} render={render}>
+		<Wrapper apiKey={apiKey} render={Render}>
 			{children}
 		</Wrapper>
 	);

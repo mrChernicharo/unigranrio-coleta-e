@@ -5,7 +5,8 @@ export default async function updatePoint(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	console.log(req.body);
+	// console.log(req.body);
+
 	const { id, ...pointData } = req.body;
 	const updatedPoint = await prisma.collectionPoint.update({
 		data: { ...pointData },

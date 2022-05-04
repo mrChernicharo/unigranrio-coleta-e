@@ -31,7 +31,7 @@ export default function Profile() {
 		);
 	}
 	return (
-		<div className="fixed top-0 z-20 w-full px-6 py-2 border justify-between bg-gray-50">
+		<div className="fixed top-0 z-20 w-full px-6 py-2 border justify-left bg-gray-50">
 			<LoadingSpinner />
 		</div>
 	);

@@ -3,7 +3,6 @@ import { FaBatteryThreeQuarters, FaLaptop } from 'react-icons/fa';
 import { ImMobile } from 'react-icons/im';
 
 export default function WasteType({ type }) {
-	console.log(type);
 	const names = { S: 'Pequenos', L: 'Grandes', I: 'Info', B: 'Baterias' };
 	const icons = {
 		S: <ImMobile size={24} />,

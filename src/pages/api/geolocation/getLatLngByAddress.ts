@@ -18,7 +18,7 @@ export default async function getLatLngByAddress(
 
 		const data = await result.json();
 
-		console.log({ data });
+		// console.log({ data });
 
 		res.status(201).json(data);
 	} catch (err) {}

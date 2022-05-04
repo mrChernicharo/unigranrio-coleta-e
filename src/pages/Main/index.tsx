@@ -24,7 +24,7 @@ const googleIconURL =
 	'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
 const render = (status: Status): ReactElement => {
-	console.log(status);
+	// console.log(status);
 	if (status === Status.FAILURE) return <h1>Error</h1>;
 	return <h1>{status}</h1>;
 };
@@ -48,7 +48,6 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
 	const handleCreatePointModalOpen = e => {
-		console.log(e);
 		setIsCreatePointModalOpen(true);
 	};
 	const handleCreatePointModalClose = () => {
@@ -58,7 +57,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		setIsDetailsModalOpen(false);
 	};
 	const handleMapIdle = map => {
-		console.log('map Idle ', map);
+		// console.log('map Idle ', map);
 	};
 	const handleMapZoom = e => {
 		console.log('map Zoom ', e);

@@ -6,7 +6,7 @@ export default async function findById(
 	res: NextApiResponse
 ) {
 	const authorId = Number(req.query.authorId);
-	console.log(authorId);
+	// console.log(authorId);
 
 	const author = await prisma.user.findFirst({
 		where: {
