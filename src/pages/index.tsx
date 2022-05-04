@@ -3,6 +3,7 @@ import { getSession, signIn } from 'next-auth/react';
 import { useRef } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import Footer from '../components/Footer';
+import { imgURLS } from '../lib/constants';
 import { styles } from '../styles/styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
@@ -37,7 +38,12 @@ const SignIn: NextPage = props => {
 
 	const handleEmailSignIn = e => {
 		e.preventDefault();
-		signIn('email', { email: emailInputRef.current?.value });
+		signIn('email', {
+			email: emailInputRef.current?.value,
+			name: emailInputRef.current?.value.split('@')[0],
+			image: imgURLS.defaultAvatarImg,
+			emailVerified: new Date().toISOString(),
+		});
 	};
 
 	return (
