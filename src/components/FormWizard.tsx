@@ -7,6 +7,7 @@ import {
 	FaChevronCircleRight,
 	FaExclamationTriangle,
 } from 'react-icons/fa';
+import { FiX } from 'react-icons/fi';
 import { fetchAddressLatLng } from '../lib/functions';
 import { Geocode, PointFormValues } from '../lib/interfaces';
 import { styles } from '../styles/styles';
@@ -18,9 +19,15 @@ interface Props {
 	initialValues: PointFormValues;
 	onSubmit: (values: PointFormValues, formikHelpers: FormikHelpers<PointFormValues>) => void | Promise<any>;
 	mode: 'create' | 'edit';
+	onCancel?: () => void
 }
 
-export default function Form({ initialValues, onSubmit, mode }: Props) {
+export default function Form({
+	initialValues,
+	onSubmit,
+	mode,
+	onCancel,
+}: Props) {
 	// prettier-ignore
 	const { handleSubmit, handleChange, setFieldValue, values } = 
         useFormik<PointFormValues>({ initialValues, onSubmit });
@@ -85,7 +92,6 @@ export default function Form({ initialValues, onSubmit, mode }: Props) {
 	return (
 		<div>
 			<div className="px-4 py-5 sm:px-8 ">
-				formStep: {formStep}
 				<form onSubmit={handleSubmit} onKeyUp={handleFormKeyUp}>
 					<div className="grid grid-cols-6 gap-6">
 						{formStep === 1 && (
@@ -383,6 +389,20 @@ export default function Form({ initialValues, onSubmit, mode }: Props) {
 					</div>
 					<div className="mt-8 grid grid-cols-6 gap-6">
 						<div className="col-span-6 text-right">
+							{mode === 'edit' && (
+								<button
+									type="button"
+									onClick={onCancel}
+									className={
+										'ml-2 flex items-center ' + styles.btn
+									}
+								>
+									<span className="mr-2">Cancelar</span>
+									<span>
+										<FiX />
+									</span>
+								</button>
+							)}
 							{formStep > 1 && (
 								<button
 									onClick={() => setFormStep(s => s - 1)}
@@ -397,7 +417,6 @@ export default function Form({ initialValues, onSubmit, mode }: Props) {
 									</span>
 								</button>
 							)}
-
 							{formStep < 4 && (
 								<button
 									disabled={!isValidStep(formStep)}

@@ -127,9 +127,7 @@ export default function DetailsModal({
 
 					<button
 						className="absolute right-2"
-						onClick={
-							mode === 'read' ? handleModalClose : toggleEdit
-						}
+						onClick={handleModalClose}
 					>
 						<FiX
 							size={24}
@@ -139,15 +137,17 @@ export default function DetailsModal({
 					</button>
 				</div>
 
-				<div className="">
-					<img
-						src={image || imgURLS.defaultPointImg}
-						alt="imagem do ponto de coleta"
-						height={200}
-						width={580}
-						className=""
-					/>
-				</div>
+				{mode === 'read' && (
+					<div className="rounded-lg">
+						<img
+							src={image || imgURLS.defaultPointImg}
+							alt="imagem do ponto de coleta"
+							height={200}
+							width={580}
+							className="mx-auto"
+						/>
+					</div>
+				)}
 
 				<div className="p-4">
 					{user && isAuthor(user) && mode === 'read' && (
@@ -231,7 +231,7 @@ export default function DetailsModal({
 							)}
 							{mode === 'write' && (
 								<div className="flex flex-col mb-4">
-									<div className="w-full flex justify-left">
+									<div className="w-full flex justify-center">
 										<FormWizard
 											initialValues={{
 												name,
@@ -248,29 +248,32 @@ export default function DetailsModal({
 											}}
 											onSubmit={handleFormSubmit}
 											mode="edit"
+											onCancel={toggleEdit}
 										/>
 									</div>
 								</div>
 							)}
 
-							<div className="p-2 flex items-center">
-								<div className="">
-									<img
-										className="h-10 rounded-full"
-										src={
-											author?.image ||
-											imgURLS.defaultAvatarImg
-										}
-										alt=""
-									/>
+							{mode === 'read' && (
+								<div className="p-2 flex items-center">
+									<div className="">
+										<img
+											className="h-10 rounded-full"
+											src={
+												author?.image ||
+												imgURLS.defaultAvatarImg
+											}
+											alt=""
+										/>
+									</div>
+									<div className="pl-2 text-left">
+										<p className="text-gray-400 text-xs">
+											Postado por
+										</p>
+										<p>{author?.name}</p>
+									</div>
 								</div>
-								<div className="pl-2 text-left">
-									<p className="text-gray-400 text-xs">
-										Postado por
-									</p>
-									<p>{author?.name}</p>
-								</div>
-							</div>
+							)}
 						</>
 					)}
 				</div>
