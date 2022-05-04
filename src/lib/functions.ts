@@ -1,5 +1,6 @@
 import { CollectionPoint, User } from '@prisma/client';
 import { imgURLS } from './constants';
+import { TypesOfWaste, TypesOfWasteStr } from './interfaces';
 
 export const fetchAddressLatLng = async (address: string) => {
 	console.log('fetchAddressLatLng', address);
@@ -17,7 +18,9 @@ export const fetchAuthor = async (authorId: number) => {
 	return data;
 };
 
-export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
+export const postCreatePoint = async (
+	data: Omit<CollectionPoint, 'id' | 'createdAt'>
+) => {
 	const {
 		name,
 		address,
@@ -45,6 +48,19 @@ export const postCreatePoint = async (data: Partial<CollectionPoint>) => {
 	const response = await fetch(`${getMainUrl()}/api/point/create`, {
 		method: 'POST',
 		body: JSON.stringify(point),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const newPoint: CollectionPoint = await response.json();
+
+	return newPoint;
+};
+
+export const postUpdatePoint = async (userData: CollectionPoint) => {
+	const response = await fetch(`${getMainUrl()}/api/point/update`, {
+		method: 'PUT',
+		body: JSON.stringify(userData),
 		headers: {
 			'Content-Type': 'application/json',
 		},
@@ -112,6 +128,26 @@ export const apiPost = async (url: string, body: any) => {
 
 export const getMainUrl = () => {
 	return location.href.replace('/Main', '');
+};
+
+export const parseTypesOfWaste = (wasteTypes: (0 | 1)[]) => {
+	const slibStr = 'SLIB';
+	return wasteTypes
+		.map((item, i) => (item === 1 ? slibStr[i] : '_'))
+		.join('');
+};
+
+export const convertTypesOfWaste = (
+	wasteTypesStr: TypesOfWasteStr
+): TypesOfWaste => {
+	const types = {
+		small: wasteTypesStr[0] !== '_',
+		large: wasteTypesStr[1] !== '_',
+		info: wasteTypesStr[2] !== '_',
+		battery: wasteTypesStr[3] !== '_',
+	};
+
+	return types as TypesOfWaste;
 };
 
 export const getClickLatLng = (e: google.maps.MapMouseEvent) => {

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useFormik } from 'formik';
+import { FormikHelpers, useFormik } from 'formik';
 import { useRef, useState } from 'react';
 import {
 	FaCheck,
@@ -12,7 +12,15 @@ import { Geocode, PointFormValues } from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import GoogleMap from './GoogleMap';
 import Marker from './Marker';
-export default function Form({ initialValues, onSubmit, mode }) {
+
+// prettier-ignore
+interface Props {
+	initialValues: PointFormValues;
+	onSubmit: (values: PointFormValues, formikHelpers: FormikHelpers<PointFormValues>) => void | Promise<any>;
+	mode: 'create' | 'edit';
+}
+
+export default function Form({ initialValues, onSubmit, mode }: Props) {
 	// prettier-ignore
 	const { handleSubmit, handleChange, setFieldValue, values } = 
         useFormik<PointFormValues>({ initialValues, onSubmit });
@@ -52,7 +60,10 @@ export default function Form({ initialValues, onSubmit, mode }) {
 	const isValidStep = step => {
 		const stepChecks = {
 			step1() {
-				return values.address && values.lat && values.lng && showMap;
+				return (
+					(values.address && values.lat && values.lng && showMap) ||
+					mode === 'edit'
+				);
 			},
 			step2() {
 				return values.name && values.email && values.phone;
@@ -141,7 +152,7 @@ export default function Form({ initialValues, onSubmit, mode }) {
 									</div>
 								)}
 
-								{showMap && (
+								{(showMap || mode === 'edit') && (
 									<div className="col-span-6">
 										<GoogleMap
 											center={{
@@ -230,7 +241,7 @@ export default function Form({ initialValues, onSubmit, mode }) {
 													id="typesOfWaste.small"
 													type="checkbox"
 													checked={
-														values.typesOfWaste
+														values.typesOfWaste!
 															.small
 													}
 													className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
@@ -340,9 +351,8 @@ export default function Form({ initialValues, onSubmit, mode }) {
 									>
 										Imagem URL
 									</label>
-									<input
+									<textarea
 										onChange={handleChange}
-										type="text"
 										name="image"
 										id="image"
 										className={styles.input2}
@@ -376,6 +386,7 @@ export default function Form({ initialValues, onSubmit, mode }) {
 							{formStep > 1 && (
 								<button
 									onClick={() => setFormStep(s => s - 1)}
+									type="button"
 									className={
 										'ml-2 flex items-center ' + styles.btn
 									}
@@ -390,6 +401,7 @@ export default function Form({ initialValues, onSubmit, mode }) {
 							{formStep < 4 && (
 								<button
 									disabled={!isValidStep(formStep)}
+									type="button"
 									onClick={() => setFormStep(s => s + 1)}
 									className={
 										'ml-2 flex items-center ' + styles.btn
@@ -408,7 +420,11 @@ export default function Form({ initialValues, onSubmit, mode }) {
 										'ml-2 flex items-center ' + styles.btn
 									}
 								>
-									<span className="mr-2">Enviar</span>
+									<span className="mr-2">
+										{mode === 'create'
+											? 'Enviar'
+											: 'Salvar alterações'}
+									</span>
 									<span>
 										<FaCheck />
 									</span>

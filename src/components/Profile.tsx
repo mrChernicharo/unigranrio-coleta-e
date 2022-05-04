@@ -2,6 +2,7 @@
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { FaPowerOff } from 'react-icons/fa';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function Profile() {
 	const { data } = useSession();
@@ -30,8 +31,8 @@ export default function Profile() {
 		);
 	}
 	return (
-		<div className="fixed top-0 z-20 w-full px-6 py-2 flex border items-center justify-between bg-gray-50">
-			<img src="loading.svg" alt="loading" height={42} width={42} />
+		<div className="fixed top-0 z-20 w-full px-6 py-2 border justify-between bg-gray-50">
+			<LoadingSpinner />
 		</div>
 	);
 }

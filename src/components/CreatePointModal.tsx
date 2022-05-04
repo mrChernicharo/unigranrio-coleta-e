@@ -1,9 +1,17 @@
-import React from 'react';
+import { CollectionPoint } from '@prisma/client';
+import React, { useState } from 'react';
 import { FiX } from 'react-icons/fi';
+import { useUserContext } from '../contexts/UserContext';
 import { formDefaultValues } from '../lib/constants';
-import { CollectionPointWithAuthor } from '../lib/interfaces';
+import { parseTypesOfWaste, postCreatePoint } from '../lib/functions';
+import {
+	CollectionPointWithAuthor,
+	PointFormValues,
+	TypesOfWasteStr,
+} from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import FormWizard from './FormWizard';
+import LoadingSpinner from './LoadingSpinner';
 
 interface Props {
 	handleModalClose: () => void;
@@ -14,8 +22,41 @@ export default function CreatePointModal({
 	handleModalClose,
 	onPointCreated,
 }: Props) {
-	const handleFormSubmit = e => {
-		console.log('onSubmit', e);
+	const { user } = useUserContext();
+	const [isLoading, setIsLoading] = useState(false);
+
+	const handleFormSubmit = async (pointFormValues: PointFormValues) => {
+		try {
+			setIsLoading(true);
+			localStorage.setItem(
+				'@createPointFormValues',
+				JSON.stringify(pointFormValues)
+			);
+			const wasteTypes = Object.values(pointFormValues.typesOfWaste).map(
+				v => (v ? 1 : 0)
+			);
+			const pointInfo: Omit<CollectionPoint, 'id' | 'createdAt'> = {
+				...pointFormValues,
+				authorId: user?.id!,
+				typesOfWaste: parseTypesOfWaste(wasteTypes),
+			};
+
+			console.log('onSubmit', pointInfo);
+
+			const point = await postCreatePoint(pointInfo);
+
+			onPointCreated({
+				...point,
+				typesOfWaste: point.typesOfWaste as TypesOfWasteStr,
+				author: { ...user! },
+			});
+			setIsLoading(false);
+			handleModalClose();
+			alert('Ponto de coleta cadastrado com sucesso!');
+		} catch (err) {
+			console.error(err);
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -34,19 +75,22 @@ export default function CreatePointModal({
 				</div>
 
 				<h1 className="mt-[-2rem] mb-2 text-lg font-bold text-center">
-					Cadastrar novo ponto de coleta
+					{isLoading
+						? 'Salvando ponto de coleta...'
+						: 'Cadastrar novo ponto de coleta'}
 				</h1>
 
-				<FormWizard
-					initialValues={formDefaultValues}
-					onSubmit={handleFormSubmit}
-					mode="create"
-				/>
-
-				{/* <CreatePointForm
-					onFormClose={handleModalClose}
-					onSend={onPointCreated}
-				/> */}
+				{isLoading ? (
+					<div className="py-16">
+						<LoadingSpinner height={120} width={120} />
+					</div>
+				) : (
+					<FormWizard
+						initialValues={formDefaultValues}
+						onSubmit={handleFormSubmit}
+						mode="create"
+					/>
+				)}
 			</div>
 			<div className={styles.overlay} onClick={handleModalClose}></div>
 		</>

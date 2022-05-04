@@ -36,7 +36,33 @@ export interface Geocode {
 
 export interface CollectionPointWithAuthor extends CollectionPoint {
 	author: User;
+	typesOfWaste: TypesOfWasteStr;
 }
+
+export interface TypesOfWaste {
+	small: boolean;
+	large: boolean;
+	info: boolean;
+	battery: boolean;
+}
+
+export type TypesOfWasteStr =
+	| '____'
+	| 'S___'
+	| '_L__'
+	| '__I_'
+	| '___B'
+	| 'SL__'
+	| 'S_I_'
+	| 'S__B'
+	| '_LI_'
+	| '_L_B'
+	| '__IB'
+	| 'SLI_'
+	| 'SL_B'
+	| 'S_IB'
+	| '_LIB'
+	| 'SLIB';
 
 export interface PointFormValues {
 	name: string;
@@ -46,10 +72,5 @@ export interface PointFormValues {
 	phone: string;
 	email: string;
 	image: string;
-	typesOfWaste: {
-		small: boolean;
-		large: boolean;
-		info: boolean;
-		battery: boolean;
-	};
+	typesOfWaste: TypesOfWaste;
 }

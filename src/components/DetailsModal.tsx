@@ -1,14 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
-import { User } from '@prisma/client';
+import { CollectionPoint, User } from '@prisma/client';
 import { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { useUserContext } from '../contexts/UserContext';
 import { imgURLS } from '../lib/constants';
-import { postDeletePoint } from '../lib/functions';
-import { CollectionPointWithAuthor } from '../lib/interfaces';
+import {
+	convertTypesOfWaste,
+	parseTypesOfWaste,
+	postDeletePoint,
+	postUpdatePoint,
+} from '../lib/functions';
+import {
+	CollectionPointWithAuthor,
+	PointFormValues,
+	TypesOfWasteStr,
+} from '../lib/interfaces';
 import { styles } from '../styles/styles';
 import FormWizard from './FormWizard';
+import LoadingSpinner from './LoadingSpinner';
 import WasteType from './WasteType';
 
 interface Props {
@@ -34,9 +44,12 @@ export default function DetailsModal({
 		image,
 		phone,
 		email,
+		lat,
+		lng,
 		author,
 		authorId,
 		typesOfWaste,
+		createdAt,
 	} = point;
 	const [isLoading, setIsLoading] = useState(false);
 	const [mode, setMode] = useState<'read' | 'write'>('read');
@@ -64,8 +77,42 @@ export default function DetailsModal({
 		setMode(prevMode => (prevMode === 'read' ? 'write' : 'read'));
 	};
 
-	const handleFormSubmit = e => {
-		console.log(e);
+	const handleFormSubmit = async (pointFormValues: PointFormValues) => {
+		try {
+			setIsLoading(true);
+			localStorage.setItem(
+				'@createPointFormValues',
+				JSON.stringify(pointFormValues)
+			);
+			const wasteTypes = Object.values(pointFormValues.typesOfWaste).map(
+				v => (v ? 1 : 0)
+			);
+			const pointInfo: Omit<CollectionPoint, 'id' | 'createdAt'> = {
+				...pointFormValues,
+				authorId: user?.id!,
+				typesOfWaste: parseTypesOfWaste(wasteTypes),
+			};
+
+			console.log('onSubmit', pointInfo);
+
+			const point = await postUpdatePoint({
+				id,
+				createdAt,
+				...pointInfo,
+			});
+
+			onPointUpdated({
+				...point,
+				typesOfWaste: point.typesOfWaste as TypesOfWasteStr,
+				author: { ...user! },
+			});
+			setIsLoading(false);
+			handleModalClose();
+			alert('Ponto de coleta atualizado com sucesso!');
+		} catch (err) {
+			console.error(err);
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -127,12 +174,12 @@ export default function DetailsModal({
 					{isLoading && (
 						<div className="flex flex-col justify-center">
 							<h2 className="text-xl">
-								Deletando Ponto de Coleta...
+								{mode === 'write'
+									? 'Registrando suas atualizações...'
+									: 'Deletando Ponto de Coleta...'}
 							</h2>
-							<img
+							<LoadingSpinner
 								className="mx-auto my-8"
-								src="loading.svg"
-								alt="loading"
 								height={120}
 								width={120}
 							/>
@@ -185,18 +232,22 @@ export default function DetailsModal({
 							{mode === 'write' && (
 								<div className="flex flex-col mb-4">
 									<div className="w-full flex justify-left">
-										Edit Form
 										<FormWizard
 											initialValues={{
 												name,
 												address,
 												image,
+												lat,
+												lng,
 												phone,
 												email,
-												typesOfWaste,
+												typesOfWaste:
+													convertTypesOfWaste(
+														typesOfWaste
+													),
 											}}
 											onSubmit={handleFormSubmit}
-											mode="create"
+											mode="edit"
 										/>
 									</div>
 								</div>

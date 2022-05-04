@@ -83,8 +83,12 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		);
 	};
 
-	const handlePointUpdated = e => {
-		console.log('handlePointUpdated', e);
+	const handlePointUpdated = point => {
+		console.log('handlePointUpdated', point);
+		setCollectionPoints([
+			...collectionPoints.filter(item => item.id !== point.id),
+			point,
+		]);
 	};
 
 	useEffect(() => {
@@ -189,6 +193,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 	const googleApiKey = process.env.GOOGLE_API_KEY;
 
 	// include: => point + author
+	// @ts-ignore
 	const response: CollectionPointWithAuthor[] =
 		await prisma.collectionPoint.findMany({
 			include: {

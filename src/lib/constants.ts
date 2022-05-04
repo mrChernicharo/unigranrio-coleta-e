@@ -9,7 +9,7 @@ export const initialState = {
 	initialZoom: 10,
 };
 
-export const formDefaultValues: Partial<PointFormValues> = {
+export const formDefaultValues: PointFormValues = {
 	address: '',
 	email: '',
 	image: '',
