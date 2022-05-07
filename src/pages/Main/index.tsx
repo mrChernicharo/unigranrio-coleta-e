@@ -30,6 +30,7 @@ const render = (status: Status): ReactElement => {
 
 export default function App({ initialPoints, googleApiKey }: Props) {
 	const router = useRouter();
+	// const { width } = useWindowSize();
 	const { data: session, status } = useSession({
 		required: true,
 		onUnauthenticated() {
@@ -121,7 +122,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 				</pre> */}
 
 				<GoogleMap
-					height={500}
+					// height={width < 580 ? 300 : 500}
+					// height={width < 580 ? 300 : 500}
 					onClick={handleMapClick}
 					onZoom={handleMapZoom}
 					onIdle={handleMapIdle}
@@ -142,9 +144,9 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 					})}
 				</GoogleMap>
 
-				<div className="bg-white pt-10 pr-6 pb-16 flex justify-end">
+				<div className="bg-white px-6 pt-10 pb-16 flex justify-end">
 					<button
-						className="flex items-center rounded-lg p-4 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						className="w-full sm:w-auto flex items-center justify-center rounded-lg p-4 border border-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						onClick={handleCreatePointModalOpen}
 					>
 						<FaPlus color={'white'} />
@@ -192,19 +194,21 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 
 	// include: => point + author
 	// @ts-ignore
-	const response: CollectionPointWithAuthor[] =
+	let response: CollectionPointWithAuthor[] | null =
 		await prisma.collectionPoint.findMany({
 			include: {
 				author: true,
 			},
 		});
 
+	if (!response) response = [];
+
 	const initialPoints = response.map(item => ({
 		...item,
 		createdAt: item.createdAt.toISOString(),
 		author: {
 			...item.author,
-			emailVerified: item.author.emailVerified?.toISOString(),
+			emailVerified: item?.author?.emailVerified?.toISOString() || null,
 		},
 	}));
 

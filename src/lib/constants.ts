@@ -42,3 +42,26 @@ export const imgURLS = {
 // export const prodBaseURL =
 // 	'https://unigranrio-coleta-e-mrchernicharo.vercel.app';
 // export const devBaseURL = 'http://localhost:3000';
+
+export const wasteTypesData = [
+	{
+		item: 'small',
+		title: 'Itens Pequenos',
+		description: 'Torradeiras, câmeras, rádios, etc.',
+	},
+	{
+		item: 'large',
+		title: 'Itens Grandes',
+		description: 'Geladeiras, máquinas de lavar, ar condicionados, etc',
+	},
+	{
+		item: 'info',
+		title: 'Itens de Informática',
+		description: 'Computadores, celulares, impressoras, monitores.',
+	},
+	{
+		item: 'battery',
+		title: 'Baterias',
+		description: 'Pilhas, baterias e carregadores.',
+	},
+];

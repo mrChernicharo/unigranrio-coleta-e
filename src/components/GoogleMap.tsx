@@ -72,8 +72,7 @@ export default function GoogleMap({
 	return (
 		<div
 			ref={mapRef}
-			style={{ width: '100%', height }}
-			className="shadow-lg shadow-indigo-200"
+			className="w-[100%] h-[400px] sm:h-[480px] lg:h-[540px] shadow-lg shadow-indigo-200"
 		>
 			{Children.map(children, child => {
 				if (isValidElement(child)) {

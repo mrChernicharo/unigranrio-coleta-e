@@ -50,7 +50,7 @@ const SignIn: NextPage = props => {
 	return (
 		<div className="bg-gray-200 flex flex-col items-center space-between">
 			<div className="w-full">
-				<div className="max-w-lg mx-auto mt-32 mb-52 pt-16 pb-24 px-12 bg-white rounded-lg shadow-md">
+				<div className="max-w-lg bg-white rounded-lg shadow-md mx-auto mt-16 sm:mt-20 lg:mt-28 mb-24 sm:mb-40 lg:mb-52 pt-16 pb-24 px-12 ">
 					<div>
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img

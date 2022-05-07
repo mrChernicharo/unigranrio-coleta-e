@@ -8,6 +8,7 @@ import {
 	FaExclamationTriangle,
 } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
+import { wasteTypesData } from '../lib/constants';
 import { fetchAddressLatLng } from '../lib/functions';
 import { Geocode, PointFormValues } from '../lib/interfaces';
 import { styles } from '../styles/styles';
@@ -96,7 +97,7 @@ export default function Form({
 					<div className="grid grid-cols-6 gap-6">
 						{formStep === 1 && (
 							<>
-								<div className="col-span-5">
+								<div className="col-span-6 sm:col-span-5">
 									<label
 										htmlFor="address"
 										className={styles.fieldLabel}
@@ -111,7 +112,7 @@ export default function Form({
 										defaultValue={values.address}
 									/>
 								</div>
-								<div className="col-span-1 flex pt-6">
+								<div className="col-span-6 sm:col-span-1 flex pt-0 sm:pt-6">
 									<button
 										type="button"
 										onClick={handleAddressSearch}
@@ -182,7 +183,7 @@ export default function Form({
 
 						{formStep === 2 && (
 							<>
-								<div className="-mb-2 col-span-6">
+								<div className="mb-0 sm:-mb-2 col-span-6">
 									<label
 										htmlFor="name"
 										className={styles.fieldLabel}
@@ -198,7 +199,7 @@ export default function Form({
 									/>
 								</div>
 
-								<div className="col-span-4">
+								<div className="col-span-6 sm:col-span-4">
 									<label
 										htmlFor="email"
 										className={styles.fieldLabel}
@@ -214,7 +215,7 @@ export default function Form({
 									/>
 								</div>
 
-								<div className="col-span-2">
+								<div className="col-span-6 sm:col-span-2">
 									<label
 										htmlFor="phone"
 										className={styles.fieldLabel}
@@ -239,109 +240,40 @@ export default function Form({
 										<h2 className="mb-4">
 											Tipos de resíduos recolhidos
 										</h2>
-										<div className="flex items-start">
-											<div className="flex items-center h-5">
-												<input
-													onChange={handleChange}
-													name="typesOfWaste.small"
-													id="typesOfWaste.small"
-													type="checkbox"
-													checked={
-														values.typesOfWaste!
-															.small
-													}
-													className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-												/>
-											</div>
-											<div className="ml-3 text-sm">
-												<label
-													htmlFor="typesOfWaste.small"
-													className="font-medium text-gray-700"
-												>
-													Pequenos equipamentos
-												</label>
-												<p className="text-gray-500">
-													Get notified when a
-													candidate applies for a job.
-												</p>
-											</div>
-
-											<div className="flex items-center h-5">
-												<input
-													onChange={handleChange}
-													id="typesOfWaste.large"
-													name="typesOfWaste.large"
-													type="checkbox"
-													checked={
-														values.typesOfWaste
-															.large
-													}
-													className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-												/>
-											</div>
-											<div className="ml-3 text-sm">
-												<label
-													htmlFor="typesOfWaste.large"
-													className="font-medium text-gray-700"
-												>
-													Itens Grandes
-												</label>
-												<p className="text-gray-500">
-													Get notified when a
-													candidate applies for a job.
-												</p>
-											</div>
-
-											<div className="flex items-center h-5">
-												<input
-													onChange={handleChange}
-													name="typesOfWaste.info"
-													id="typesOfWaste.info"
-													type="checkbox"
-													checked={
-														values.typesOfWaste.info
-													}
-													className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-												/>
-											</div>
-											<div className="ml-3 text-sm">
-												<label
-													htmlFor="typesOfWaste.info"
-													className="font-medium text-gray-700"
-												>
-													Itens de Informática
-												</label>
-												<p className="text-gray-500">
-													Get notified when a
-													candidate applies for a job.
-												</p>
-											</div>
-
-											<div className="flex items-center h-5">
-												<input
-													onChange={handleChange}
-													id="typesOfWaste.battery"
-													name="typesOfWaste.battery"
-													type="checkbox"
-													checked={
-														values.typesOfWaste
-															.battery
-													}
-													className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-												/>
-											</div>
-											<div className="ml-3 text-sm">
-												<label
-													htmlFor="typesOfWaste.battery"
-													className="font-medium text-gray-700"
-												>
-													Baterias
-												</label>
-												<p className="text-gray-500">
-													Get notified when a
-													candidate applies for a job.
-												</p>
-											</div>
+										<div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-4">
+											{wasteTypesData.map(wasteType => {
+												// prettier-ignore
+												return (
+													<div
+														key={wasteType.item}
+														className=""
+													>
+														<div className="inline float-left">
+															<input
+																onChange={handleChange}
+																name={`typesOfWaste.${wasteType.item}`}
+																id={`typesOfWaste.${wasteType.item}`}
+																type="checkbox"
+																checked={values.typesOfWaste[wasteType.item]!}
+																className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded mr-2"
+															/>
+														</div>
+														<div className="ml-3 text-sm">
+															<label
+																htmlFor={`typesOfWaste.${wasteType.item}`}
+																className="font-medium text-gray-700"
+															>
+																<p className="text-md">
+																	{wasteType.title}
+																</p>
+																<p className="text-gray-400 text-xs">
+																	{wasteType.description}
+																</p>
+															</label>
+														</div>
+													</div>
+												);
+											})}
 										</div>
 									</fieldset>
 								</div>
@@ -387,14 +319,14 @@ export default function Form({
 							</>
 						)}
 					</div>
-					<div className="mt-8 grid grid-cols-6 gap-6">
-						<div className="col-span-6 text-right">
+					<div className="w-full mt-8 flex">
+						<div className="w-full flex justify-end">
 							{mode === 'edit' && (
 								<button
 									type="button"
 									onClick={onCancel}
 									className={
-										'ml-2 flex items-center ' + styles.btn
+										'flex items-center ' + styles.btn
 									}
 								>
 									<span className="mr-2">Cancelar</span>
@@ -408,7 +340,8 @@ export default function Form({
 									onClick={() => setFormStep(s => s - 1)}
 									type="button"
 									className={
-										'ml-2 flex items-center ' + styles.btn
+										'w-[30%] ml-2 flex items-center ' +
+										styles.btnPrimary
 									}
 								>
 									<span className="mr-2">Voltar</span>
@@ -423,7 +356,8 @@ export default function Form({
 									type="button"
 									onClick={() => setFormStep(s => s + 1)}
 									className={
-										'ml-2 flex items-center ' + styles.btn
+										'w-[40%] ml-2 flex items-center ' +
+										styles.btnPrimary
 									}
 								>
 									<span className="mr-2">Próximo</span>
@@ -436,13 +370,14 @@ export default function Form({
 								<button
 									type="submit"
 									className={
-										'ml-2 flex items-center ' + styles.btn
+										'w-[40%] ml-2 flex items-center ' +
+										styles.btnPrimary
 									}
 								>
 									<span className="mr-2">
 										{mode === 'create'
 											? 'Enviar'
-											: 'Salvar alterações'}
+											: 'Salvar'}
 									</span>
 									<span>
 										<FaCheck />
