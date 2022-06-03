@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FormikHelpers, useFormik } from 'formik';
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import {
 	FaCheck,
 	FaChevronCircleLeft,
@@ -30,7 +30,7 @@ export default function Form({
 	onCancel,
 }: Props) {
 	// prettier-ignore
-	const { handleSubmit, handleChange, setFieldValue, values } = 
+	const { handleSubmit, handleChange, setFieldValue, values, validateForm } = 
         useFormik<PointFormValues>({ initialValues, onSubmit });
 
 	const addressInputRef = useRef<HTMLInputElement>(null);
@@ -39,6 +39,23 @@ export default function Form({
 	const [geocodeAddresses, setGeocodeAddresses] = useState<Geocode[]>([]);
 	const [geoCodeStatus, setGeoCodeStatus] = useState('');
 	const [showMap, setShowMap] = useState(false);
+
+	const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		const hasAtLeastOneTypeOfWaste = Object.keys(values.typesOfWaste).some(
+			k => !!values.typesOfWaste[k]
+		);
+		const hasRequiredValues = Object.keys(values)
+			.filter(v => ['name', 'email', 'address', 'lat', 'lng'].includes(v))
+			.every(v => !!v);
+
+		const isValidForm = hasRequiredValues && hasAtLeastOneTypeOfWaste;
+
+		if (isValidForm) {
+			handleSubmit(e);
+		}
+	};
 
 	const handleAddressSearch = async () => {
 		const data = await fetchAddressLatLng(addressInputRef.current?.value!);
@@ -57,12 +74,6 @@ export default function Form({
 		setFieldValue('lng', geo.geometry.location.lng);
 		(addressInputRef.current as any).value = geo.formatted_address;
 		setShowMap(true);
-	};
-
-	const handleFormKeyUp = e => {
-		// return e.code === 'Enter' && formStep === 1
-		// 	? handleAddressSearch()
-		// 	: () => {};
 	};
 
 	const isValidStep = step => {
@@ -93,7 +104,7 @@ export default function Form({
 	return (
 		<div>
 			<div className="px-4 py-5 sm:px-8 ">
-				<form onSubmit={handleSubmit} onKeyUp={handleFormKeyUp}>
+				<form onSubmit={handleFormSubmit}>
 					<div className="grid grid-cols-6 gap-6">
 						{formStep === 1 && (
 							<>
@@ -114,7 +125,6 @@ export default function Form({
 								</div>
 								<div className="col-span-6 sm:col-span-1 flex pt-0 sm:pt-6">
 									<button
-										type="button"
 										onClick={handleAddressSearch}
 										className={styles.submitBtn}
 									>
