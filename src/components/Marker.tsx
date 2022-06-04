@@ -11,8 +11,6 @@ const Marker = ({ onClick, point, ...options }: Props) => {
 
 	useEffect(() => {
 		if (!marker) {
-			console.log('set marker');
-
 			setMarker(new google.maps.Marker());
 		}
 

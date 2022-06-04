@@ -4,7 +4,6 @@ import {
 	ReactNode,
 	SetStateAction,
 	useContext,
-	useEffect,
 	useState,
 } from 'react';
 import { CollectionPointWithAuthor } from '../lib/interfaces';
@@ -28,10 +27,6 @@ export const PointsContextProvider = ({
 	const [collectionPoints, setCollectionPoints] = useState<
 		CollectionPointWithAuthor[]
 	>([]);
-
-	useEffect(() => {
-		console.log({ collectionPoints });
-	}, [collectionPoints]);
 
 	const context: ICollectionPointsContext = {
 		collectionPoints,

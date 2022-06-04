@@ -3,7 +3,6 @@ import { imgURLS } from './constants';
 import { TypesOfWaste, TypesOfWasteStr } from './interfaces';
 
 export const fetchAddressLatLng = async (address: string) => {
-	console.log('fetchAddressLatLng', address);
 	return apiPost(`${getMainUrl()}/api/geolocation/getLatLngByAddress`, {
 		address,
 	});

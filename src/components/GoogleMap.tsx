@@ -38,7 +38,6 @@ export default function GoogleMap({
 
 	useEffect(() => {
 		if (mapRef.current && !map) {
-			console.log('setMap');
 			setMap(
 				new window.google.maps.Map(mapRef.current, {
 					center,

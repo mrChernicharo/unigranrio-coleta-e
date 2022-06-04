@@ -6,7 +6,6 @@ import { UserContextProvider } from '../contexts/UserContext';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-	// console.log({ session, pageProps });
 	return (
 		<SessionProvider session={session}>
 			<UserContextProvider>

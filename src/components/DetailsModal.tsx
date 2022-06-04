@@ -55,7 +55,6 @@ export default function DetailsModal({
 	const [mode, setMode] = useState<'read' | 'write'>('read');
 
 	const isAuthor = (user: User) => {
-		console.log({ user, authorId });
 		return authorId === user.id;
 	};
 
@@ -64,7 +63,6 @@ export default function DetailsModal({
 
 		if (hasConfirmed) {
 			setIsLoading(true);
-			console.log('deleting...', point);
 			await postDeletePoint(id);
 			onPointDeleted(point);
 
@@ -92,8 +90,6 @@ export default function DetailsModal({
 				authorId: user?.id!,
 				typesOfWaste: parseTypesOfWaste(wasteTypes),
 			};
-
-			console.log('onSubmit', pointInfo);
 
 			const point = await postUpdatePoint({
 				id,

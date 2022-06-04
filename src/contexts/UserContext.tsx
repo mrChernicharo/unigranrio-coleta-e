@@ -5,7 +5,6 @@ import {
 	ReactNode,
 	SetStateAction,
 	useContext,
-	useEffect,
 	useState,
 } from 'react';
 
@@ -26,10 +25,6 @@ export const UserContextProvider = ({
 	children,
 }: IUserContextProviderProps) => {
 	const [user, setUser] = useState<User | null>(null);
-
-	useEffect(() => {
-		console.log({ user });
-	}, [user]);
 
 	const context: IUserContext = {
 		user,

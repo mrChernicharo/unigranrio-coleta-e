@@ -2,7 +2,7 @@ import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { GetServerSideProps } from 'next';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreatePointModal from '../../components/CreatePointModal';
 import DetailsModal from '../../components/DetailsModal';
@@ -14,10 +14,8 @@ import { useCollectionPointsContext } from '../../contexts/PointsContext';
 import { useUserContext } from '../../contexts/UserContext';
 import { getClickLatLng, handleUserInit } from '../../lib/functions';
 import { CollectionPointWithAuthor } from '../../lib/interfaces';
-import { prisma } from '../../lib/prisma';
 
 interface Props {
-	initialPoints: CollectionPointWithAuthor[];
 	googleApiKey: string;
 }
 const googleIconURL = 'flag.png';
@@ -27,9 +25,8 @@ const render = (status: Status): ReactElement => {
 	return <h1>{status}</h1>;
 };
 
-export default function App({ initialPoints, googleApiKey }: Props) {
+export default function App({ googleApiKey }: Props) {
 	const router = useRouter();
-	// const { width } = useWindowSize();
 	const { data: session, status } = useSession({
 		required: true,
 		onUnauthenticated() {
@@ -40,11 +37,17 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	const { collectionPoints, setCollectionPoints } =
 		useCollectionPointsContext();
 
-	// const [collectionPoints, setCollectionPoints] = useState(initialPoints);
 	// prettier-ignore
 	const [selectedPoint, setSelectedPoint] = useState<CollectionPointWithAuthor | null>(null);
 	const [isCreatePointModalOpen, setIsCreatePointModalOpen] = useState(false);
 	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+
+	const fetchInitialPoints = useCallback(async () => {
+		const response = await fetch('/api/fetchPoints');
+		const data = await response.json();
+
+		setCollectionPoints(data);
+	}, [setCollectionPoints]);
 
 	const handleCreatePointModalOpen = e => {
 		setIsCreatePointModalOpen(true);
@@ -59,7 +62,7 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 		// console.log('map Idle ', map);
 	};
 	const handleMapZoom = e => {
-		console.log('map Zoom ', e);
+		// console.log('map Zoom ', e);
 	};
 	const handleMapClick = (e: google.maps.MapMouseEvent) => {
 		const { lat, lng } = getClickLatLng(e);
@@ -75,14 +78,12 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	};
 
 	const handlePointDeleted = point => {
-		console.log('handlePointDeleted', point);
 		setCollectionPoints(
 			collectionPoints.filter(item => item.id !== point.id)
 		);
 	};
 
 	const handlePointUpdated = point => {
-		console.log('handlePointUpdated', point);
 		setCollectionPoints([
 			...collectionPoints.filter(item => item.id !== point.id),
 			point,
@@ -96,8 +97,8 @@ export default function App({ initialPoints, googleApiKey }: Props) {
 	}, [status, session, user, setUser]);
 
 	useEffect(() => {
-		setCollectionPoints(initialPoints);
-	}, [initialPoints, setCollectionPoints]);
+		fetchInitialPoints();
+	}, [fetchInitialPoints]);
 
 	return (
 		<Wrapper apiKey={googleApiKey} render={render}>
@@ -191,27 +192,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 
 	const googleApiKey = process.env.GOOGLE_API_KEY;
 
-	// include: => point + author
-	// @ts-ignore
-	let response: CollectionPointWithAuthor[] | null =
-		await prisma.collectionPoint.findMany({
-			include: {
-				author: true,
-			},
-		});
-
-	if (!response) response = [];
-
-	const initialPoints = response.map(item => ({
-		...item,
-		createdAt: item.createdAt.toISOString(),
-		author: {
-			...item.author,
-			emailVerified: item?.author?.emailVerified?.toISOString() || null,
-		},
-	}));
-
 	return {
-		props: { initialPoints, googleApiKey },
+		props: { googleApiKey },
 	};
 };

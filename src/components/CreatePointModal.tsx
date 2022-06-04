@@ -41,8 +41,6 @@ export default function CreatePointModal({
 				typesOfWaste: parseTypesOfWaste(wasteTypes),
 			};
 
-			console.log('onSubmit', pointInfo);
-
 			const point = await postCreatePoint(pointInfo);
 
 			onPointCreated({

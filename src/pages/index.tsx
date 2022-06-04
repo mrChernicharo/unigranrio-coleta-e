@@ -38,7 +38,6 @@ const SignIn: NextPage = props => {
 
 	const handleEmailSignIn = e => {
 		e.preventDefault();
-		console.log(emailInputRef.current?.value);
 		signIn('email', {
 			email: emailInputRef.current?.value,
 			name: emailInputRef.current?.value.split('@')[0],
