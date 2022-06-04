@@ -9,7 +9,7 @@ const nextConfig = {
 			'*',
 		],
 	},
-	productionBrowserSourceMaps: true,
+	// productionBrowserSourceMaps: true,
 };
 
 module.exports = nextConfig;
