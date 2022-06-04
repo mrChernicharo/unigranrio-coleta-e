@@ -20,8 +20,7 @@ interface Props {
 	initialPoints: CollectionPointWithAuthor[];
 	googleApiKey: string;
 }
-const googleIconURL =
-	'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+const googleIconURL = 'flag.png';
 
 const render = (status: Status): ReactElement => {
 	if (status === Status.FAILURE) return <h1>Error</h1>;
