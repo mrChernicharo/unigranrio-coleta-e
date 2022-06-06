@@ -91,7 +91,9 @@ export default function App({ googleApiKey }: Props) {
 	};
 
 	useEffect(() => {
+		console.log({ status, session, user, setUser });
 		if (status && session && session.user && !user) {
+			console.log('handleUserInit', { status, session, user });
 			handleUserInit({ userData: session.user }).then(u => setUser(u));
 		}
 	}, [status, session, user, setUser]);
@@ -180,6 +182,9 @@ export default function App({ googleApiKey }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
 	const session = await getSession(ctx);
+
+	console.log({ session });
+
 	if (!session) {
 		return {
 			redirect: {

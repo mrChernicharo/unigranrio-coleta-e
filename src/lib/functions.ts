@@ -84,29 +84,30 @@ export const postDeletePoint = async (pointId: string) => {
 
 export const handleUserInit = async ({ userData }) => {
 	const url = getMainUrl();
+
 	const { name, email, image } = userData;
 
 	const userQueryResponse = await fetch(
-		`${url}/api/user/findByEmail?email=${email}`
+		`${url}/api/user/findByNameAndEmail?email=${email}&name=${name}`
 	);
 
 	const foundUser = await userQueryResponse.json();
 
 	if ('name' in foundUser || 'email' in foundUser) {
 		console.log('email is already in use, user exists');
+		console.log({ url, userData, name, email, image, foundUser });
 		return foundUser;
 	}
 
-	const newUser: User = {
-		id: foundUser.id,
-		name,
+	const newUser: Partial<User> = {
+		name: name ?? email.split('@')[0],
 		email,
 		emailVerified: new Date(),
 		image: image ?? imgURLS.defaultAvatarImg,
 	};
 
-	const user = await apiPost(`${getMainUrl()}/api/user/create`, {
-		...newUser,
+	const user = await apiPost(`${url}/api/user/create`, {
+		newUser,
 	});
 
 	return user;

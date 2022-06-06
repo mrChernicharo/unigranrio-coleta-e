@@ -6,11 +6,15 @@ export default async function FindByEmail(
 	res: NextApiResponse
 ) {
 	const email = req.query.email as string;
+	const name = req.query.name as string;
 
 	const foundUser = await prisma.user.findFirst({
 		where: {
 			email: {
 				equals: email,
+			},
+			name: {
+				equals: name,
 			},
 		},
 	});
